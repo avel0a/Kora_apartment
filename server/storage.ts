@@ -1,38 +1,44 @@
-import { type User, type InsertUser } from "@shared/schema";
-import { randomUUID } from "crypto";
-
-// modify the interface with any CRUD methods
-// you might need
+import { db } from "./db";
+import { rooms, bookings, contacts, type Room, type InsertRoom, type Booking, type InsertBooking, type Contact, type InsertContact } from "@shared/schema";
+import { eq } from "drizzle-orm";
 
 export interface IStorage {
-  getUser(id: string): Promise<User | undefined>;
-  getUserByUsername(username: string): Promise<User | undefined>;
-  createUser(user: InsertUser): Promise<User>;
+  // Rooms
+  getRooms(): Promise<Room[]>;
+  getRoomBySlug(slug: string): Promise<Room | undefined>;
+  createRoom(room: InsertRoom): Promise<Room>;
+
+  // Bookings
+  createBooking(booking: InsertBooking): Promise<Booking>;
+
+  // Contacts
+  createContact(contact: InsertContact): Promise<Contact>;
 }
 
-export class MemStorage implements IStorage {
-  private users: Map<string, User>;
-
-  constructor() {
-    this.users = new Map();
+export class DatabaseStorage implements IStorage {
+  async getRooms(): Promise<Room[]> {
+    return await db.select().from(rooms);
   }
 
-  async getUser(id: string): Promise<User | undefined> {
-    return this.users.get(id);
+  async getRoomBySlug(slug: string): Promise<Room | undefined> {
+    const [room] = await db.select().from(rooms).where(eq(rooms.slug, slug));
+    return room;
   }
 
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
+  async createRoom(insertRoom: InsertRoom): Promise<Room> {
+    const [room] = await db.insert(rooms).values(insertRoom).returning();
+    return room;
   }
 
-  async createUser(insertUser: InsertUser): Promise<User> {
-    const id = randomUUID();
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
-    return user;
+  async createBooking(insertBooking: InsertBooking): Promise<Booking> {
+    const [booking] = await db.insert(bookings).values(insertBooking).returning();
+    return booking;
+  }
+
+  async createContact(insertContact: InsertContact): Promise<Contact> {
+    const [contact] = await db.insert(contacts).values(insertContact).returning();
+    return contact;
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();
