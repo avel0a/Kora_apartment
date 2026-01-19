@@ -9,6 +9,7 @@ import Rooms from "@/pages/Rooms";
 import RoomDetail from "@/pages/RoomDetail";
 import Amenities from "@/pages/Amenities";
 import Contact from "@/pages/Contact";
+import AdminBookings from "@/pages/AdminBookings";
 
 function Router() {
   return (
@@ -18,6 +19,7 @@ function Router() {
       <Route path="/rooms/:slug" component={RoomDetail} />
       <Route path="/amenities" component={Amenities} />
       <Route path="/contact" component={Contact} />
+      <Route path="/admin/bookings" component={AdminBookings} />
       <Route component={NotFound} />
     </Switch>
   );

@@ -24,6 +24,11 @@ export async function registerRoutes(
   });
 
   // Bookings
+  app.get(api.bookings.list.path, async (req, res) => {
+    const bookings = await storage.getBookings();
+    res.json(bookings);
+  });
+
   app.post(api.bookings.create.path, async (req, res) => {
     try {
       const input = api.bookings.create.input.parse(req.body);

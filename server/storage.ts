@@ -10,6 +10,7 @@ export interface IStorage {
 
   // Bookings
   createBooking(booking: InsertBooking): Promise<Booking>;
+  getBookings(): Promise<Booking[]>;
 
   // Contacts
   createContact(contact: InsertContact): Promise<Contact>;
@@ -33,6 +34,10 @@ export class DatabaseStorage implements IStorage {
   async createBooking(insertBooking: InsertBooking): Promise<Booking> {
     const [booking] = await db.insert(bookings).values(insertBooking).returning();
     return booking;
+  }
+
+  async getBookings(): Promise<Booking[]> {
+    return await db.select().from(bookings).orderBy(bookings.createdAt);
   }
 
   async createContact(insertContact: InsertContact): Promise<Contact> {
