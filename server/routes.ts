@@ -16,7 +16,11 @@ export async function registerRoutes(
   });
 
   app.get(api.rooms.get.path, async (req, res) => {
-    const room = await storage.getRoomBySlug(req.params.slug);
+    const slug = req.params.slug;
+    if (typeof slug !== 'string') {
+      return res.status(400).json({ message: "Invalid room slug" });
+    }
+    const room = await storage.getRoomBySlug(slug);
     if (!room) {
       return res.status(404).json({ message: "Room not found" });
     }
