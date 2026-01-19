@@ -64,44 +64,70 @@ export async function registerRoutes(
 }
 
 async function seedDatabase() {
-  const rooms = await storage.getRooms();
-  if (rooms.length === 0) {
+  const roomsCount = await storage.getRooms();
+  if (roomsCount.length === 0) {
     console.log("Seeding rooms...");
-    await storage.createRoom({
-      name: "Standard Single Room",
-      slug: "standard-single",
-      description: "Perfect for business travelers, our Single Rooms offer a comfortable king-size bed, work desk, and stunning mountain views.",
-      price: 80,
-      capacity: 1,
-      size: "30m²",
-      bedType: "King Size",
-      imageUrl: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?q=80&w=1000&auto=format&fit=crop",
-      amenities: ["Free WiFi", "Mountain View", "Work Desk", "Mini Bar", "Flat-screen TV"]
-    });
+    const roomTypes = [
+      {
+        name: "Executive Room",
+        slug: "executive",
+        description: "Experience the pinnacle of luxury in our Executive Rooms, designed for the discerning traveler with premium finishes and city views.",
+        price: 150,
+        capacity: 2,
+        size: "45m²",
+        bedType: "King Size",
+        imageUrl: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?q=80&w=1000&auto=format&fit=crop",
+        amenities: ["Free WiFi", "City View", "Mini Bar", "Work Desk", "Coffee Maker"]
+      },
+      {
+        name: "Deluxe Room",
+        slug: "deluxe",
+        description: "Our Deluxe Rooms offer enhanced space and comfort, featuring elegant decor and top-tier amenities for a relaxing stay.",
+        price: 130,
+        capacity: 2,
+        size: "40m²",
+        bedType: "King Size",
+        imageUrl: "https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=1000&auto=format&fit=crop",
+        amenities: ["Free WiFi", "Mountain View", "Flat-screen TV", "Mini Bar", "Safe"]
+      },
+      {
+        name: "Twin Room",
+        slug: "twin",
+        description: "Perfect for colleagues or friends, our Twin Rooms feature two comfortable beds and all the essential amenities for a productive stay.",
+        price: 110,
+        capacity: 2,
+        size: "38m²",
+        bedType: "2 Twin Beds",
+        imageUrl: "https://images.unsplash.com/photo-1566665797739-1674de7a421a?q=80&w=1000&auto=format&fit=crop",
+        amenities: ["Free WiFi", "Work Desk", "Coffee Maker", "Safe", "Mini Bar"]
+      },
+      {
+        name: "Single Room",
+        slug: "single",
+        description: "Ideal for solo business travelers, offering a cozy and efficient space with a comfortable bed and work area.",
+        price: 90,
+        capacity: 1,
+        size: "28m²",
+        bedType: "Queen Size",
+        imageUrl: "https://images.unsplash.com/photo-1505691938895-1758d7eaa511?q=80&w=1000&auto=format&fit=crop",
+        amenities: ["Free WiFi", "Work Desk", "Flat-screen TV", "Mini Bar"]
+      },
+      {
+        name: "Junior Suite",
+        slug: "junior-suite",
+        description: "Spacious and elegant, our Junior Suites offer a separate sitting area and upgraded bathroom facilities for a touch of extra luxury.",
+        price: 180,
+        capacity: 2,
+        size: "55m²",
+        bedType: "King Size",
+        imageUrl: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1000&auto=format&fit=crop",
+        amenities: ["Free WiFi", "Separate Sitting Area", "Jacuzzi", "Premium Coffee Machine", "Bathrobes"]
+      }
+    ];
 
-    await storage.createRoom({
-      name: "Executive Twin Room",
-      slug: "executive-twin",
-      description: "Spacious twin room with modern amenities, perfect for friends or colleagues sharing. Includes a balcony with city views.",
-      price: 120,
-      capacity: 2,
-      size: "40m²",
-      bedType: "2 Twin Beds",
-      imageUrl: "https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=1000&auto=format&fit=crop",
-      amenities: ["Free WiFi", "City View", "Balcony", "Coffee Maker", "Safe"]
-    });
-
-    await storage.createRoom({
-      name: "Luxury Suite",
-      slug: "luxury-suite",
-      description: "Experience ultimate luxury in our spacious suites featuring a separate living area, jacuzzi, and premium amenities.",
-      price: 200,
-      capacity: 2,
-      size: "65m²",
-      bedType: "King Size",
-      imageUrl: "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?q=80&w=1000&auto=format&fit=crop",
-      amenities: ["Free WiFi", "Jacuzzi", "Living Area", "Welcome Fruit Basket", "Bathrobes"]
-    });
+    for (const roomType of roomTypes) {
+      await storage.createRoom(roomType);
+    }
     console.log("Rooms seeded.");
   }
 }
