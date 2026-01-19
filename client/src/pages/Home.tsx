@@ -56,24 +56,29 @@ export default function Home() {
             {
               title: "Spa in the Sky",
               description: "Relax in our 9th-floor sanctuary with steam, sauna, and panoramic city views.",
-              icon: "🧖‍♀️"
+              icon: "🧖‍♀️",
+              href: "/amenities#spa"
             },
             {
               title: "Prime Location",
               description: "Located on Bole Road, moments from shopping, dining, and the airport.",
-              icon: "📍"
+              icon: "📍",
+              href: "/contact"
             },
             {
               title: "Rooftop Pool",
               description: "Unwind by our temperature-controlled pool overlooking the skyline.",
-              icon: "🏊‍♂️"
+              icon: "🏊‍♂️",
+              href: "/amenities#spa"
             }
           ].map((item, i) => (
-            <div key={i} className="bg-white p-8 border border-border/50 text-center hover:-translate-y-2 transition-transform duration-300 shadow-sm hover:shadow-md">
-              <div className="text-4xl mb-4">{item.icon}</div>
-              <h3 className="text-xl font-serif font-semibold text-primary mb-3">{item.title}</h3>
-              <p className="text-muted-foreground leading-relaxed">{item.description}</p>
-            </div>
+            <Link key={i} href={item.href}>
+              <div className="bg-white h-full p-8 border border-border/50 text-center hover-elevate shadow-sm transition-all duration-300 group cursor-pointer">
+                <div className="text-4xl mb-4 group-hover:scale-110 transition-transform">{item.icon}</div>
+                <h3 className="text-xl font-serif font-semibold text-primary mb-3">{item.title}</h3>
+                <p className="text-muted-foreground leading-relaxed">{item.description}</p>
+              </div>
+            </Link>
           ))}
         </div>
       </section>
