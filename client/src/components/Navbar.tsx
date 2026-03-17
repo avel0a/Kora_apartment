@@ -2,11 +2,16 @@ import { Link, useLocation } from "wouter";
 import { Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { useSettings, getSetting } from "@/hooks/use-settings";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [location] = useLocation();
+  const { data: settings } = useSettings();
+
+  const siteName = getSetting(settings, "site_name", "MOMONA");
+  const siteSubtitle = getSetting(settings, "site_subtitle", "Hotel Apartments");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -19,7 +24,7 @@ export function Navbar() {
   const navLinks = [
     { href: "/", label: "Home" },
     { href: "/rooms", label: "Rooms & Suites" },
-    { href: "/amenities", label: "Dining & Spa" },
+    { href: "/gallery", label: "Gallery" },
     { href: "/contact", label: "Contact" },
   ];
 
@@ -35,9 +40,9 @@ export function Navbar() {
         {/* Logo */}
         <Link href="/">
           <div className="text-2xl font-serif font-bold text-primary cursor-pointer flex flex-col items-center leading-none">
-            <span className="tracking-widest">MOMONA</span>
+            <span className="tracking-widest">{siteName.toUpperCase()}</span>
             <span className="text-[10px] font-sans text-primary/80 tracking-[0.3em] uppercase mt-1">
-              Hotel & Spa
+              {siteSubtitle}
             </span>
           </div>
         </Link>
@@ -61,6 +66,11 @@ export function Navbar() {
             <Button className="btn-primary rounded-none px-6 font-serif">
               Book Now
             </Button>
+          </Link>
+          <Link href="/admin">
+            <span className="text-xs font-medium text-muted-foreground hover:text-primary cursor-pointer ml-2">
+              Admin
+            </span>
           </Link>
         </div>
 
@@ -90,6 +100,14 @@ export function Navbar() {
             <Button className="w-full btn-primary mt-2" onClick={() => setIsOpen(false)}>
               Book Your Stay
             </Button>
+          </Link>
+          <Link href="/admin">
+            <span
+               className="block text-sm font-medium py-2 text-muted-foreground hover:text-primary cursor-pointer border-t pt-4 mt-2"
+               onClick={() => setIsOpen(false)}
+            >
+              Admin Access
+            </span>
           </Link>
         </div>
       )}

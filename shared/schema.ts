@@ -39,11 +39,44 @@ export const contacts = pgTable("contacts", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+export const users = pgTable("users", {
+  id: serial("id").primaryKey(),
+  username: text("username").notNull().unique(),
+  password: text("password").notNull(),
+  role: text("role").notNull().default("admin"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const siteSettings = pgTable("site_settings", {
+  key: text("key").primaryKey(),
+  value: text("value").notNull(),
+  label: text("label"),
+  type: text("type").notNull().default("text"), // text, textarea, image, url
+});
+
+export const galleryImages = pgTable("gallery_images", {
+  id: serial("id").primaryKey(),
+  imageUrl: text("image_url").notNull(),
+  caption: text("caption"),
+  sortOrder: integer("sort_order").notNull().default(0),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const roomImages = pgTable("room_images", {
+  id: serial("id").primaryKey(),
+  roomId: integer("room_id").notNull(),
+  imageUrl: text("image_url").notNull(),
+  sortOrder: integer("sort_order").notNull().default(0),
+});
+
 // === SCHEMAS ===
 
-export const insertRoomSchema = createInsertSchema(rooms).omit({ id: true });
-export const insertBookingSchema = createInsertSchema(bookings).omit({ id: true, createdAt: true, status: true });
-export const insertContactSchema = createInsertSchema(contacts).omit({ id: true, createdAt: true });
+export const insertRoomSchema = createInsertSchema(rooms);
+export const insertBookingSchema = createInsertSchema(bookings);
+export const insertContactSchema = createInsertSchema(contacts);
+export const insertUserSchema = createInsertSchema(users);
+export const insertGalleryImageSchema = createInsertSchema(galleryImages);
+export const insertRoomImageSchema = createInsertSchema(roomImages);
 
 // === TYPES ===
 
@@ -55,3 +88,14 @@ export type InsertBooking = z.infer<typeof insertBookingSchema>;
 
 export type Contact = typeof contacts.$inferSelect;
 export type InsertContact = z.infer<typeof insertContactSchema>;
+
+export type User = typeof users.$inferSelect;
+export type InsertUser = z.infer<typeof insertUserSchema>;
+
+export type SiteSetting = typeof siteSettings.$inferSelect;
+
+export type GalleryImage = typeof galleryImages.$inferSelect;
+export type InsertGalleryImage = z.infer<typeof insertGalleryImageSchema>;
+
+export type RoomImage = typeof roomImages.$inferSelect;
+export type InsertRoomImage = z.infer<typeof insertRoomImageSchema>;

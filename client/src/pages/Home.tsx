@@ -5,9 +5,18 @@ import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { RoomCard } from "@/components/RoomCard";
 import { useRooms } from "@/hooks/use-rooms";
+import { useSettings, getSetting } from "@/hooks/use-settings";
 
 export default function Home() {
   const { data: rooms, isLoading } = useRooms();
+  const { data: settings } = useSettings();
+
+  const heroImage = getSetting(settings, "hero_image", "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80");
+  const heroTitle = getSetting(settings, "hero_title", "Luxury in the Heart of Addis Ababa");
+  const heroSubtitle = getSetting(settings, "hero_subtitle", "Experience Ethiopian hospitality redefined. Just 3 minutes from Bole International Airport.");
+  const aboutImage = getSetting(settings, "about_image", "https://images.unsplash.com/photo-1559339352-11d035aa65de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1974&q=80");
+  const aboutTitle = getSetting(settings, "about_title", "A Stay Defined by Comfort & Class");
+  const aboutDesc = getSetting(settings, "about_description", "Whether you're visiting Addis Ababa for business or leisure, Momona Hotel offers a perfect blend of traditional Ethiopian hospitality and modern luxury.");
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -15,11 +24,9 @@ export default function Home() {
 
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        {/* Background Image - Modern Hotel Lobby/Facade */}
         <div className="absolute inset-0 z-0">
-          {/* unsplash: modern luxury hotel lobby warm lighting */}
           <img 
-            src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+            src={heroImage}
             alt="Momona Hotel Lobby" 
             className="w-full h-full object-cover"
           />
@@ -34,10 +41,12 @@ export default function Home() {
             <Star className="fill-current" size={20} />
           </div>
           <h1 className="text-5xl md:text-7xl font-serif font-bold leading-tight">
-            Luxury in the Heart of <br/> <span className="text-accent italic">Addis Ababa</span>
+            {heroTitle.includes("Addis Ababa") ? (
+              <>Luxury in the Heart of <br/> <span className="text-accent italic">Addis Ababa</span></>
+            ) : heroTitle}
           </h1>
           <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto font-light leading-relaxed">
-            Experience Ethiopian hospitality redefined. Just 3 minutes from Bole International Airport.
+            {heroSubtitle}
           </p>
           <div className="pt-8">
             <Link href="/rooms">
@@ -54,10 +63,10 @@ export default function Home() {
         <div className="container-custom grid grid-cols-1 md:grid-cols-3 gap-8">
           {[
             {
-              title: "Spa in the Sky",
-              description: "Relax in our 9th-floor sanctuary with steam, sauna, and panoramic city views.",
-              icon: "🧖‍♀️",
-              href: "/amenities#spa"
+              title: "Fully Equipped Apartments",
+              description: "Modern, fully furnished apartments with kitchen, living area, and everything you need for a comfortable stay.",
+              icon: "🏠",
+              href: "/rooms"
             },
             {
               title: "Prime Location",
@@ -66,10 +75,10 @@ export default function Home() {
               href: "/contact"
             },
             {
-              title: "Rooftop Pool",
-              description: "Unwind by our temperature-controlled pool overlooking the skyline.",
-              icon: "🏊‍♂️",
-              href: "/amenities#spa"
+              title: "24/7 Service",
+              description: "Round-the-clock concierge and room service to ensure your stay is seamless and enjoyable.",
+              icon: "🛎️",
+              href: "/contact"
             }
           ].map((item, i) => (
             <Link key={i} href={item.href}>
@@ -120,10 +129,12 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="space-y-8">
               <h2 className="text-4xl md:text-5xl font-serif leading-tight">
-                A Stay Defined by <br/><span className="text-accent">Comfort & Class</span>
+                {aboutTitle.includes("&") ? (
+                  <>{aboutTitle.split("&")[0]}<br/><span className="text-accent">&{aboutTitle.split("&")[1]}</span></>
+                ) : aboutTitle}
               </h2>
               <p className="text-white/80 text-lg leading-relaxed">
-                Whether you're visiting Addis Ababa for business or leisure, Momona Hotel offers a perfect blend of traditional Ethiopian hospitality and modern luxury.
+                {aboutDesc}
               </p>
               
               <ul className="space-y-4">
@@ -131,7 +142,7 @@ export default function Home() {
                   "Complimentary High-Speed WiFi",
                   "24/7 Room Service & Concierge",
                   "Free Airport Shuttle Service",
-                  "International Buffet Breakfast"
+                  "Fully Equipped Kitchenette"
                 ].map((item, i) => (
                   <li key={i} className="flex items-center gap-3">
                     <CheckCircle className="text-accent" size={20} />
@@ -140,19 +151,18 @@ export default function Home() {
                 ))}
               </ul>
 
-              <Link href="/amenities">
+              <Link href="/gallery">
                 <Button variant="outline" className="border-white text-white hover:bg-white hover:text-primary mt-4 rounded-none h-12 px-8">
-                  Explore Amenities
+                  View Gallery
                 </Button>
               </Link>
             </div>
             
             <div className="relative">
               <div className="absolute -inset-4 border-2 border-accent/30 translate-x-4 translate-y-4" />
-              {/* unsplash: fine dining restaurant interior luxury */}
               <img 
-                src="https://images.unsplash.com/photo-1559339352-11d035aa65de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1974&q=80" 
-                alt="Restaurant" 
+                src={aboutImage}
+                alt="Hotel Apartment" 
                 className="relative w-full h-auto shadow-2xl"
               />
             </div>

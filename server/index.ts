@@ -1,10 +1,28 @@
+import "dotenv/config";
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { serveStatic } from "./static";
 import { createServer } from "http";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const httpServer = createServer(app);
+
+// Global error handlers for debugging
+process.on("unhandledRejection", (reason, p) => {
+  console.error("Unhandled Rejection at:", p, "reason:", reason);
+  process.exit(1);
+});
+
+process.on("uncaughtException", (err) => {
+  console.error("Uncaught Exception:", err);
+  process.exit(1);
+});
 
 declare module "http" {
   interface IncomingMessage {
@@ -19,6 +37,13 @@ app.use(
     },
   }),
 );
+
+// Serve uploaded files statically
+const uploadsPath = path.resolve(process.cwd(), "uploads");
+if (!fs.existsSync(uploadsPath)) {
+  fs.mkdirSync(uploadsPath, { recursive: true });
+}
+app.use("/uploads", express.static(uploadsPath));
 
 app.use(express.urlencoded({ extended: false }));
 
@@ -46,21 +71,31 @@ app.use((req, res, next) => {
 
   res.on("finish", () => {
     const duration = Date.now() - start;
-    if (path.startsWith("/api")) {
-      let logLine = `${req.method} ${path} ${res.statusCode} in ${duration}ms`;
-      if (capturedJsonResponse) {
-        logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
-      }
-
-      log(logLine);
+    let logLine = `${req.method} ${path} ${res.statusCode} in ${duration}ms`;
+    if (capturedJsonResponse) {
+      logLine += ` :: ${JSON.stringify(capturedJsonResponse).slice(0, 100)}...`;
     }
+    log(logLine);
   });
 
   next();
 });
 
 (async () => {
-  await registerRoutes(httpServer, app);
+  try {
+    // Initialize DB and run migrations if PGlite
+    const { db } = await import("./db");
+    if (!process.env.DATABASE_URL) {
+      console.log("Running PGlite migrations...");
+      const { migrate } = await import("drizzle-orm/pglite/migrator");
+      await migrate(db, { migrationsFolder: "migrations" });
+      console.log("Migrations applied successfully!");
+    }
+    await registerRoutes(httpServer, app);
+  } catch (err) {
+    console.error("Failed to start server:", err);
+    process.exit(1);
+  }
 
   app.use((err: any, _req: Request, res: Response, next: NextFunction) => {
     const status = err.status || err.statusCode || 500;
@@ -94,7 +129,6 @@ app.use((req, res, next) => {
     {
       port,
       host: "0.0.0.0",
-      reusePort: true,
     },
     () => {
       log(`serving on port ${port}`);

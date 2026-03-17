@@ -3,23 +3,44 @@ import { Footer } from "@/components/Footer";
 import { useCreateContact } from "@/hooks/use-contact";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { insertContactSchema } from "@shared/schema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { MapPin, Phone, Mail, Loader2 } from "lucide-react";
-import type { z } from "zod";
+import { z } from "zod";
+import { useSettings, getSetting } from "@/hooks/use-settings";
 
-type ContactForm = z.infer<typeof insertContactSchema>;
+const contactFormSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  email: z.string().email("Invalid email address"),
+  subject: z.string().min(1, "Subject is required"),
+  message: z.string().min(1, "Message is required"),
+});
+
+type ContactFormData = z.infer<typeof contactFormSchema>;
 
 export default function Contact() {
   const { mutate, isPending } = useCreateContact();
-  const form = useForm<ContactForm>({
-    resolver: zodResolver(insertContactSchema),
+  const form = useForm<ContactFormData>({
+    resolver: zodResolver(contactFormSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      subject: "",
+      message: "",
+    },
   });
+  const { data: settings } = useSettings();
 
-  const onSubmit = (data: ContactForm) => {
+  const address = getSetting(settings, "contact_address", "Bole Road, Addis Ababa, Ethiopia");
+  const phone = getSetting(settings, "contact_phone", "+251 11 661 0404");
+  const email = getSetting(settings, "contact_email", "info@momonahotel.com");
+
+  const latitude = getSetting(settings, "map_latitude", "9.0054");
+  const longitude = getSetting(settings, "map_longitude", "38.7893");
+
+  const onSubmit = (data: ContactFormData) => {
     mutate(data, {
       onSuccess: () => form.reset()
     });
@@ -55,7 +76,7 @@ export default function Contact() {
                 <MapPin className="text-accent w-6 h-6 mt-1" />
                 <div>
                   <h4 className="font-serif text-lg font-medium text-primary">Address</h4>
-                  <p className="text-muted-foreground">Bole Road, Addis Ababa, Ethiopia</p>
+                  <p className="text-muted-foreground">{address}</p>
                 </div>
               </div>
               
@@ -63,7 +84,7 @@ export default function Contact() {
                 <Phone className="text-accent w-6 h-6 mt-1" />
                 <div>
                   <h4 className="font-serif text-lg font-medium text-primary">Phone</h4>
-                  <p className="text-muted-foreground">+251 11 661 0404</p>
+                  <p className="text-muted-foreground">{phone}</p>
                 </div>
               </div>
 
@@ -71,7 +92,7 @@ export default function Contact() {
                 <Mail className="text-accent w-6 h-6 mt-1" />
                 <div>
                   <h4 className="font-serif text-lg font-medium text-primary">Email</h4>
-                  <p className="text-muted-foreground">info@momonahotel.com</p>
+                  <p className="text-muted-foreground">{email}</p>
                 </div>
               </div>
             </div>
@@ -115,11 +136,18 @@ export default function Contact() {
         </div>
       </div>
 
-      {/* Map Placeholder */}
-      <div className="h-[400px] bg-muted relative">
-        <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">
-          <p className="flex items-center gap-2"><MapPin /> Map Integration Placeholder (Addis Ababa)</p>
-        </div>
+      {/* Map Embed */}
+      <div className="h-[400px] w-full">
+        <iframe
+          title="Momona Hotel Location"
+          src={`https://maps.google.com/maps?q=${latitude},${longitude}&z=15&output=embed`}
+          width="100%"
+          height="100%"
+          style={{ border: 0 }}
+          allowFullScreen
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+        />
       </div>
 
       <Footer />

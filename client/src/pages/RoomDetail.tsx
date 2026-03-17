@@ -1,14 +1,44 @@
+import { useState, useEffect, useCallback } from "react";
 import { useRoute } from "wouter";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { useRoom } from "@/hooks/use-rooms";
+import { useRoomImages } from "@/hooks/use-room-images";
 import { BookingForm } from "@/components/BookingForm";
-import { Loader2, Wifi, Tv, Coffee, Bath, Wind, Layout, User } from "lucide-react";
+import { Loader2, Wifi, Tv, Coffee, Bath, Wind, Layout, User, ChevronLeft, ChevronRight } from "lucide-react";
+import { CheckCircle } from "lucide-react";
 
 export default function RoomDetail() {
   const [, params] = useRoute("/rooms/:slug");
   const slug = params?.slug || "";
   const { data: room, isLoading } = useRoom(slug);
+  const { data: extraImages } = useRoomImages(room?.id);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  // Build image array: main image + extra images
+  const allImages = room ? [
+    { url: room.imageUrl, caption: room.name },
+    ...(extraImages || []).map(img => ({ url: img.imageUrl, caption: "" }))
+  ] : [];
+
+  const goNext = useCallback(() => {
+    if (allImages.length > 1) {
+      setCurrentSlide((prev) => (prev + 1) % allImages.length);
+    }
+  }, [allImages.length]);
+
+  const goPrev = useCallback(() => {
+    if (allImages.length > 1) {
+      setCurrentSlide((prev) => (prev - 1 + allImages.length) % allImages.length);
+    }
+  }, [allImages.length]);
+
+  // Auto-advance slideshow every 5 seconds
+  useEffect(() => {
+    if (allImages.length <= 1) return;
+    const timer = setInterval(goNext, 5000);
+    return () => clearInterval(timer);
+  }, [allImages.length, goNext]);
 
   if (isLoading) {
     return (
@@ -40,15 +70,60 @@ export default function RoomDetail() {
     <div className="min-h-screen bg-background flex flex-col">
       <Navbar />
 
-      {/* Hero Image */}
-      <div className="h-[50vh] relative mt-20 md:mt-0">
-        <img 
-          src={room.imageUrl} 
-          alt={room.name} 
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-black/30" />
-        <div className="absolute bottom-0 left-0 w-full p-8 bg-gradient-to-t from-black/80 to-transparent">
+      {/* Hero Image Slideshow */}
+      <div className="h-[50vh] relative mt-20 md:mt-0 overflow-hidden group">
+        {allImages.map((img, index) => (
+          <div
+            key={index}
+            className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+              index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
+            }`}
+          >
+            <img
+              src={img.url}
+              alt={`${room.name} - Photo ${index + 1}`}
+              className="w-full h-full object-cover"
+            />
+          </div>
+        ))}
+        <div className="absolute inset-0 bg-black/30 z-20" />
+        
+        {/* Slideshow Navigation Arrows */}
+        {allImages.length > 1 && (
+          <>
+            <button
+              onClick={goPrev}
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-30 text-white/70 hover:text-white p-2 rounded-full bg-black/30 hover:bg-black/50 transition-all opacity-0 group-hover:opacity-100"
+            >
+              <ChevronLeft size={28} />
+            </button>
+            <button
+              onClick={goNext}
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-30 text-white/70 hover:text-white p-2 rounded-full bg-black/30 hover:bg-black/50 transition-all opacity-0 group-hover:opacity-100"
+            >
+              <ChevronRight size={28} />
+            </button>
+          </>
+        )}
+
+        {/* Slide Indicator Dots */}
+        {allImages.length > 1 && (
+          <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-30 flex gap-2">
+            {allImages.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentSlide(index)}
+                className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                  index === currentSlide
+                    ? "bg-white w-8"
+                    : "bg-white/50 hover:bg-white/70"
+                }`}
+              />
+            ))}
+          </div>
+        )}
+
+        <div className="absolute bottom-0 left-0 w-full p-8 bg-gradient-to-t from-black/80 to-transparent z-20">
           <div className="container-custom">
             <h1 className="text-4xl md:text-5xl font-serif text-white mb-2">{room.name}</h1>
             <p className="text-xl text-accent font-medium">${room.price} <span className="text-sm text-white/80 font-normal">/ night</span></p>
@@ -125,6 +200,3 @@ export default function RoomDetail() {
     </div>
   );
 }
-
-// Helper component for default icons if map lookup fails
-import { CheckCircle } from "lucide-react";
