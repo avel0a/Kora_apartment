@@ -370,6 +370,10 @@ async function seedSettings() {
     { key: "facebook_url", value: "#", label: "Facebook URL", type: "url" },
     { key: "instagram_url", value: "#", label: "Instagram URL", type: "url" },
     { key: "twitter_url", value: "#", label: "Twitter/X URL", type: "url" },
+    // Authentication Page
+    { key: "auth_image", value: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=2070&auto=format&fit=crop", label: "Login Background Image", type: "image" },
+    { key: "auth_title", value: "Modern Panda Hotel", label: "Login Title", type: "text" },
+    { key: "auth_subtitle", value: "Experience Luxury & Comfort", label: "Login Subtitle", type: "text" },
   ];
 
   for (const setting of defaults) {

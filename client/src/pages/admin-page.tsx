@@ -1023,6 +1023,24 @@ function SiteSettingsTab() {
         </div>
       </SettingsSection>
 
+      {/* Authentication Page */}
+      <SettingsSection
+        title="🔒 Authentication Page"
+        description="Background image, title, and subtitle shown on the login and registration page"
+        onSave={() => saveSection(["auth_image", "auth_title", "auth_subtitle"])}
+        isSaving={updateSettings.isPending}
+      >
+        <SettingsImageField label="Login Background Image" settingKey="auth_image" value={local.auth_image || ""} onChange={set} />
+        <div className="space-y-2">
+          <Label>Login Title</Label>
+          <Input value={local.auth_title || ""} onChange={e => set("auth_title", e.target.value)} placeholder="e.g. Modern Panda Hotel" />
+        </div>
+        <div className="space-y-2">
+          <Label>Login Subtitle</Label>
+          <Input value={local.auth_subtitle || ""} onChange={e => set("auth_subtitle", e.target.value)} placeholder="e.g. Experience Luxury & Comfort" />
+        </div>
+      </SettingsSection>
+
       {/* Social Links */}
       <SettingsSection
         title="🔗 Social Media Links"
