@@ -9,8 +9,8 @@ import { Loader2, Wifi, Tv, Coffee, Bath, Wind, Layout, User, ChevronLeft, Chevr
 import { CheckCircle } from "lucide-react";
 
 export default function RoomDetail() {
-  const [, params] = useRoute("/rooms/:slug");
-  const slug = params?.slug || "";
+  const [, params] = useRoute<{slug: string}>("/rooms/:slug");
+  const slug = params ? params.slug : "";
   const { data: room, isLoading } = useRoom(slug);
   const { data: extraImages } = useRoomImages(room?.id);
   const [currentSlide, setCurrentSlide] = useState(0);
