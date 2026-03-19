@@ -5,21 +5,21 @@
 @tailwind utilities;
 
 :root {
-  /* Warm Earth Tones Palette */
-  --background: 40 20% 98%;      /* Soft off-white */
-  --foreground: 24 10% 10%;      /* Dark warm grey */
+  /* Red Theme Palette */
+  --background: 0 0% 100%;       /* Pure white */
+  --foreground: 0 0% 10%;        /* Dark grey */
   
-  --primary: 35 30% 35%;         /* Deep Bronze/Brown */
-  --primary-foreground: 40 20% 98%;
+  --primary: 0 72% 35%;          /* Deep Red */
+  --primary-foreground: 0 0% 100%;
   
-  --secondary: 40 30% 90%;       /* Light Beige */
-  --secondary-foreground: 35 30% 35%;
+  --secondary: 0 10% 96%;        /* Very light pink/grey */
+  --secondary-foreground: 0 72% 35%;
   
-  --muted: 40 10% 94%;
-  --muted-foreground: 24 5% 45%;
+  --muted: 0 0% 96%;
+  --muted-foreground: 0 0% 45%;
   
-  --accent: 38 40% 55%;          /* Muted Gold */
-  --accent-foreground: 40 20% 98%;
+  --accent: 0 84% 60%;           /* Vibrant Red */
+  --accent-foreground: 0 0% 100%;
 
   --popover: 0 0% 100%;
   --popover-foreground: 24 10% 10%;
