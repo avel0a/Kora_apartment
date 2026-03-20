@@ -69,6 +69,14 @@ export function BookingForm({ roomId, roomName }: BookingFormProps) {
       children: data.children,
       checkIn: format(data.dateRange.from, "yyyy-MM-dd"),
       checkOut: format(data.dateRange.to, "yyyy-MM-dd"),
+    }, {
+      onSuccess: () => {
+        form.reset();
+        setDate({
+          from: new Date(),
+          to: addDays(new Date(), 1),
+        });
+      }
     });
   };
 

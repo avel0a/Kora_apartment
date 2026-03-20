@@ -65,11 +65,11 @@ export default function Home() {
           animate="visible"
           className="relative z-10 text-center text-white px-4 max-w-5xl mx-auto space-y-8"
         >
-          <motion.div variants={itemVariants} className="flex items-center justify-center gap-2 text-accent">
+          {/* <motion.div variants={itemVariants} className="flex items-center justify-center gap-2 text-accent">
             {[1, 2, 3, 4, 5].map((i) => (
               <Star key={i} className="fill-current" size={18} />
             ))}
-          </motion.div>
+          </motion.div> */}
           
           <motion.h1 variants={itemVariants} className="text-6xl md:text-8xl font-serif font-bold leading-[1.1] tracking-tight">
             {heroTitle.includes("Addis Ababa") ? (
