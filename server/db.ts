@@ -9,10 +9,9 @@ let pool: pg.Pool | undefined;
 let db: any; 
 
 if (!process.env.DATABASE_URL) {
-  // Use in-memory database by default, or persist to .drizzle/pglite if desired
-  // Using file system persistence for better dev experience across restarts
-  const client = new PGlite("./.drizzle/pglite");
-  console.log("Using PGlite database at ./.drizzle/pglite");
+  // Use in-memory database to avoid RuntimeError: Aborted on some Windows environments
+  const client = new PGlite();
+  console.log("Using in-memory PGlite database");
 
   db = drizzlePglite(client, { schema });
   // pool is not available in PGlite mode

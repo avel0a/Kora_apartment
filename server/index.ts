@@ -86,7 +86,7 @@ app.use((req, res, next) => {
     // Initialize DB and run migrations if PGlite
     const { db } = await import("./db");
     if (!process.env.DATABASE_URL) {
-      console.log("Running PGlite migrations...");
+      console.log("Running PGlite migrations (in-memory)...");
       const { migrate } = await import("drizzle-orm/pglite/migrator");
       await migrate(db, { migrationsFolder: "migrations" });
       console.log("Migrations applied successfully!");

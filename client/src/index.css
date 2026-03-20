@@ -5,41 +5,50 @@
 @tailwind utilities;
 
 :root {
-  /* Red Theme Palette */
-  --background: 0 0% 100%;       /* Pure white */
-  --foreground: 0 0% 10%;        /* Dark grey */
+  /* Premium Red & Gold Theme */
+  --background: 0 0% 100%;
+  --foreground: 20 14% 4%;
   
-  --primary: 0 72% 35%;          /* Deep Red */
+  --primary: 348 83% 47%;        /* Rich Crimson */
   --primary-foreground: 0 0% 100%;
   
-  --secondary: 0 10% 96%;        /* Very light pink/grey */
-  --secondary-foreground: 0 72% 35%;
+  --secondary: 0 0% 98%;
+  --secondary-foreground: 348 83% 47%;
   
   --muted: 0 0% 96%;
-  --muted-foreground: 0 0% 45%;
+  --muted-foreground: 20 10% 45%;
   
-  --accent: 0 84% 60%;           /* Vibrant Red */
-  --accent-foreground: 0 0% 100%;
+  --accent: 43 96% 58%;          /* Royal Gold */
+  --accent-foreground: 20 14% 4%;
 
   --popover: 0 0% 100%;
-  --popover-foreground: 24 10% 10%;
-  --popover-border: 35 15% 85%;
-
+  --popover-foreground: 20 14% 4%;
+  --popover-border: 0 0% 90%;
+  
   --card: 0 0% 100%;
-  --card-foreground: 24 10% 10%;
-  --card-border: 35 15% 85%;
+  --card-foreground: 20 14% 4%;
+  --card-border: 0 0% 90%;
   
-  --destructive: 0 84% 60%;
-  --destructive-foreground: 0 0% 98%;
-
-  --border: 35 15% 85%;
-  --input: 35 15% 85%;
-  --ring: 35 30% 35%;
+  --border: 0 0% 92%;
+  --input: 0 0% 92%;
+  --ring: 348 83% 47%;
   
-  --radius: 0.5rem;
+  --radius: 0.75rem;
   
   --font-serif: 'Playfair Display', serif;
   --font-sans: 'Inter', sans-serif;
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-white/70 backdrop-blur-md border border-white/20;
+  }
+  .glass-dark {
+    @apply bg-black/70 backdrop-blur-md border border-white/10;
+  }
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent;
+  }
 }
 
 @layer base {

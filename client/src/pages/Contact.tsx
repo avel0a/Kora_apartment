@@ -1,143 +1,200 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { useCreateContact } from "@/hooks/use-contact";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { Mail, Phone, MapPin, Send, Instagram, Facebook, Twitter, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { MapPin, Phone, Mail, Loader2 } from "lucide-react";
-import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { insertContactSchema } from "@shared/schema";
+import { useMutation } from "@tanstack/react-query";
+import { apiRequest, queryClient } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
+import { motion } from "framer-motion";
 import { useSettings, getSetting } from "@/hooks/use-settings";
 
-const contactFormSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  email: z.string().email("Invalid email address"),
-  subject: z.string().min(1, "Subject is required"),
-  message: z.string().min(1, "Message is required"),
-});
-
-type ContactFormData = z.infer<typeof contactFormSchema>;
-
 export default function Contact() {
-  const { mutate, isPending } = useCreateContact();
-  const form = useForm<ContactFormData>({
-    resolver: zodResolver(contactFormSchema),
+  const { toast } = useToast();
+  const { data: settings } = useSettings();
+
+  const address = getSetting(settings, "contact_address", "Bole Road, Addis Ababa, Ethiopia");
+  const phone = getSetting(settings, "contact_phone", "+251 116 123 456");
+  const email = getSetting(settings, "contact_email", "info@momonahotel.com");
+  const latitude = getSetting(settings, "map_latitude", "9.0054");
+  const longitude = getSetting(settings, "map_longitude", "38.7893");
+
+  const form = useForm({
+    resolver: zodResolver(insertContactSchema),
     defaultValues: {
       name: "",
       email: "",
       subject: "",
-      message: "",
-    },
+      message: ""
+    }
   });
-  const { data: settings } = useSettings();
 
-  const address = getSetting(settings, "contact_address", "Bole Road, Addis Ababa, Ethiopia");
-  const phone = getSetting(settings, "contact_phone", "+251 11 661 0404");
-  const email = getSetting(settings, "contact_email", "info@momonahotel.com");
-
-  const latitude = getSetting(settings, "map_latitude", "9.0054");
-  const longitude = getSetting(settings, "map_longitude", "38.7893");
-
-  const onSubmit = (data: ContactFormData) => {
-    mutate(data, {
-      onSuccess: () => form.reset()
-    });
-  };
+  const mutation = useMutation({
+    mutationFn: async (data: any) => {
+      await apiRequest("POST", "/api/inquiries", data);
+    },
+    onSuccess: () => {
+      toast({
+        title: "Message Sent",
+        description: "Thank you for reaching out. We'll get back to you soon.",
+      });
+      form.reset();
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  });
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Navbar />
 
-      <div className="bg-primary pt-32 pb-16 text-center text-white">
+      {/* Cinematic Header */}
+      <section className="relative pt-48 pb-24 overflow-hidden bg-primary text-white">
+        <div className="absolute inset-0 opacity-10 pointer-events-none">
+          <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--accent)_1px,_transparent_1px)] bg-[size:40px_40px]" />
+        </div>
+        
+        <div className="container-custom relative z-10 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <span className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-4 block">Connect With Us</span>
+            <h1 className="text-5xl md:text-7xl font-serif font-bold mb-6">Get in Touch</h1>
+            <p className="text-xl text-white/70 max-w-2xl mx-auto font-light leading-relaxed">
+              We're here to ensure your stay is extraordinary. Reach out for reservations, events, or inquiries.
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Contact Content */}
+      <section className="py-24 bg-background flex-grow">
         <div className="container-custom">
-          <h1 className="text-4xl md:text-5xl font-serif mb-4">Contact Us</h1>
-          <p className="text-lg text-white/80 max-w-2xl mx-auto">
-            We are here to assist you. Reach out for bookings, events, or general inquiries.
-          </p>
-        </div>
-      </div>
-
-      <div className="section-padding">
-        <div className="container-custom grid grid-cols-1 lg:grid-cols-2 gap-16">
-          
-          {/* Info Side */}
-          <div className="space-y-8">
-            <div>
-              <h2 className="text-3xl font-serif text-primary mb-6">Get in Touch</h2>
-              <p className="text-muted-foreground text-lg mb-8">
-                Located conveniently on Bole Road, Momona Hotel is just 3 minutes away from Bole International Airport, making it the perfect choice for transit and business travelers.
-              </p>
-            </div>
-
-            <div className="space-y-6">
-              <div className="flex items-start gap-4 p-6 bg-white border border-border/60 shadow-sm rounded-lg">
-                <MapPin className="text-accent w-6 h-6 mt-1" />
-                <div>
-                  <h4 className="font-serif text-lg font-medium text-primary">Address</h4>
-                  <p className="text-muted-foreground">{address}</p>
-                </div>
-              </div>
-              
-              <div className="flex items-start gap-4 p-6 bg-white border border-border/60 shadow-sm rounded-lg">
-                <Phone className="text-accent w-6 h-6 mt-1" />
-                <div>
-                  <h4 className="font-serif text-lg font-medium text-primary">Phone</h4>
-                  <p className="text-muted-foreground">{phone}</p>
-                </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
+            {/* Info */}
+            <motion.div 
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="space-y-12"
+            >
+              <div>
+                <h2 className="text-4xl font-serif font-bold text-primary mb-6 text-gradient inline-block">Contact Information</h2>
+                <p className="text-muted-foreground text-lg leading-relaxed font-light">
+                  Located in the heart of the vibrant Bole district, Momona Hotel is your gateway to Addis Ababa's finest experiences.
+                </p>
               </div>
 
-              <div className="flex items-start gap-4 p-6 bg-white border border-border/60 shadow-sm rounded-lg">
-                <Mail className="text-accent w-6 h-6 mt-1" />
-                <div>
-                  <h4 className="font-serif text-lg font-medium text-primary">Email</h4>
-                  <p className="text-muted-foreground">{email}</p>
+              <div className="space-y-8">
+                {[
+                  { icon: <MapPin className="text-accent" />, label: "Location", value: address },
+                  { icon: <Phone className="text-accent" />, label: "Phone", value: phone },
+                  { icon: <Mail className="text-accent" />, label: "Email", value: email }
+                ].map((item, i) => (
+                  <div key={i} className="flex items-start gap-6 group">
+                    <div className="bg-secondary/50 p-4 rounded-xl group-hover:bg-primary group-hover:text-white transition-all duration-300 shadow-sm leading-none">
+                      {item.icon}
+                    </div>
+                    <div>
+                      <span className="text-xs font-bold tracking-[0.2em] uppercase text-muted-foreground mb-1 block">{item.label}</span>
+                      <p className="text-xl font-medium text-primary">{item.value}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="pt-8 border-t border-border/50">
+                <span className="text-xs font-bold tracking-[0.2em] uppercase text-muted-foreground mb-6 block">Follow Our Journey</span>
+                <div className="flex gap-4">
+                  {[<Instagram size={20} />, <Facebook size={20} />, <Twitter size={20} />].map((icon, i) => (
+                    <button key={i} className="bg-primary/5 p-4 rounded-xl text-primary hover:bg-primary hover:text-white transition-all duration-300">
+                      {icon}
+                    </button>
+                  ))}
                 </div>
               </div>
-            </div>
+            </motion.div>
+
+            {/* Form */}
+            <motion.div 
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="glass p-10 md:p-12 rounded-3xl shadow-2xl border-white/40"
+            >
+              <h3 className="text-3xl font-serif font-bold text-primary mb-8">Send a Message</h3>
+              <form 
+                onSubmit={form.handleSubmit((data) => mutation.mutate(data))}
+                className="space-y-6"
+              >
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-[10px] uppercase tracking-[0.3em] font-bold text-muted-foreground ml-1">Your Name</label>
+                    <Input 
+                      {...form.register("name")} 
+                      placeholder="John Doe" 
+                      className="rounded-xl border-border/50 focus:border-primary/30 h-14 bg-white/50"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] uppercase tracking-[0.3em] font-bold text-muted-foreground ml-1">Email Address</label>
+                    <Input 
+                      {...form.register("email")} 
+                      type="email" 
+                      placeholder="john@example.com" 
+                      className="rounded-xl border-border/50 focus:border-primary/30 h-14 bg-white/50"
+                    />
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <label className="text-[10px] uppercase tracking-[0.3em] font-bold text-muted-foreground ml-1">Subject</label>
+                  <Input 
+                    {...form.register("subject")} 
+                    placeholder="Reservation Inquiry" 
+                    className="rounded-xl border-border/50 focus:border-primary/30 h-14 bg-white/50"
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                    <label className="text-[10px] uppercase tracking-[0.3em] font-bold text-muted-foreground ml-1">Your Message</label>
+                  <Textarea 
+                    {...form.register("message")} 
+                    placeholder="How can we help you?" 
+                    className="rounded-xl border-border/50 focus:border-primary/30 min-h-[160px] bg-white/50"
+                  />
+                </div>
+                
+                <Button 
+                  type="submit" 
+                  disabled={mutation.isPending}
+                  className="w-full btn-primary h-16 rounded-xl text-lg font-bold tracking-[0.2em] uppercase flex items-center justify-center gap-3 shadow-2xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
+                >
+                  {mutation.isPending ? (
+                    <><Loader2 className="animate-spin" size={20} /> Sending...</>
+                  ) : (
+                    <>Send Message <Send size={20} /></>
+                  )}
+                </Button>
+              </form>
+            </motion.div>
           </div>
-
-          {/* Form Side */}
-          <div className="bg-white p-8 md:p-10 rounded-xl shadow-lg border border-border/40">
-            <h3 className="text-2xl font-serif text-primary mb-6">Send a Message</h3>
-            
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <div className="space-y-2">
-                <Label htmlFor="name">Your Name</Label>
-                <Input id="name" placeholder="John Doe" {...form.register("name")} />
-                {form.formState.errors.name && <p className="text-destructive text-sm">{form.formState.errors.name.message}</p>}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="email">Email Address</Label>
-                <Input id="email" type="email" placeholder="john@example.com" {...form.register("email")} />
-                {form.formState.errors.email && <p className="text-destructive text-sm">{form.formState.errors.email.message}</p>}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="subject">Subject</Label>
-                <Input id="subject" placeholder="Inquiry about..." {...form.register("subject")} />
-                {form.formState.errors.subject && <p className="text-destructive text-sm">{form.formState.errors.subject.message}</p>}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="message">Message</Label>
-                <Textarea id="message" placeholder="How can we help you?" className="min-h-[150px]" {...form.register("message")} />
-                {form.formState.errors.message && <p className="text-destructive text-sm">{form.formState.errors.message.message}</p>}
-              </div>
-
-              <Button type="submit" className="w-full btn-primary h-12" disabled={isPending}>
-                {isPending ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Sending...</> : "Send Message"}
-              </Button>
-            </form>
-          </div>
-
         </div>
-      </div>
+      </section>
 
       {/* Map Embed */}
-      <div className="h-[400px] w-full">
+      <section className="h-[500px] w-full relative grayscale hover:grayscale-0 transition-all duration-1000">
         <iframe
           title="Momona Hotel Location"
           src={`https://maps.google.com/maps?q=${latitude},${longitude}&z=15&output=embed`}
@@ -148,7 +205,8 @@ export default function Contact() {
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
         />
-      </div>
+        <div className="absolute inset-0 pointer-events-none border-y border-border/50 shadow-inner" />
+      </section>
 
       <Footer />
     </div>

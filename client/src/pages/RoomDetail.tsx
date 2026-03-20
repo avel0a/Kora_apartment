@@ -5,8 +5,9 @@ import { Footer } from "@/components/Footer";
 import { useRoom } from "@/hooks/use-rooms";
 import { useRoomImages } from "@/hooks/use-room-images";
 import { BookingForm } from "@/components/BookingForm";
-import { Loader2, Wifi, Tv, Coffee, Bath, Wind, Layout, User, ChevronLeft, ChevronRight } from "lucide-react";
-import { CheckCircle } from "lucide-react";
+import { Loader2, Wifi, Tv, Coffee, Bath, Wind, Layout, User, ChevronLeft, ChevronRight, CheckCircle, Maximize, Bed } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Button } from "@/components/ui/button";
 
 export default function RoomDetail() {
   const [, params] = useRoute<{slug: string}>("/rooms/:slug");
@@ -33,26 +34,31 @@ export default function RoomDetail() {
     }
   }, [allImages.length]);
 
-  // Auto-advance slideshow every 5 seconds
+  // Auto-advance slideshow every 8 seconds for a slower, more cinematic feel
   useEffect(() => {
     if (allImages.length <= 1) return;
-    const timer = setInterval(goNext, 5000);
+    const timer = setInterval(goNext, 8000);
     return () => clearInterval(timer);
   }, [allImages.length, goNext]);
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-12 h-12 animate-spin text-primary" />
+      <div className="min-h-screen flex flex-col items-center justify-center bg-background gap-4">
+        <Loader2 className="w-16 h-16 animate-spin text-primary/20" />
+        <span className="text-sm font-bold tracking-[0.3em] text-primary/40 uppercase">Preparing your suite...</span>
       </div>
     );
   }
 
   if (!room) {
     return (
-      <div className="min-h-screen flex items-center justify-center flex-col gap-4">
-        <h2 className="text-2xl font-serif">Room Not Found</h2>
-        <a href="/rooms" className="text-primary hover:underline">Back to Rooms</a>
+      <div className="min-h-screen flex items-center justify-center flex-col gap-8 bg-background">
+        <h2 className="text-4xl font-serif font-bold text-primary">Suite Not Found</h2>
+        <a href="/rooms">
+          <Button variant="outline" className="rounded-xl px-8 h-14 font-bold tracking-widest uppercase border-primary/20 hover:bg-primary hover:text-white transition-all">
+             Back to Collection
+          </Button>
+        </a>
       </div>
     );
   }
@@ -60,7 +66,7 @@ export default function RoomDetail() {
   const amenityIcons: Record<string, React.ReactNode> = {
     "Wifi": <Wifi size={20} />,
     "TV": <Tv size={20} />,
-    "Coffee Maker": <Coffee size={20} />,
+    "Coffee": <Coffee size={20} />,
     "Bathtub": <Bath size={20} />,
     "AC": <Wind size={20} />,
     "Desk": <Layout size={20} />,
@@ -70,131 +76,168 @@ export default function RoomDetail() {
     <div className="min-h-screen bg-background flex flex-col">
       <Navbar />
 
-      {/* Hero Image Slideshow */}
-      <div className="h-[50vh] relative mt-20 md:mt-0 overflow-hidden group">
-        {allImages.map((img, index) => (
-          <div
-            key={index}
-            className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
-              index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
-            }`}
+      {/* Cinematic Hero Slideshow */}
+      <section className="h-[75vh] relative overflow-hidden">
+        <AnimatePresence initial={false} mode="wait">
+          <motion.div
+            key={currentSlide}
+            initial={{ scale: 1.1, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 1.05, opacity: 0 }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+            className="absolute inset-0"
           >
             <img
-              src={img.url}
-              alt={`${room.name} - Photo ${index + 1}`}
+              src={allImages[currentSlide]?.url}
+              alt={`${room.name} - Photo ${currentSlide + 1}`}
               className="w-full h-full object-cover"
             />
-          </div>
-        ))}
-        <div className="absolute inset-0 bg-black/30 z-20" />
+          </motion.div>
+        </AnimatePresence>
         
-        {/* Slideshow Navigation Arrows */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/80 z-10" />
+        
+        {/* Slideshow Navigation */}
         {allImages.length > 1 && (
-          <>
+          <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 z-20 container-custom flex justify-between px-4 pointer-events-none">
             <button
-              onClick={goPrev}
-              className="absolute left-4 top-1/2 -translate-y-1/2 z-30 text-white/70 hover:text-white p-2 rounded-full bg-black/30 hover:bg-black/50 transition-all opacity-0 group-hover:opacity-100"
+              onClick={(e) => { e.stopPropagation(); goPrev(); }}
+              className="pointer-events-auto glass w-16 h-16 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all shadow-2xl group"
             >
-              <ChevronLeft size={28} />
+              <ChevronLeft size={32} className="group-hover:-translate-x-1 transition-transform" />
             </button>
             <button
-              onClick={goNext}
-              className="absolute right-4 top-1/2 -translate-y-1/2 z-30 text-white/70 hover:text-white p-2 rounded-full bg-black/30 hover:bg-black/50 transition-all opacity-0 group-hover:opacity-100"
+              onClick={(e) => { e.stopPropagation(); goNext(); }}
+              className="pointer-events-auto glass w-16 h-16 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all shadow-2xl group"
             >
-              <ChevronRight size={28} />
+              <ChevronRight size={32} className="group-hover:translate-x-1 transition-transform" />
             </button>
-          </>
-        )}
-
-        {/* Slide Indicator Dots */}
-        {allImages.length > 1 && (
-          <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-30 flex gap-2">
-            {allImages.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentSlide(index)}
-                className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-                  index === currentSlide
-                    ? "bg-white w-8"
-                    : "bg-white/50 hover:bg-white/70"
-                }`}
-              />
-            ))}
           </div>
         )}
 
-        <div className="absolute bottom-0 left-0 w-full p-8 bg-gradient-to-t from-black/80 to-transparent z-20">
+        {/* Hero Content Overlay */}
+        <div className="absolute bottom-0 left-0 w-full p-12 md:p-24 z-20">
           <div className="container-custom">
-            <h1 className="text-4xl md:text-5xl font-serif text-white mb-2">{room.name}</h1>
-            <p className="text-xl text-accent font-medium">${room.price} <span className="text-sm text-white/80 font-normal">/ night</span></p>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.8 }}
+              className="space-y-6"
+            >
+              <h1 className="text-6xl md:text-8xl font-serif font-bold text-white tracking-tight leading-[1.1]">{room.name}</h1>
+              <div className="flex items-center gap-8">
+                <div className="flex items-baseline gap-2">
+                   <span className="text-4xl font-serif font-bold text-accent">${room.price}</span>
+                   <span className="text-white/60 text-sm uppercase tracking-widest font-bold">/ night</span>
+                </div>
+                <div className="h-8 w-[1px] bg-white/20" />
+                <span className="text-white/80 font-light flex items-center gap-2">
+                  <Maximize size={18} className="text-accent" /> {room.size || "Standard"} Living Space
+                </span>
+              </div>
+            </motion.div>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Content */}
-      <div className="section-padding flex-grow">
-        <div className="container-custom grid grid-cols-1 lg:grid-cols-3 gap-12">
-          
-          {/* Details */}
-          <div className="lg:col-span-2 space-y-8">
-            <div>
-              <h2 className="text-2xl font-serif text-primary mb-4">Description</h2>
-              <p className="text-muted-foreground leading-relaxed text-lg">
-                {room.description}
-              </p>
-            </div>
+      {/* Main Content */}
+      <section className="py-24 bg-background">
+        <div className="container-custom">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-20">
+            
+            {/* Suite Details */}
+            <div className="lg:col-span-2 space-y-20">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+              >
+                <span className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-4 block">The Experience</span>
+                <h2 className="text-4xl font-serif font-bold text-primary mb-8">Unparalleled Comfort</h2>
+                <p className="text-muted-foreground leading-relaxed text-xl font-light">
+                  {room.description}
+                </p>
+              </motion.div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 py-6 border-y border-border">
-              <div className="flex flex-col gap-1">
-                <span className="text-sm text-muted-foreground uppercase tracking-wider">Size</span>
-                <span className="font-medium text-lg">{room.size || "Standard"}</span>
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="text-sm text-muted-foreground uppercase tracking-wider">Occupancy</span>
-                <div className="flex items-center gap-2 font-medium text-lg">
-                  <User size={18} /> {room.capacity} Guests
-                </div>
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="text-sm text-muted-foreground uppercase tracking-wider">Bed Type</span>
-                <span className="font-medium text-lg">{room.bedType || "King Bed"}</span>
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="text-sm text-muted-foreground uppercase tracking-wider">View</span>
-                <span className="font-medium text-lg">City / Mountain</span>
-              </div>
-            </div>
-
-            <div>
-              <h2 className="text-2xl font-serif text-primary mb-6">Room Amenities</h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {room.amenities?.map((amenity, idx) => (
-                  <div key={idx} className="flex items-center gap-3 p-3 bg-secondary/20 rounded-lg">
-                    <span className="text-accent">{amenityIcons[amenity.split(' ')[0]] || <CheckCircle size={20} />}</span>
-                    <span className="text-sm font-medium">{amenity}</span>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="grid grid-cols-2 md:grid-cols-4 gap-10 py-12 border-y border-border/50"
+              >
+                {[
+                  { label: "Guest Capacity", value: `${room.capacity} Persons`, icon: <User size={24} /> },
+                  { label: "Bed Configuration", value: room.bedType || "King Suite", icon: <Bed size={24} /> },
+                  { label: "Total Area", value: room.size || "Spacious", icon: <Maximize size={24} /> },
+                  { label: "Suite View", value: "Panoramic City", icon: <Wind size={24} /> }
+                ].map((item, i) => (
+                  <div key={i} className="space-y-3">
+                    <div className="text-accent">{item.icon}</div>
+                    <div className="space-y-1">
+                      <span className="text-[10px] text-muted-foreground uppercase tracking-[0.2em] font-bold block">{item.label}</span>
+                      <span className="text-lg font-serif font-bold text-primary block">{item.value}</span>
+                    </div>
                   </div>
                 ))}
-                {!room.amenities?.length && (
-                  <>
-                    <div className="flex items-center gap-3"><Wifi size={20} className="text-accent"/> Free Wifi</div>
-                    <div className="flex items-center gap-3"><Tv size={20} className="text-accent"/> Flat Screen TV</div>
-                    <div className="flex items-center gap-3"><Wind size={20} className="text-accent"/> Air Conditioning</div>
-                    <div className="flex items-center gap-3"><Coffee size={20} className="text-accent"/> Tea/Coffee Maker</div>
-                  </>
-                )}
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+              >
+                <h2 className="text-3xl font-serif font-bold text-primary mb-10">Premium Amenities</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                  {room.amenities?.length ? (
+                    room.amenities.map((amenity, idx) => (
+                      <div key={idx} className="flex items-center gap-4 p-5 bg-secondary/20 rounded-2xl border border-transparent hover:border-primary/10 hover:bg-white hover:shadow-xl transition-all duration-300">
+                        <div className="bg-primary/5 p-3 rounded-xl text-primary">
+                          {amenityIcons[amenity.split(' ')[0]] || <CheckCircle size={20} />}
+                        </div>
+                        <span className="text-sm font-bold tracking-wide text-primary/80">{amenity}</span>
+                      </div>
+                    ))
+                  ) : (
+                    ["Gigabit WiFi", "65\" Smart TV", "Climate Control", "Artisan Coffee"].map((item, i) => (
+                      <div key={i} className="flex items-center gap-4 p-5 bg-secondary/20 rounded-2xl">
+                         <div className="bg-primary/5 p-3 rounded-xl text-primary">
+                           <CheckCircle size={20} />
+                         </div>
+                         <span className="text-sm font-bold tracking-wide text-primary/80">{item}</span>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Booking Sidebar */}
+            <motion.div 
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.8 }}
+              className="lg:col-span-1"
+            >
+              <div className="sticky top-32">
+                <div className="glass p-8 md:p-10 rounded-3xl shadow-2xl border-white/40 space-y-8">
+                  <div className="text-center pb-6 border-b border-black/5">
+                    <span className="text-[10px] font-bold tracking-[0.4em] uppercase text-muted-foreground block mb-2">Reservation</span>
+                    <h3 className="text-3xl font-serif font-bold text-primary">Secure Your Suite</h3>
+                  </div>
+                  <BookingForm roomId={room.id} roomName={room.name} />
+                </div>
+                
+                {/* Visual Accent */}
+                <div className="mt-8 p-6 bg-primary rounded-2xl text-white text-center space-y-2">
+                   <p className="text-xs tracking-[0.2em] font-bold text-accent uppercase">Expert Assistance</p>
+                   <p className="text-lg font-serif">Call +251 116 123 456</p>
+                </div>
               </div>
-            </div>
-          </div>
+            </motion.div>
 
-          {/* Booking Form Sidebar */}
-          <div className="lg:col-span-1">
-            <div className="sticky top-24">
-              <BookingForm roomId={room.id} roomName={room.name} />
-            </div>
           </div>
-
         </div>
-      </div>
+      </section>
 
       <Footer />
     </div>
