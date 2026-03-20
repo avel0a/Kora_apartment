@@ -339,6 +339,9 @@ async function seedDatabase() {
 }
 
 async function seedSettings() {
+  const existingSettings = await storage.getSettings();
+  if (existingSettings.length > 0) return;
+
   const { db: dbInstance } = await import("./db");
   const { siteSettings } = await import("@shared/schema");
 

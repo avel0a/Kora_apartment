@@ -228,10 +228,10 @@ export default function RoomDetail() {
                 </div>
                 
                 {/* Visual Accent */}
-                <div className="mt-8 p-6 bg-primary rounded-2xl text-white text-center space-y-2">
+                {/* <div className="mt-8 p-6 bg-primary rounded-2xl text-white text-center space-y-2">
                    <p className="text-xs tracking-[0.2em] font-bold text-accent uppercase">Expert Assistance</p>
                    <p className="text-lg font-serif">Call +251 116 123 456</p>
-                </div>
+                </div> */}
               </div>
             </motion.div>
 
