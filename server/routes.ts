@@ -4,6 +4,7 @@ import { storage } from "./storage";
 import { api } from "@shared/routes";
 import { z } from "zod";
 import { setupAuth } from "./auth";
+import { sendBookingEmails, sendInquiryEmail } from "./email";
 import { insertRoomSchema, insertGalleryImageSchema, insertRoomImageSchema } from "@shared/schema";
 import multer from "multer";
 import path from "path";
@@ -160,6 +161,13 @@ export async function registerRoutes(
     try {
       const input = api.bookings.create.input.parse(req.body);
       const booking = await storage.createBooking(input);
+      
+      const room = await storage.getRoom(booking.roomId);
+      if (room) {
+        // Send email notifications asynchronously
+        sendBookingEmails(booking, room).catch(e => console.error("[Email] Failed to send booking emails:", e));
+      }
+
       res.status(201).json(booking);
     } catch (err) {
       if (err instanceof z.ZodError) return res.status(400).json({ message: err.errors[0].message });
@@ -184,7 +192,11 @@ export async function registerRoutes(
   apiRouter.post("/contact", async (req, res) => {
     try {
       const input = api.contact.create.input.parse(req.body);
-      await storage.createContact(input);
+      const contact = await storage.createContact(input);
+      
+      // Send email notification asynchronously
+      sendInquiryEmail(contact).catch(e => console.error("[Email] Failed to send inquiry email:", e));
+
       res.status(201).json({ success: true });
     } catch (err) {
       if (err instanceof z.ZodError) return res.status(400).json({ message: err.errors[0].message });
@@ -373,6 +385,15 @@ async function seedSettings() {
     { key: "facebook_url", value: "#", label: "Facebook URL", type: "url" },
     { key: "instagram_url", value: "#", label: "Instagram URL", type: "url" },
     { key: "twitter_url", value: "#", label: "Twitter/X URL", type: "url" },
+    
+    // Email Settings
+    { key: "smtp_host", value: "", label: "SMTP Host", type: "text" },
+    { key: "smtp_port", value: "587", label: "SMTP Port", type: "text" },
+    { key: "smtp_user", value: "", label: "SMTP Username", type: "text" },
+    { key: "smtp_pass", value: "", label: "SMTP Password", type: "password" },
+    { key: "smtp_from", value: "noreply@momonahotel.com", label: "From Email Header", type: "text" },
+    { key: "admin_booking_email", value: "admin@momonahotel.com", label: "Admin Notification Email", type: "text" },
+
     // Authentication Page
     { key: "auth_image", value: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=2070&auto=format&fit=crop", label: "Login Background Image", type: "image" },
     { key: "auth_title", value: "Modern Panda Hotel", label: "Login Title", type: "text" },

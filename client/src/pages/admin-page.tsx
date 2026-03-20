@@ -1061,6 +1061,45 @@ function SiteSettingsTab() {
           <Input value={local.twitter_url || ""} onChange={e => set("twitter_url", e.target.value)} placeholder="https://x.com/..." />
         </div>
       </SettingsSection>
+
+      {/* Email Settings */}
+      <SettingsSection
+        title="📧 Email Settings"
+        description="Configure SMTP settings for booking and inquiry notifications. Note: You may need to use an 'App Password' for Gmail."
+        onSave={() => saveSection(["smtp_host", "smtp_port", "smtp_user", "smtp_pass", "smtp_from", "admin_booking_email"])}
+        isSaving={updateSettings.isPending}
+      >
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label>SMTP Host</Label>
+            <Input value={local.smtp_host || ""} onChange={e => set("smtp_host", e.target.value)} placeholder="e.g. smtp.gmail.com" />
+          </div>
+          <div className="space-y-2">
+            <Label>SMTP Port</Label>
+            <Input value={local.smtp_port || ""} onChange={e => set("smtp_port", e.target.value)} placeholder="e.g. 587" />
+          </div>
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label>SMTP Username</Label>
+            <Input value={local.smtp_user || ""} onChange={e => set("smtp_user", e.target.value)} placeholder="e.g. your-email@gmail.com" />
+          </div>
+          <div className="space-y-2">
+            <Label>SMTP Password</Label>
+            <Input type="password" value={local.smtp_pass || ""} onChange={e => set("smtp_pass", e.target.value)} />
+          </div>
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label>From Email Header</Label>
+            <Input value={local.smtp_from || ""} onChange={e => set("smtp_from", e.target.value)} placeholder="e.g. noreply@yourdomain.com" />
+          </div>
+          <div className="space-y-2">
+            <Label>Admin Notification Email</Label>
+            <Input value={local.admin_booking_email || ""} onChange={e => set("admin_booking_email", e.target.value)} placeholder="Email to receive alerts" />
+          </div>
+        </div>
+      </SettingsSection>
     </div>
   );
 }

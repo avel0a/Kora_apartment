@@ -9,7 +9,7 @@ export interface IStorage {
   createUser(user: InsertUser): Promise<User>;
 
   // Rooms
-  getRooms(): Promise<Room[]>;
+  getRoom(id: number): Promise<Room | undefined>;
   getRoomBySlug(slug: string): Promise<Room | undefined>;
   createRoom(room: InsertRoom): Promise<Room>;
   updateRoom(id: number, room: Partial<InsertRoom>): Promise<Room>;
@@ -60,6 +60,11 @@ export class DatabaseStorage implements IStorage {
 
   async getRooms(): Promise<Room[]> {
     return await db.select().from(rooms);
+  }
+
+  async getRoom(id: number): Promise<Room | undefined> {
+    const [room] = await db.select().from(rooms).where(eq(rooms.id, id));
+    return room;
   }
 
   async getRoomBySlug(slug: string): Promise<Room | undefined> {
