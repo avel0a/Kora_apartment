@@ -13,6 +13,7 @@ export function Navbar() {
 
   const siteName = getSetting(settings, "site_name", "MOMONA");
   const siteSubtitle = getSetting(settings, "site_subtitle", "Hotel Apartments");
+  const companyLogo = getSetting(settings, "company_logo", "");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -51,15 +52,19 @@ export function Navbar() {
       >
         {/* Logo */}
         <Link href="/">
-          <div className="group flex flex-col items-center cursor-pointer transition-transform duration-300 hover:scale-105">
-            <span className="text-2xl font-serif font-bold tracking-[0.2em] text-primary group-hover:text-accent transition-colors duration-300">
-              {siteName.toUpperCase()}
-            </span>
-            <div className="h-[1px] w-0 group-hover:w-full bg-accent transition-all duration-300" />
-            <span className="text-[9px] font-sans font-medium text-primary/70 tracking-[0.4em] uppercase mt-1">
-              {siteSubtitle}
-            </span>
-          </div>
+          {companyLogo ? (
+            <img src={companyLogo} alt={siteName} className="h-10 w-auto object-contain cursor-pointer hover:scale-105 transition-transform duration-300" />
+          ) : (
+            <div className="group flex flex-col items-center cursor-pointer transition-transform duration-300 hover:scale-105">
+              <span className="text-2xl font-serif font-bold tracking-[0.2em] text-primary group-hover:text-accent transition-colors duration-300">
+                {siteName.toUpperCase()}
+              </span>
+              <div className="h-[1px] w-0 group-hover:w-full bg-accent transition-all duration-300" />
+              <span className="text-[9px] font-sans font-medium text-primary/70 tracking-[0.4em] uppercase mt-1">
+                {siteSubtitle}
+              </span>
+            </div>
+          )}
         </Link>
 
         {/* Desktop Nav */}

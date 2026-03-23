@@ -1,6 +1,14 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Mail, Phone, MapPin, Send, Instagram, Facebook, Twitter, Loader2 } from "lucide-react";
+
+function TikTokIcon({ size = 20 }: { size?: number }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" width={size} height={size}>
+      <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 0 0-.79-.05A6.34 6.34 0 0 0 3.15 15a6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V8.71a8.21 8.21 0 0 0 4.76 1.52V6.79a4.85 4.85 0 0 1-1-.1z" />
+    </svg>
+  );
+}
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -22,6 +30,10 @@ export default function Contact() {
   const email = getSetting(settings, "contact_email", "info@momonahotel.com");
   const latitude = getSetting(settings, "map_latitude", "9.0054");
   const longitude = getSetting(settings, "map_longitude", "38.7893");
+  const facebookUrl = getSetting(settings, "facebook_url", "#");
+  const instagramUrl = getSetting(settings, "instagram_url", "#");
+  const twitterUrl = getSetting(settings, "twitter_url", "#");
+  const tiktokUrl = getSetting(settings, "tiktok_url", "#");
 
   const form = useForm({
     resolver: zodResolver(insertContactSchema),
@@ -35,7 +47,7 @@ export default function Contact() {
 
   const mutation = useMutation({
     mutationFn: async (data: any) => {
-      await apiRequest("POST", "/api/inquiries", data);
+      await apiRequest("POST", "/api/contact", data);
     },
     onSuccess: () => {
       toast({
@@ -92,7 +104,7 @@ export default function Contact() {
               <div>
                 <h2 className="text-4xl font-serif font-bold text-primary mb-6 text-gradient inline-block">Contact Information</h2>
                 <p className="text-muted-foreground text-lg leading-relaxed font-light">
-                  Located in the heart of the vibrant Bole district, Momona Hotel is your gateway to Addis Ababa's finest experiences.
+                  Located in the heart of the vibrant Bole district, Panda Hotel is your gateway to Addis Ababa's finest experiences.
                 </p>
               </div>
 
@@ -117,10 +129,15 @@ export default function Contact() {
               <div className="pt-8 border-t border-border/50">
                 <span className="text-xs font-bold tracking-[0.2em] uppercase text-muted-foreground mb-6 block">Follow Our Journey</span>
                 <div className="flex gap-4">
-                  {[<Instagram size={20} />, <Facebook size={20} />, <Twitter size={20} />].map((icon, i) => (
-                    <button key={i} className="bg-primary/5 p-4 rounded-xl text-primary hover:bg-primary hover:text-white transition-all duration-300">
-                      {icon}
-                    </button>
+                  {[
+                    { icon: <Instagram size={20} />, url: instagramUrl },
+                    { icon: <Facebook size={20} />, url: facebookUrl },
+                    { icon: <Twitter size={20} />, url: twitterUrl },
+                    { icon: <TikTokIcon size={20} />, url: tiktokUrl },
+                  ].map((item, i) => (
+                    <a key={i} href={item.url} target="_blank" rel="noopener noreferrer" className="bg-primary/5 p-4 rounded-xl text-primary hover:bg-primary hover:text-white transition-all duration-300">
+                      {item.icon}
+                    </a>
                   ))}
                 </div>
               </div>

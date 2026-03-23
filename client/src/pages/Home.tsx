@@ -17,7 +17,7 @@ export default function Home() {
   const heroSubtitle = getSetting(settings, "hero_subtitle", "Experience Ethiopian hospitality redefined. Just 3 minutes from Bole International Airport.");
   const aboutImage = getSetting(settings, "about_image", "https://images.unsplash.com/photo-1559339352-11d035aa65de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1974&q=80");
   const aboutTitle = getSetting(settings, "about_title", "A Stay Defined by Comfort & Class");
-  const aboutDesc = getSetting(settings, "about_description", "Whether you're visiting Addis Ababa for business or leisure, Momona Hotel offers a perfect blend of traditional Ethiopian hospitality and modern luxury.");
+  const aboutDesc = getSetting(settings, "about_description", "Whether you're visiting Addis Ababa for business or leisure, Panda Hotel offers a perfect blend of traditional Ethiopian hospitality and modern luxury.");
 
   const containerVariants = {
     hidden: { opacity: 0 },

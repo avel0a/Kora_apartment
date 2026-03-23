@@ -2,6 +2,14 @@ import { Link } from "wouter";
 import { Facebook, Instagram, Twitter, MapPin, Phone, Mail } from "lucide-react";
 import { useSettings, getSetting } from "@/hooks/use-settings";
 
+function TikTokIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+      <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 0 0-.79-.05A6.34 6.34 0 0 0 3.15 15a6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V8.71a8.21 8.21 0 0 0 4.76 1.52V6.79a4.85 4.85 0 0 1-1-.1z" />
+    </svg>
+  );
+}
+
 export function Footer() {
   const { data: settings } = useSettings();
 
@@ -11,16 +19,23 @@ export function Footer() {
   const facebookUrl = getSetting(settings, "facebook_url", "#");
   const instagramUrl = getSetting(settings, "instagram_url", "#");
   const twitterUrl = getSetting(settings, "twitter_url", "#");
+  const tiktokUrl = getSetting(settings, "tiktok_url", "#");
   const siteName = getSetting(settings, "site_name", "MOMONA");
+  const siteSubtitle = getSetting(settings, "site_subtitle", "Hotel Apartments");
+  const companyLogo = getSetting(settings, "company_logo", "");
 
   return (
     <footer className="bg-primary text-primary-foreground pt-16 pb-8">
       <div className="container-custom grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
         {/* Brand */}
         <div className="space-y-4">
-          <div className="text-2xl font-serif font-bold text-white tracking-widest uppercase">
-            {siteName}
-          </div>
+          {companyLogo ? (
+            <img src={companyLogo} alt={siteName} className="h-12 w-auto object-contain" />
+          ) : (
+            <div className="text-2xl font-serif font-bold text-white tracking-widest uppercase">
+              {siteName}
+            </div>
+          )}
           <p className="text-primary-foreground/80 text-sm leading-relaxed max-w-xs">
             Experience luxury and comfort in the heart of Addis Ababa. Just minutes from Bole International Airport.
           </p>
@@ -68,6 +83,9 @@ export function Footer() {
             </a>
             <a href={twitterUrl} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-primary transition-all">
               <Twitter className="w-5 h-5" />
+            </a>
+            <a href={tiktokUrl} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-primary transition-all">
+              <TikTokIcon className="w-5 h-5" />
             </a>
           </div>
         </div>

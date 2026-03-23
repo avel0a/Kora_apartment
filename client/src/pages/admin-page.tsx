@@ -931,13 +931,14 @@ function SiteSettingsTab() {
       {/* Brand Section */}
       <SettingsSection
         title="🌟 Brand Settings"
-        description="The main text logo and subtitle shown in the Navbar and Footer."
-        onSave={() => saveSection(["site_name", "site_subtitle"])}
+        description="The main text logo and subtitle shown in the Navbar and Footer. Upload a logo to replace the text branding."
+        onSave={() => saveSection(["site_name", "site_subtitle", "company_logo"])}
         isSaving={updateSettings.isPending}
       >
+        <SettingsImageField label="Company Logo" settingKey="company_logo" value={local.company_logo || ""} onChange={set} />
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label>Site Name / Logo Text</Label>
+            <Label>Site Name / Logo Text (fallback)</Label>
             <Input value={local.site_name || ""} onChange={e => set("site_name", e.target.value)} placeholder="e.g. MOMONA" />
           </div>
           <div className="space-y-2">
@@ -1044,8 +1045,8 @@ function SiteSettingsTab() {
       {/* Social Links */}
       <SettingsSection
         title="🔗 Social Media Links"
-        description="Social media URLs shown in the website footer"
-        onSave={() => saveSection(["facebook_url", "instagram_url", "twitter_url"])}
+        description="Social media URLs shown in the website footer and contact page"
+        onSave={() => saveSection(["facebook_url", "instagram_url", "twitter_url", "tiktok_url"])}
         isSaving={updateSettings.isPending}
       >
         <div className="space-y-2">
@@ -1059,6 +1060,10 @@ function SiteSettingsTab() {
         <div className="space-y-2">
           <Label>Twitter / X URL</Label>
           <Input value={local.twitter_url || ""} onChange={e => set("twitter_url", e.target.value)} placeholder="https://x.com/..." />
+        </div>
+        <div className="space-y-2">
+          <Label>TikTok URL</Label>
+          <Input value={local.tiktok_url || ""} onChange={e => set("tiktok_url", e.target.value)} placeholder="https://tiktok.com/@..." />
         </div>
       </SettingsSection>
 

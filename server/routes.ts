@@ -351,16 +351,16 @@ async function seedDatabase() {
 }
 
 async function seedSettings() {
-  const existingSettings = await storage.getSettings();
-  if (existingSettings.length > 0) return;
-
   const { db: dbInstance } = await import("./db");
   const { siteSettings } = await import("@shared/schema");
+
+  // Always upsert — new keys will be inserted, existing keys will not be overwritten
 
   const defaults = [
     // Brand
     { key: "site_name", value: "MOMONA", label: "Site Name", type: "text" },
     { key: "site_subtitle", value: "Hotel Apartments", label: "Site Subtitle", type: "text" },
+    { key: "company_logo", value: "", label: "Company Logo", type: "image" },
 
     // Hero Section
     { key: "hero_image", value: "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80", label: "Hero Background Image", type: "image" },
@@ -385,6 +385,7 @@ async function seedSettings() {
     { key: "facebook_url", value: "#", label: "Facebook URL", type: "url" },
     { key: "instagram_url", value: "#", label: "Instagram URL", type: "url" },
     { key: "twitter_url", value: "#", label: "Twitter/X URL", type: "url" },
+    { key: "tiktok_url", value: "#", label: "TikTok URL", type: "url" },
     
     // Email Settings
     { key: "smtp_host", value: "", label: "SMTP Host", type: "text" },
