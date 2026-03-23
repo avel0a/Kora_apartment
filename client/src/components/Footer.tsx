@@ -29,13 +29,14 @@ export function Footer() {
       <div className="container-custom grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
         {/* Brand */}
         <div className="space-y-4">
-          {companyLogo ? (
-            <img src={companyLogo} alt={siteName} className="h-12 w-auto object-contain" />
-          ) : (
+          <div className="flex items-center gap-4">
+            {companyLogo && (
+              <img src={companyLogo} alt={siteName} className="h-12 w-auto object-contain" />
+            )}
             <div className="text-2xl font-serif font-bold text-white tracking-widest uppercase">
               {siteName}
             </div>
-          )}
+          </div>
           <p className="text-primary-foreground/80 text-sm leading-relaxed max-w-xs">
             Experience luxury and comfort in the heart of Addis Ababa. Just minutes from Bole International Airport.
           </p>

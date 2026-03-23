@@ -52,10 +52,11 @@ export function Navbar() {
       >
         {/* Logo */}
         <Link href="/">
-          {companyLogo ? (
-            <img src={companyLogo} alt={siteName} className="h-10 w-auto object-contain cursor-pointer hover:scale-105 transition-transform duration-300" />
-          ) : (
-            <div className="group flex flex-col items-center cursor-pointer transition-transform duration-300 hover:scale-105">
+          <div className="flex items-center gap-3 cursor-pointer group hover:scale-105 transition-transform duration-300">
+            {companyLogo && (
+              <img src={companyLogo} alt={siteName} className="h-10 w-auto object-contain" />
+            )}
+            <div className="flex flex-col items-center">
               <span className="text-2xl font-serif font-bold tracking-[0.2em] text-primary group-hover:text-accent transition-colors duration-300">
                 {siteName.toUpperCase()}
               </span>
@@ -64,7 +65,7 @@ export function Navbar() {
                 {siteSubtitle}
               </span>
             </div>
-          )}
+          </div>
         </Link>
 
         {/* Desktop Nav */}
