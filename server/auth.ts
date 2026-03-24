@@ -5,7 +5,9 @@ import session from "express-session";
 import { scrypt, randomBytes, timingSafeEqual } from "crypto";
 import { promisify } from "util";
 import { storage } from "./storage";
-import { User } from "@shared/schema";
+import { User, users } from "@shared/schema";
+import { db } from "./db";
+import { eq } from "drizzle-orm";
 
 const scryptAsync = promisify(scrypt);
 
@@ -57,19 +59,6 @@ export function setupAuth(app: Express) {
   passport.use(
     new LocalStrategy(async (username, password, done) => {
       try {
-        // Hardcoded admin login for production/CPANEL stability
-        if (username === "admin" && password === "admin123") {
-          let user = await storage.getUserByUsername("admin");
-          if (!user) {
-            // Ensure admin user exists in DB for session serialization
-            user = await storage.createUser({
-              username: "admin",
-              password: "admin123", // This will be hashed by storage.createUser but we match plaintext above
-              role: "admin"
-            });
-          }
-          return done(null, user);
-        }
 
         const user = await storage.getUserByUsername(username);
         if (!user) {
@@ -107,6 +96,26 @@ export function setupAuth(app: Express) {
     }
     res.status(401).json({ message: "Unauthorized" });
   };
+
+  app.post("/api/admin/password", isAuthenticated, async (req, res) => {
+    try {
+      if ((req.user as User).role !== "admin") {
+        return res.status(403).json({ message: "Forbidden" });
+      }
+      const { password } = req.body;
+      if (!password || password.length < 6) {
+        return res.status(400).json({ message: "Password must be at least 6 characters" });
+      }
+      const hashedPassword = await hashPassword(password);
+      await db.update(users)
+        .set({ password: hashedPassword })
+        .where(eq(users.id, (req.user as User).id));
+      res.json({ message: "Password updated successfully" });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Failed to update password" });
+    }
+  });
 
   app.post("/api/login", (req, res, next) => {
     passport.authenticate("local", (err, user, info) => {

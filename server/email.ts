@@ -96,7 +96,7 @@ export async function sendBookingEmails(booking: Booking, room: Room) {
   });
 
   const siteName = config.site_name || "Modern Panda Hotel";
-  const fromEmail = config.smtp_from || "noreply@momonahotel.com";
+  const fromEmail = config.smtp_from || "noreply@pandahotel.com";
   const adminEmail = config.admin_booking_email || config.contact_email;
 
   // 1. Email to Guest
@@ -190,7 +190,7 @@ export async function sendInquiryEmail(contact: Contact) {
   });
 
   const siteName = config.site_name || "Modern Panda Hotel";
-  const fromEmail = config.smtp_from || "noreply@momonahotel.com";
+  const fromEmail = config.smtp_from || "noreply@pandahotel.com";
   const adminEmail = config.admin_booking_email || config.contact_email;
 
   const inquiryContent = `

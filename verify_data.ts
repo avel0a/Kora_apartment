@@ -9,12 +9,13 @@ async function verify() {
   
   try {
     const settings = await client.query("SELECT count(*) FROM site_settings;");
-    console.log("Site Settings count:", settings.rows[0]);
+    const countRow = settings.rows[0] as { count: number };
+    console.log("Site Settings count:", countRow);
     
     const rooms = await client.query("SELECT count(*) FROM rooms;");
     console.log("Rooms count:", rooms.rows[0]);
     
-    if (settings.rows[0].count > 0) {
+    if (countRow.count > 0) {
         const sample = await client.query("SELECT key, value FROM site_settings LIMIT 5;");
         console.log("Sample settings:", sample.rows);
     }

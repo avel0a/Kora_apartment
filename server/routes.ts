@@ -358,7 +358,7 @@ async function seedSettings() {
 
   const defaults = [
     // Brand
-    { key: "site_name", value: "MOMONA", label: "Site Name", type: "text" },
+    { key: "site_name", value: "PANDA", label: "Site Name", type: "text" },
     { key: "site_subtitle", value: "Hotel Apartments", label: "Site Subtitle", type: "text" },
     { key: "company_logo", value: "", label: "Company Logo", type: "image" },
 
@@ -370,12 +370,12 @@ async function seedSettings() {
     // About Section
     { key: "about_image", value: "https://images.unsplash.com/photo-1559339352-11d035aa65de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1974&q=80", label: "About Section Image", type: "image" },
     { key: "about_title", value: "A Stay Defined by Comfort & Class", label: "About Title", type: "text" },
-    { key: "about_description", value: "Whether you're visiting Addis Ababa for business or leisure, Momona Hotel offers a perfect blend of traditional Ethiopian hospitality and modern luxury.", label: "About Description", type: "textarea" },
+    { key: "about_description", value: "Whether you're visiting Addis Ababa for business or leisure, Panda Hotel offers a perfect blend of traditional Ethiopian hospitality and modern luxury.", label: "About Description", type: "textarea" },
 
     // Contact
     { key: "contact_address", value: "Bole Road, Addis Ababa, Ethiopia", label: "Address", type: "text" },
     { key: "contact_phone", value: "+251 11 661 0404", label: "Phone Number", type: "text" },
-    { key: "contact_email", value: "info@momonahotel.com", label: "Email Address", type: "text" },
+    { key: "contact_email", value: "info@pandahotel.com", label: "Email Address", type: "text" },
 
     // Map Location
     { key: "map_latitude", value: "9.0054", label: "Map Latitude", type: "text" },
@@ -392,8 +392,8 @@ async function seedSettings() {
     { key: "smtp_port", value: "587", label: "SMTP Port", type: "text" },
     { key: "smtp_user", value: "", label: "SMTP Username", type: "text" },
     { key: "smtp_pass", value: "", label: "SMTP Password", type: "password" },
-    { key: "smtp_from", value: "noreply@momonahotel.com", label: "From Email Header", type: "text" },
-    { key: "admin_booking_email", value: "admin@momonahotel.com", label: "Admin Notification Email", type: "text" },
+    { key: "smtp_from", value: "noreply@pandahotel.com", label: "From Email Header", type: "text" },
+    { key: "admin_booking_email", value: "admin@pandahotel.com", label: "Admin Notification Email", type: "text" },
 
     // Authentication Page
     { key: "auth_image", value: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=2070&auto=format&fit=crop", label: "Login Background Image", type: "image" },

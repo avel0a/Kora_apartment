@@ -8,14 +8,16 @@ async function verifyPath(name: string, relativePath: string) {
   try {
     const client = new PGlite(dbPath);
     const settings = await client.query("SELECT count(*) FROM site_settings;");
-    console.log(`${name} Site Settings count:`, settings.rows[0]);
+    const countRow = settings.rows[0] as { count: number };
+    console.log(`${name} Site Settings count:`, countRow);
     
-    if (settings.rows[0].count > 0) {
+    if (countRow.count > 0) {
         const sample = await client.query("SELECT key, value FROM site_settings WHERE key = 'site_name' LIMIT 1;");
-        console.log(`${name} Site Name:`, sample.rows[0]?.value);
+        const sampleRow = sample.rows[0] as { value: string } | undefined;
+        console.log(`${name} Site Name:`, sampleRow?.value);
     }
     await client.close();
-  } catch (e) {
+  } catch (e: any) {
     console.log(`${name} Error:`, e.message);
   }
 }

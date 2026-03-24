@@ -27,7 +27,7 @@ export default function Contact() {
 
   const address = getSetting(settings, "contact_address", "Bole Road, Addis Ababa, Ethiopia");
   const phone = getSetting(settings, "contact_phone", "+251 116 123 456");
-  const email = getSetting(settings, "contact_email", "info@momonahotel.com");
+  const email = getSetting(settings, "contact_email", "info@pandahotel.com");
   const latitude = getSetting(settings, "map_latitude", "9.0054");
   const longitude = getSetting(settings, "map_longitude", "38.7893");
   const facebookUrl = getSetting(settings, "facebook_url", "#");
@@ -213,7 +213,7 @@ export default function Contact() {
       {/* Map Embed */}
       <section className="h-[500px] w-full relative grayscale hover:grayscale-0 transition-all duration-1000">
         <iframe
-          title="Momona Hotel Location"
+          title="Panda Hotel Location"
           src={`https://maps.google.com/maps?q=${latitude},${longitude}&z=15&output=embed`}
           width="100%"
           height="100%"

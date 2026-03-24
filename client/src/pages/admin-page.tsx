@@ -939,7 +939,7 @@ function SiteSettingsTab() {
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label>Site Name / Logo Text (fallback)</Label>
-            <Input value={local.site_name || ""} onChange={e => set("site_name", e.target.value)} placeholder="e.g. MOMONA" />
+            <Input value={local.site_name || ""} onChange={e => set("site_name", e.target.value)} placeholder="e.g. PANDA" />
           </div>
           <div className="space-y-2">
             <Label>Site Subtitle</Label>
@@ -1105,6 +1105,52 @@ function SiteSettingsTab() {
           </div>
         </div>
       </SettingsSection>
+
+      {/* Password Reset Section */}
+      <Card className="mb-6 border-red-200">
+        <CardHeader>
+          <CardTitle className="text-lg text-red-600">🔑 Admin Password</CardTitle>
+          <CardDescription>Change the password used to log into this admin dashboard.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>New Password</Label>
+                <Input type="password" value={local.new_admin_password || ""} onChange={e => set("new_admin_password", e.target.value)} placeholder="Minimum 6 characters" />
+              </div>
+              <div className="space-y-2">
+                <Label>Confirm Password</Label>
+                <Input type="password" value={local.confirm_admin_password || ""} onChange={e => set("confirm_admin_password", e.target.value)} placeholder="Retype new password" />
+              </div>
+            </div>
+            <Button 
+               variant="destructive"
+               disabled={!local.new_admin_password || local.new_admin_password !== local.confirm_admin_password || local.new_admin_password.length < 6}
+               onClick={async () => {
+                 try {
+                   const res = await fetch("/api/admin/password", {
+                     method: "POST",
+                     headers: { "Content-Type": "application/json" },
+                     body: JSON.stringify({ password: local.new_admin_password })
+                   });
+                   if (!res.ok) {
+                     const data = await res.json();
+                     throw new Error(data.message || "Failed to update password");
+                   }
+                   toast({ title: "Password changed successfully" });
+                   set("new_admin_password", "");
+                   set("confirm_admin_password", "");
+                 } catch (err: any) {
+                   toast({ title: "Failed to change password", description: err.message, variant: "destructive" });
+                 }
+               }}
+            >
+              Update Password
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

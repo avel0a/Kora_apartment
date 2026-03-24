@@ -11,7 +11,7 @@ export function Navbar() {
   const [location] = useLocation();
   const { data: settings } = useSettings();
 
-  const siteName = getSetting(settings, "site_name", "MOMONA");
+  const siteName = getSetting(settings, "site_name", "PANDA");
   const siteSubtitle = getSetting(settings, "site_subtitle", "Hotel Apartments");
   const companyLogo = getSetting(settings, "company_logo", "");
 

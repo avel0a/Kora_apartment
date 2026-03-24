@@ -10,7 +10,15 @@ import { motion } from "framer-motion";
 
 export default function Home() {
   const { data: rooms, isLoading } = useRooms();
-  const { data: settings } = useSettings();
+  const { data: settings, isLoading: isSettingsLoading } = useSettings();
+
+  if (isSettingsLoading) {
+    return (
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center">
+        <div className="w-12 h-12 rounded-full border-4 border-primary border-t-transparent animate-spin"/>
+      </div>
+    );
+  }
 
   const heroImage = getSetting(settings, "hero_image", "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80");
   const heroTitle = getSetting(settings, "hero_title", "Luxury in the Heart of Addis Ababa");
@@ -53,7 +61,7 @@ export default function Home() {
         >
           <img 
             src={heroImage}
-            alt="Momona Hotel Lobby" 
+            alt="Panda Hotel Lobby" 
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-black/50" />

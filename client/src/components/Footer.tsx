@@ -15,12 +15,12 @@ export function Footer() {
 
   const address = getSetting(settings, "contact_address", "Bole Road, Addis Ababa, Ethiopia");
   const phone = getSetting(settings, "contact_phone", "+251 11 661 0404");
-  const email = getSetting(settings, "contact_email", "info@momonahotel.com");
+  const email = getSetting(settings, "contact_email", "info@pandahotel.com");
   const facebookUrl = getSetting(settings, "facebook_url", "#");
   const instagramUrl = getSetting(settings, "instagram_url", "#");
   const twitterUrl = getSetting(settings, "twitter_url", "#");
   const tiktokUrl = getSetting(settings, "tiktok_url", "#");
-  const siteName = getSetting(settings, "site_name", "MOMONA");
+  const siteName = getSetting(settings, "site_name", "PANDA");
   const siteSubtitle = getSetting(settings, "site_subtitle", "Hotel Apartments");
   const companyLogo = getSetting(settings, "company_logo", "");
 
