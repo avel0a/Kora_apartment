@@ -2,21 +2,37 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { RoomCard } from "@/components/RoomCard";
 import { useRooms } from "@/hooks/use-rooms";
+import { useSettings, getSetting } from "@/hooks/use-settings";
 import { Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function Rooms() {
   const { data: rooms, isLoading } = useRooms();
+  const { data: settings } = useSettings();
+
+  const headerImage = getSetting(settings, "rooms_header_image", "");
+  const headerTagline = getSetting(settings, "rooms_header_tagline", "Exquisite Stays");
+  const headerTitle = getSetting(settings, "rooms_header_title", "Our Rooms & Suites");
+  const headerSubtitle = getSetting(settings, "rooms_header_subtitle", "Curated spaces designed for the discerning traveler, blending modern luxury with timeless Ethiopian warmth.");
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Navbar />
 
       {/* Cinematic Header */}
-      <section className="relative pt-48 pb-24 overflow-hidden bg-primary text-white">
-        <div className="absolute inset-0 opacity-10 pointer-events-none">
-          <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--accent)_1px,_transparent_1px)] bg-[size:40px_40px]" />
-        </div>
+      <section className={`relative pt-48 pb-24 overflow-hidden text-white ${!headerImage ? 'bg-primary' : ''}`}>
+        {headerImage ? (
+          <>
+            <div className="absolute inset-0 z-0">
+              <img src={headerImage} alt="" className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-black/60" />
+            </div>
+          </>
+        ) : (
+          <div className="absolute inset-0 opacity-10 pointer-events-none">
+            <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--accent)_1px,_transparent_1px)] bg-[size:40px_40px]" />
+          </div>
+        )}
         
         <div className="container-custom relative z-10 text-center">
           <motion.div
@@ -24,10 +40,10 @@ export default function Rooms() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <span className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-4 block">Exquisite Stays</span>
-            <h1 className="text-5xl md:text-7xl font-serif font-bold mb-6">Our Rooms & Suites</h1>
+            <span className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-4 block">{headerTagline}</span>
+            <h1 className="text-5xl md:text-7xl font-serif font-bold mb-6">{headerTitle}</h1>
             <p className="text-xl text-white/70 max-w-2xl mx-auto font-light leading-relaxed">
-              Curated spaces designed for the discerning traveler, blending modern luxury with timeless Ethiopian warmth.
+              {headerSubtitle}
             </p>
           </motion.div>
         </div>

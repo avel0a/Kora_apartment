@@ -80,9 +80,7 @@ export default function Home() {
           </motion.div> */}
           
           <motion.h1 variants={itemVariants} className="text-6xl md:text-8xl font-serif font-bold leading-[1.1] tracking-tight">
-            {heroTitle.includes("Addis Ababa") ? (
-              <>Luxury in the <br/> <span className="text-accent italic font-normal">Heart of Addis</span></>
-            ) : heroTitle}
+            {heroTitle}
           </motion.h1>
           
           <motion.p variants={itemVariants} className="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto font-light leading-relaxed">

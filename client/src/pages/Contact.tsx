@@ -35,6 +35,11 @@ export default function Contact() {
   const twitterUrl = getSetting(settings, "twitter_url", "#");
   const tiktokUrl = getSetting(settings, "tiktok_url", "#");
 
+  const headerImage = getSetting(settings, "contact_header_image", "");
+  const headerTagline = getSetting(settings, "contact_header_tagline", "Connect With Us");
+  const headerTitle = getSetting(settings, "contact_header_title", "Get in Touch");
+  const headerSubtitle = getSetting(settings, "contact_header_subtitle", "We're here to ensure your stay is extraordinary. Reach out for reservations, events, or inquiries.");
+
   const form = useForm({
     resolver: zodResolver(insertContactSchema),
     defaultValues: {
@@ -70,10 +75,19 @@ export default function Contact() {
       <Navbar />
 
       {/* Cinematic Header */}
-      <section className="relative pt-48 pb-24 overflow-hidden bg-primary text-white">
-        <div className="absolute inset-0 opacity-10 pointer-events-none">
-          <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--accent)_1px,_transparent_1px)] bg-[size:40px_40px]" />
-        </div>
+      <section className={`relative pt-48 pb-24 overflow-hidden text-white ${!headerImage ? 'bg-primary' : ''}`}>
+        {headerImage ? (
+          <>
+            <div className="absolute inset-0 z-0">
+              <img src={headerImage} alt="" className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-black/60" />
+            </div>
+          </>
+        ) : (
+          <div className="absolute inset-0 opacity-10 pointer-events-none">
+            <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--accent)_1px,_transparent_1px)] bg-[size:40px_40px]" />
+          </div>
+        )}
         
         <div className="container-custom relative z-10 text-center">
           <motion.div
@@ -81,10 +95,10 @@ export default function Contact() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <span className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-4 block">Connect With Us</span>
-            <h1 className="text-5xl md:text-7xl font-serif font-bold mb-6">Get in Touch</h1>
+            <span className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-4 block">{headerTagline}</span>
+            <h1 className="text-5xl md:text-7xl font-serif font-bold mb-6">{headerTitle}</h1>
             <p className="text-xl text-white/70 max-w-2xl mx-auto font-light leading-relaxed">
-              We're here to ensure your stay is extraordinary. Reach out for reservations, events, or inquiries.
+              {headerSubtitle}
             </p>
           </motion.div>
         </div>

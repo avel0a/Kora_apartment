@@ -984,6 +984,70 @@ function SiteSettingsTab() {
         </div>
       </SettingsSection>
 
+      {/* Page Headers */}
+      <SettingsSection
+        title="📄 Page Headers — Rooms"
+        description="Background image and text shown at the top of the Rooms & Suites page"
+        onSave={() => saveSection(["rooms_header_image", "rooms_header_tagline", "rooms_header_title", "rooms_header_subtitle"])}
+        isSaving={updateSettings.isPending}
+      >
+        <SettingsImageField label="Header Background Image" settingKey="rooms_header_image" value={local.rooms_header_image || ""} onChange={set} />
+        <div className="space-y-2">
+          <Label>Tagline (small text above title)</Label>
+          <Input value={local.rooms_header_tagline || ""} onChange={e => set("rooms_header_tagline", e.target.value)} placeholder="e.g. Exquisite Stays" />
+        </div>
+        <div className="space-y-2">
+          <Label>Page Title</Label>
+          <Input value={local.rooms_header_title || ""} onChange={e => set("rooms_header_title", e.target.value)} placeholder="e.g. Our Rooms & Suites" />
+        </div>
+        <div className="space-y-2">
+          <Label>Subtitle</Label>
+          <Textarea value={local.rooms_header_subtitle || ""} onChange={e => set("rooms_header_subtitle", e.target.value)} rows={2} placeholder="Short description shown below the title" />
+        </div>
+      </SettingsSection>
+
+      <SettingsSection
+        title="📄 Page Headers — Gallery"
+        description="Background image and text shown at the top of the Gallery page"
+        onSave={() => saveSection(["gallery_header_image", "gallery_header_tagline", "gallery_header_title", "gallery_header_subtitle"])}
+        isSaving={updateSettings.isPending}
+      >
+        <SettingsImageField label="Header Background Image" settingKey="gallery_header_image" value={local.gallery_header_image || ""} onChange={set} />
+        <div className="space-y-2">
+          <Label>Tagline (small text above title)</Label>
+          <Input value={local.gallery_header_tagline || ""} onChange={e => set("gallery_header_tagline", e.target.value)} placeholder="e.g. Visual Journey" />
+        </div>
+        <div className="space-y-2">
+          <Label>Page Title</Label>
+          <Input value={local.gallery_header_title || ""} onChange={e => set("gallery_header_title", e.target.value)} placeholder="e.g. Our Gallery" />
+        </div>
+        <div className="space-y-2">
+          <Label>Subtitle</Label>
+          <Textarea value={local.gallery_header_subtitle || ""} onChange={e => set("gallery_header_subtitle", e.target.value)} rows={2} placeholder="Short description shown below the title" />
+        </div>
+      </SettingsSection>
+
+      <SettingsSection
+        title="📄 Page Headers — Contact"
+        description="Background image and text shown at the top of the Contact page"
+        onSave={() => saveSection(["contact_header_image", "contact_header_tagline", "contact_header_title", "contact_header_subtitle"])}
+        isSaving={updateSettings.isPending}
+      >
+        <SettingsImageField label="Header Background Image" settingKey="contact_header_image" value={local.contact_header_image || ""} onChange={set} />
+        <div className="space-y-2">
+          <Label>Tagline (small text above title)</Label>
+          <Input value={local.contact_header_tagline || ""} onChange={e => set("contact_header_tagline", e.target.value)} placeholder="e.g. Connect With Us" />
+        </div>
+        <div className="space-y-2">
+          <Label>Page Title</Label>
+          <Input value={local.contact_header_title || ""} onChange={e => set("contact_header_title", e.target.value)} placeholder="e.g. Get in Touch" />
+        </div>
+        <div className="space-y-2">
+          <Label>Subtitle</Label>
+          <Textarea value={local.contact_header_subtitle || ""} onChange={e => set("contact_header_subtitle", e.target.value)} rows={2} placeholder="Short description shown below the title" />
+        </div>
+      </SettingsSection>
+
       {/* Contact Info */}
       <SettingsSection
         title="📞 Contact Information"

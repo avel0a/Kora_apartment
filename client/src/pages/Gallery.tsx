@@ -2,12 +2,19 @@ import { useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { useGalleryImages } from "@/hooks/use-gallery";
+import { useSettings, getSetting } from "@/hooks/use-settings";
 import { Loader2, X, ChevronLeft, ChevronRight, Camera } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Gallery() {
   const { data: images, isLoading } = useGalleryImages();
+  const { data: settings } = useSettings();
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
+  const headerImage = getSetting(settings, "gallery_header_image", "");
+  const headerTagline = getSetting(settings, "gallery_header_tagline", "Visual Journey");
+  const headerTitle = getSetting(settings, "gallery_header_title", "Our Gallery");
+  const headerSubtitle = getSetting(settings, "gallery_header_subtitle", "Step into a world of refined elegance and traditional charm through our curated lens.");
 
   const openLightbox = (index: number) => setLightboxIndex(index);
   const closeLightbox = () => setLightboxIndex(null);
@@ -29,10 +36,19 @@ export default function Gallery() {
       <Navbar />
 
       {/* Cinematic Header */}
-      <section className="relative pt-48 pb-24 overflow-hidden bg-primary text-white">
-        <div className="absolute inset-0 opacity-10 pointer-events-none">
-          <div className="absolute top-0 right-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--accent)_1px,_transparent_1px)] bg-[size:40px_40px]" />
-        </div>
+      <section className={`relative pt-48 pb-24 overflow-hidden text-white ${!headerImage ? 'bg-primary' : ''}`}>
+        {headerImage ? (
+          <>
+            <div className="absolute inset-0 z-0">
+              <img src={headerImage} alt="" className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-black/60" />
+            </div>
+          </>
+        ) : (
+          <div className="absolute inset-0 opacity-10 pointer-events-none">
+            <div className="absolute top-0 right-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--accent)_1px,_transparent_1px)] bg-[size:40px_40px]" />
+          </div>
+        )}
         
         <div className="container-custom relative z-10 text-center">
           <motion.div
@@ -40,10 +56,10 @@ export default function Gallery() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <span className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-4 block">Visual Journey</span>
-            <h1 className="text-5xl md:text-7xl font-serif font-bold mb-6">Our Gallery</h1>
+            <span className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-4 block">{headerTagline}</span>
+            <h1 className="text-5xl md:text-7xl font-serif font-bold mb-6">{headerTitle}</h1>
             <p className="text-xl text-white/70 max-w-2xl mx-auto font-light leading-relaxed">
-              Step into a world of refined elegance and traditional charm through our curated lens.
+              {headerSubtitle}
             </p>
           </motion.div>
         </div>
