@@ -5,6 +5,13 @@ import { Button } from "@/components/ui/button";
 import { useSettings, getSetting } from "@/hooks/use-settings";
 import { motion, AnimatePresence } from "framer-motion";
 
+const prefetchRoutes: Record<string, () => Promise<any>> = {
+  "/": () => import("@/pages/Home"),
+  "/rooms": () => import("@/pages/Rooms"),
+  "/gallery": () => import("@/pages/Gallery"),
+  "/contact": () => import("@/pages/Contact"),
+};
+
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -32,8 +39,17 @@ export function Navbar() {
 
   const isActive = (path: string) => location === path;
 
+  const handlePrefetch = (path: string) => {
+    const prefetcher = prefetchRoutes[path];
+    if (prefetcher) {
+      prefetcher().catch(() => {}); // silently catch prefetch errors
+    }
+  };
+
   return (
     <motion.nav
+      role="navigation"
+      aria-label="Main Navigation"
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
@@ -43,6 +59,9 @@ export function Navbar() {
           : "top-0"
       }`}
     >
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-primary text-white p-2 rounded z-[60]">
+        Skip to main content
+      </a>
       <div 
         className={`container-custom flex justify-between items-center transition-all duration-500 ${
           scrolled 
@@ -73,7 +92,10 @@ export function Navbar() {
           <div className="flex items-center gap-8">
             {navLinks.map((link) => (
               <Link key={link.href} href={link.href}>
-                <span className="relative group cursor-pointer text-sm font-medium tracking-widest transition-colors">
+                <span 
+                  onMouseEnter={() => handlePrefetch(link.href)}
+                  className="relative group cursor-pointer text-sm font-medium tracking-widest transition-colors"
+                >
                   <span className={`${
                     isActive(link.href) 
                       ? "text-primary font-bold" 
@@ -100,12 +122,13 @@ export function Navbar() {
           </Link>
         </div>
 
-        {/* Mobile Menu Toggle */}
         <button
           className={`${scrolled ? "text-foreground" : "text-white"} md:hidden hover:scale-110 active:scale-90 transition-transform`}
           onClick={() => setIsOpen(!isOpen)}
+          aria-expanded={isOpen}
+          aria-label={isOpen ? "Close menu" : "Open menu"}
         >
-          {isOpen ? <X size={28} /> : <Menu size={28} />}
+          {isOpen ? <X size={28} aria-hidden="true" /> : <Menu size={28} aria-hidden="true" />}
         </button>
       </div>
 

@@ -9,6 +9,7 @@ import { insertRoomSchema, insertGalleryImageSchema, insertRoomImageSchema } fro
 import multer from "multer";
 import path from "path";
 import fs from "fs";
+import sharp from "sharp";
 
 const storage_multer = multer.diskStorage({
   destination: function (_req, _file, cb) {
@@ -43,14 +44,35 @@ export async function registerRoutes(
     res.status(401).json({ message: "Unauthorized" });
   };
 
+
   // Uploads
-  apiRouter.post("/upload", isAuthenticated, upload.single("file"), (req: any, res) => {
+  apiRouter.post("/upload", isAuthenticated, upload.single("file"), async (req: any, res) => {
     console.log(`[apiRouter] POST /upload hit, file present: ${!!req.file}`);
     if (!req.file) {
       return res.status(400).json({ message: "No file uploaded" });
     }
-    const filePath = `/uploads/${req.file.filename}`;
-    res.json({ url: filePath });
+
+    try {
+      const uploadDir = path.resolve(process.cwd(), "uploads");
+      const optimizedFilename = req.file.filename.replace(path.extname(req.file.filename), "") + "-optimized.webp";
+      const optimizedPath = path.join(uploadDir, optimizedFilename);
+
+      await sharp(req.file.path)
+        .resize({ width: 1920, withoutEnlargement: true })
+        .webp({ quality: 80 })
+        .toFile(optimizedPath);
+
+      // Clean up the original unoptimized file
+      fs.unlinkSync(req.file.path);
+
+      const filePath = `/uploads/${optimizedFilename}`;
+      res.json({ url: filePath });
+    } catch (error) {
+      console.error("[upload error] sharp processing failed:", error);
+      // Fallback to original file if compression fails
+      const filePath = `/uploads/${req.file.filename}`;
+      res.json({ url: filePath });
+    }
   });
 
   // Rooms

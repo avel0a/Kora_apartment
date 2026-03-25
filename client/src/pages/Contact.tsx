@@ -74,12 +74,13 @@ export default function Contact() {
     <div className="min-h-screen bg-background flex flex-col">
       <Navbar />
 
+      <main id="main-content" className="flex-grow flex flex-col">
       {/* Cinematic Header */}
-      <section className={`relative pt-48 pb-24 overflow-hidden text-white ${!headerImage ? 'bg-primary' : ''}`}>
+      <section className="relative pt-48 pb-24 overflow-hidden text-white bg-primary">
         {headerImage ? (
           <>
             <div className="absolute inset-0 z-0">
-              <img src={headerImage} alt="" className="w-full h-full object-cover" />
+              <img src={headerImage} alt="" className="w-full h-full object-cover" fetchPriority="high" decoding="async" />
               <div className="absolute inset-0 bg-black/60" />
             </div>
           </>
@@ -238,6 +239,8 @@ export default function Contact() {
         />
         <div className="absolute inset-0 pointer-events-none border-y border-border/50 shadow-inner" />
       </section>
+
+      </main>
 
       <Footer />
     </div>

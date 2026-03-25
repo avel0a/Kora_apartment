@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { format, addDays } from "date-fns";
-import { CalendarIcon, Loader2, Users, User, Mail } from "lucide-react";
+import { CalendarIcon, Loader2, Users, User, Mail, CheckCircle } from "lucide-react";
 import { z } from "zod";
 import { DateRange } from "react-day-picker";
 
@@ -34,7 +34,7 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 export function BookingForm({ roomId, roomName }: BookingFormProps) {
-  const { mutate, isPending } = useCreateBooking();
+  const { mutate, isPending, isSuccess, reset } = useCreateBooking();
   
   // Default to selecting today and tomorrow
   const [date, setDate] = useState<DateRange | undefined>({
@@ -79,6 +79,49 @@ export function BookingForm({ roomId, roomName }: BookingFormProps) {
       }
     });
   };
+
+  if (isSuccess) {
+    return (
+      <div className="bg-white p-6 md:p-8 rounded-xl shadow-lg border border-border/60 text-center space-y-6">
+        <div className="mx-auto w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mb-4">
+          <CheckCircle className="w-8 h-8 text-green-500" />
+        </div>
+        <h3 className="text-2xl font-serif text-primary">Booking Confirmed!</h3>
+        <p className="text-muted-foreground">
+          Thank you, <span className="font-semibold text-foreground">{form.getValues("guestName")}</span>. 
+          Your reservation for the <span className="font-semibold text-accent">{roomName}</span> has been received.
+        </p>
+        <div className="bg-secondary/20 rounded-lg p-4 text-sm text-left space-y-2 mt-6">
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">Dates</span>
+            <span className="font-medium text-primary">
+              {date?.from && format(date.from, "MMM d, yyyy")} - {date?.to && format(date.to, "MMM d, yyyy")}
+            </span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">Guests</span>
+            <span className="font-medium text-primary">
+              {form.getValues("adults")} Adults{form.getValues("children") > 0 ? `, ${form.getValues("children")} Children` : ""}
+            </span>
+          </div>
+        </div>
+        <p className="text-xs text-muted-foreground">
+          A confirmation email has been sent to {form.getValues("guestEmail")}.
+        </p>
+        <Button 
+          variant="outline" 
+          className="w-full mt-4"
+          onClick={() => {
+            reset();
+            form.reset();
+            setDate({ from: new Date(), to: addDays(new Date(), 1) });
+          }}
+        >
+          Make Another Booking
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="bg-white p-6 md:p-8 rounded-xl shadow-lg border border-border/60">

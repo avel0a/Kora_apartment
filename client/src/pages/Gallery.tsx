@@ -35,12 +35,13 @@ export default function Gallery() {
     <div className="min-h-screen bg-background flex flex-col">
       <Navbar />
 
+      <main id="main-content" className="flex-grow flex flex-col">
       {/* Cinematic Header */}
-      <section className={`relative pt-48 pb-24 overflow-hidden text-white ${!headerImage ? 'bg-primary' : ''}`}>
+      <section className="relative pt-48 pb-24 overflow-hidden text-white bg-primary">
         {headerImage ? (
           <>
             <div className="absolute inset-0 z-0">
-              <img src={headerImage} alt="" className="w-full h-full object-cover" />
+              <img src={headerImage} alt="" className="w-full h-full object-cover" fetchPriority="high" decoding="async" />
               <div className="absolute inset-0 bg-black/60" />
             </div>
           </>
@@ -69,9 +70,10 @@ export default function Gallery() {
       <section className="py-24 flex-grow bg-background">
         <div className="container-custom">
           {isLoading ? (
-            <div className="flex flex-col justify-center items-center h-96 gap-4">
-              <Loader2 className="animate-spin w-12 h-12 text-primary" />
-              <span className="text-sm font-bold tracking-widest text-primary/40 uppercase">Loading Gallery...</span>
+            <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
+              {[280, 350, 240, 320, 260, 300, 280, 340, 250].map((h, i) => (
+                <div key={i} className="break-inside-avoid rounded-2xl overflow-hidden bg-muted animate-pulse" style={{ height: `${h}px` }} />
+              ))}
             </div>
           ) : !images?.length ? (
             <motion.div 
@@ -193,6 +195,8 @@ export default function Gallery() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      </main>
 
       <Footer />
     </div>

@@ -1108,11 +1108,15 @@ function SiteSettingsTab() {
 
       {/* Social Links */}
       <SettingsSection
-        title="🔗 Social Media Links"
-        description="Social media URLs shown in the website footer and contact page"
-        onSave={() => saveSection(["facebook_url", "instagram_url", "twitter_url", "tiktok_url"])}
+        title="🔗 Social Media & WhatsApp"
+        description="Social media URLs and WhatsApp number shown on the website"
+        onSave={() => saveSection(["facebook_url", "instagram_url", "twitter_url", "tiktok_url", "whatsapp_number"])}
         isSaving={updateSettings.isPending}
       >
+        <div className="space-y-2">
+          <Label>WhatsApp Number (enables floating chat button)</Label>
+          <Input value={local.whatsapp_number || ""} onChange={e => set("whatsapp_number", e.target.value)} placeholder="e.g. 251911234567 (with country code, no +)" />
+        </div>
         <div className="space-y-2">
           <Label>Facebook URL</Label>
           <Input value={local.facebook_url || ""} onChange={e => set("facebook_url", e.target.value)} placeholder="https://facebook.com/..." />

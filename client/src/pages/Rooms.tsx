@@ -19,12 +19,13 @@ export default function Rooms() {
     <div className="min-h-screen bg-background flex flex-col">
       <Navbar />
 
+      <main id="main-content" className="flex-grow flex flex-col">
       {/* Cinematic Header */}
-      <section className={`relative pt-48 pb-24 overflow-hidden text-white ${!headerImage ? 'bg-primary' : ''}`}>
+      <section className="relative pt-48 pb-24 overflow-hidden text-white bg-primary">
         {headerImage ? (
           <>
             <div className="absolute inset-0 z-0">
-              <img src={headerImage} alt="" className="w-full h-full object-cover" />
+              <img src={headerImage} alt="" className="w-full h-full object-cover" fetchPriority="high" decoding="async" />
               <div className="absolute inset-0 bg-black/60" />
             </div>
           </>
@@ -53,9 +54,24 @@ export default function Rooms() {
       <section className="py-24 flex-grow bg-secondary/20">
         <div className="container-custom">
           {isLoading ? (
-            <div className="flex flex-col justify-center items-center h-96 gap-4">
-              <Loader2 className="animate-spin w-12 h-12 text-primary" />
-              <span className="text-sm font-bold tracking-widest text-primary/40 uppercase">Loading Suites...</span>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+              {[1, 2, 3, 4, 5, 6].map((n) => (
+                <div key={n} className="bg-white rounded-2xl overflow-hidden border border-border/50 animate-pulse">
+                  <div className="aspect-[4/5] bg-muted" />
+                  <div className="p-8 space-y-4">
+                    <div className="h-6 bg-muted rounded-lg w-3/4" />
+                    <div className="space-y-2">
+                      <div className="h-4 bg-muted rounded w-full" />
+                      <div className="h-4 bg-muted rounded w-5/6" />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4 pt-2">
+                      <div className="h-10 bg-muted rounded-lg" />
+                      <div className="h-10 bg-muted rounded-lg" />
+                    </div>
+                    <div className="h-12 bg-muted rounded-xl" />
+                  </div>
+                </div>
+              ))}
             </div>
           ) : (
             <motion.div 
@@ -79,6 +95,8 @@ export default function Rooms() {
           )}
         </div>
       </section>
+
+      </main>
 
       <Footer />
     </div>

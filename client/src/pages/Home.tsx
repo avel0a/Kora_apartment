@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { ArrowRight, Star, MapPin, CheckCircle, Home as HomeIcon, Shield, Clock } from "lucide-react";
+import { ArrowRight, Star, MapPin, CheckCircle, Home as HomeIcon, Shield, Clock, Quote } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -51,6 +51,7 @@ export default function Home() {
     <div className="min-h-screen bg-background flex flex-col selection:bg-primary/20">
       <Navbar />
 
+      <main id="main-content" className="flex-grow">
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
         <motion.div 
@@ -63,6 +64,7 @@ export default function Home() {
             src={heroImage}
             alt="Panda Hotel Lobby" 
             className="w-full h-full object-cover"
+            fetchPriority="high"
           />
           <div className="absolute inset-0 bg-black/50" />
         </motion.div>
@@ -265,12 +267,17 @@ export default function Home() {
                   src={aboutImage}
                   alt="Hotel Apartment" 
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
+                  loading="lazy"
                 />
               </div>
             </motion.div>
           </div>
         </div>
       </section>
+
+
+
+      </main>
 
       <Footer />
     </div>
