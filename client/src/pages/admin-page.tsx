@@ -961,6 +961,19 @@ function SiteSettingsTab() {
   const { toast } = useToast();
   const [local, setLocal] = React.useState<Record<string, string>>({});
 
+  const FONT_SIZES = [
+    { label: "Small", value: "text-4xl" },
+    { label: "Regular", value: "text-5xl" },
+    { label: "Large", value: "text-6xl" },
+    { label: "Extra Large", value: "text-7xl" },
+    { label: "Cinematic", value: "text-8xl" },
+    { label: "Grand", value: "text-9xl" },
+  ];
+
+  const currentSize = local.hero_title_size || "text-6xl md:text-8xl";
+  const mobileSize = currentSize.split(" ").find(s => !s.startsWith("md:")) || "text-6xl";
+  const desktopSize = currentSize.split(" ").find(s => s.startsWith("md:"))?.replace("md:", "") || "text-8xl";
+
   // Sync settings from server to local state
   React.useEffect(() => {
     if (settings) {
@@ -1036,10 +1049,40 @@ function SiteSettingsTab() {
             <Label>Hero Title Color</Label>
             <Input type="color" value={local.hero_title_color || "#D4AF37"} onChange={e => set("hero_title_color", e.target.value)} />
           </div>
-          <div className="space-y-2">
-            <Label>Hero Title Size</Label>
-            <Input value={local.hero_title_size || ""} onChange={e => set("hero_title_size", e.target.value)} placeholder="e.g. text-6xl md:text-8xl" />
-          </div>
+    <div className="grid grid-cols-2 gap-4">
+      <div className="space-y-2">
+        <Label>Mobile Font Size</Label>
+        <Select 
+          value={mobileSize} 
+          onValueChange={(val) => set("hero_title_size", `${val} md:${desktopSize}`)}
+        >
+          <SelectTrigger>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {FONT_SIZES.map(s => (
+              <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+      <div className="space-y-2">
+        <Label>Desktop Font Size</Label>
+        <Select 
+          value={desktopSize} 
+          onValueChange={(val) => set("hero_title_size", `${mobileSize} md:${val}`)}
+        >
+          <SelectTrigger>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {FONT_SIZES.map(s => (
+              <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+    </div>
         </div>
         <div className="space-y-2">
           <Label>Hero Subtitle</Label>

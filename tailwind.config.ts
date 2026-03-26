@@ -2,6 +2,10 @@ import type { Config } from "tailwindcss";
 
 export default {
   darkMode: ["class"],
+  safelist: [
+    "text-4xl", "text-5xl", "text-6xl", "text-7xl", "text-8xl", "text-9xl",
+    "md:text-4xl", "md:text-5xl", "md:text-6xl", "md:text-7xl", "md:text-8xl", "md:text-9xl"
+  ],
   content: ["./client/index.html", "./client/src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {

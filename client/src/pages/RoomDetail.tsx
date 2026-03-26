@@ -90,13 +90,13 @@ export default function RoomDetail() {
 
       {/* Cinematic Hero Slideshow */}
       <section className="h-[75vh] relative overflow-hidden">
-        <AnimatePresence initial={false} mode="wait">
+        <AnimatePresence initial={false}>
           <motion.div
             key={currentSlide}
             initial={{ scale: 1.1, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 1.05, opacity: 0 }}
-            transition={{ duration: 1.5, ease: "easeOut" }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
             className="absolute inset-0"
           >
             <img
@@ -111,16 +111,18 @@ export default function RoomDetail() {
         
         {/* Slideshow Navigation */}
         {allImages.length > 1 && (
-          <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 z-20 container-custom flex justify-between px-4 pointer-events-none">
+          <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 z-30 flex justify-between px-4 md:px-12 pointer-events-none">
             <button
               onClick={(e) => { e.stopPropagation(); goPrev(); }}
               className="pointer-events-auto glass w-16 h-16 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all shadow-2xl group"
+              aria-label="Previous Slide"
             >
               <ChevronLeft size={32} className="group-hover:-translate-x-1 transition-transform" />
             </button>
             <button
               onClick={(e) => { e.stopPropagation(); goNext(); }}
               className="pointer-events-auto glass w-16 h-16 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all shadow-2xl group"
+              aria-label="Next Slide"
             >
               <ChevronRight size={32} className="group-hover:translate-x-1 transition-transform" />
             </button>
