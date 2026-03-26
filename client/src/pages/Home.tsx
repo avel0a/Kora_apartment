@@ -22,7 +22,9 @@ export default function Home() {
 
   const heroImage = getSetting(settings, "hero_image", "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80");
   const heroTitle = getSetting(settings, "hero_title", "Luxury in the Heart of Addis Ababa");
-  const heroSubtitle = getSetting(settings, "hero_subtitle", "Experience Ethiopian hospitality redefined. Just 3 minutes from Bole International Airport.");
+  const heroTitleColor = getSetting(settings, "hero_title_color", "#D4AF37"); // Default to golden
+  const heroTitleSize = getSetting(settings, "hero_title_size", "text-6xl md:text-8xl");
+  const heroSubtitle = getSetting(settings, "hero_title_subtitle", "Experience Ethiopian hospitality redefined. Just 3 minutes from Bole International Airport.");
   const aboutImage = getSetting(settings, "about_image", "https://images.unsplash.com/photo-1559339352-11d035aa65de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1974&q=80");
   const aboutTitle = getSetting(settings, "about_title", "A Stay Defined by Comfort & Class");
   const aboutDesc = getSetting(settings, "about_description", "Whether you're visiting Addis Ababa for business or leisure, Panda Hotel offers a perfect blend of traditional Ethiopian hospitality and modern luxury.");
@@ -81,7 +83,11 @@ export default function Home() {
             ))}
           </motion.div> */}
           
-          <motion.h1 variants={itemVariants} className="text-6xl md:text-8xl font-serif font-bold leading-[1.1] tracking-tight">
+          <motion.h1 
+            variants={itemVariants} 
+            className={`${heroTitleSize} font-serif font-bold leading-[1.1] tracking-tight`}
+            style={{ color: heroTitleColor }}
+          >
             {heroTitle}
           </motion.h1>
           

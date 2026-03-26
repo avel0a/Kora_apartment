@@ -5,7 +5,7 @@ import { Footer } from "@/components/Footer";
 import { useRoom } from "@/hooks/use-rooms";
 import { useRoomImages } from "@/hooks/use-room-images";
 import { BookingForm } from "@/components/BookingForm";
-import { Loader2, Wifi, Tv, Coffee, Bath, Wind, Layout, User, ChevronLeft, ChevronRight, CheckCircle, Maximize, Bed } from "lucide-react";
+import { Loader2, Wifi, Tv, Coffee, Bath, Wind, Layout, User, ChevronLeft, ChevronRight, CheckCircle, Maximize, Bed, Wine } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 
@@ -70,6 +70,18 @@ export default function RoomDetail() {
     "Bathtub": <Bath size={20} />,
     "AC": <Wind size={20} />,
     "Desk": <Layout size={20} />,
+    "Wind": <Wind size={20} />,
+    "Wine": <Wine size={20} />,
+    "CheckCircle": <CheckCircle size={20} />
+  };
+
+  const parseAmenity = (amenity: string) => {
+    if (amenity.includes(":")) {
+      const [iconName, ...textParts] = amenity.split(":");
+      return { icon: iconName.trim(), text: textParts.join(":").trim() };
+    }
+    // Fallback for older string-only amenities
+    return { icon: amenity.split(" ")[0], text: amenity };
   };
 
   return (
@@ -189,14 +201,17 @@ export default function RoomDetail() {
                 <h2 className="text-3xl font-serif font-bold text-primary mb-10">Premium Amenities</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                   {room.amenities?.length ? (
-                    room.amenities.map((amenity, idx) => (
-                      <div key={idx} className="flex items-center gap-4 p-5 bg-secondary/20 rounded-2xl border border-transparent hover:border-primary/10 hover:bg-white hover:shadow-xl transition-all duration-300">
-                        <div className="bg-primary/5 p-3 rounded-xl text-primary">
-                          {amenityIcons[amenity.split(' ')[0]] || <CheckCircle size={20} />}
+                    room.amenities.map((amenity, idx) => {
+                      const { icon, text } = parseAmenity(amenity);
+                      return (
+                        <div key={idx} className="flex items-center gap-4 p-5 bg-secondary/20 rounded-2xl border border-transparent hover:border-primary/10 hover:bg-white hover:shadow-xl transition-all duration-300">
+                          <div className="bg-primary/5 p-3 rounded-xl text-primary">
+                            {amenityIcons[icon] || <CheckCircle size={20} />}
+                          </div>
+                          <span className="text-sm font-bold tracking-wide text-primary/80">{text}</span>
                         </div>
-                        <span className="text-sm font-bold tracking-wide text-primary/80">{amenity}</span>
-                      </div>
-                    ))
+                      );
+                    })
                   ) : (
                     ["Gigabit WiFi", "65\" Smart TV", "Climate Control", "Artisan Coffee"].map((item, i) => (
                       <div key={i} className="flex items-center gap-4 p-5 bg-secondary/20 rounded-2xl">

@@ -73,7 +73,7 @@ export function Navbar() {
         <Link href="/">
           <div className="flex items-center gap-3 cursor-pointer group hover:scale-105 transition-transform duration-300">
             {companyLogo && (
-              <img src={companyLogo} alt={siteName} className="h-10 w-auto object-contain" />
+              <img src={companyLogo} alt={siteName} className="h-16 md:h-20 w-auto object-contain" />
             )}
             <div className="flex flex-col items-center">
               <span className="text-2xl font-serif font-bold tracking-[0.2em] text-primary group-hover:text-accent transition-colors duration-300">

@@ -16,7 +16,8 @@ import {
 } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2, Trash2, CheckCircle, XCircle, Plus, Pencil, Upload, Save, Settings, Image as ImageIcon } from "lucide-react";
+import { Loader2, Trash2, Plus, Edit2, ImageIcon, PlusCircle, CheckCircle, XCircle, Pencil, Upload, Save, Settings } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { format } from "date-fns";
 import {
   Dialog,
@@ -411,6 +412,76 @@ function RoomDialog({ room }: { room?: Room }) {
                   <FormControl>
                     <Textarea {...field} />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="amenities"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Premium Amenities</FormLabel>
+                  <div className="space-y-3">
+                    {(field.value || []).map((amenity, index) => {
+                      const [icon, ...rest] = amenity.includes(":") ? amenity.split(":") : ["CheckCircle", amenity];
+                      const text = rest.join(":");
+                      
+                      return (
+                        <div key={index} className="flex items-center gap-2">
+                          <Select 
+                            value={icon} 
+                            onValueChange={(newIcon) => {
+                              const newAmenities = [...(field.value || [])];
+                              newAmenities[index] = `${newIcon}:${text}`;
+                              field.onChange(newAmenities);
+                            }}
+                          >
+                            <SelectTrigger className="w-[160px]">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {["Wifi", "TV", "Coffee", "Bathtub", "AC", "Desk", "Wind", "Wine", "CheckCircle"].map(i => (
+                                <SelectItem key={i} value={i}>{i}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <Input 
+                            value={text}
+                            onChange={(e) => {
+                              const newAmenities = [...(field.value || [])];
+                              newAmenities[index] = `${icon}:${e.target.value}`;
+                              field.onChange(newAmenities);
+                            }}
+                            placeholder="e.g. Gigabit WiFi"
+                          />
+                          <Button 
+                            type="button" 
+                            variant="ghost" 
+                            size="icon"
+                            onClick={() => {
+                              const newAmenities = [...(field.value || [])];
+                              newAmenities.splice(index, 1);
+                              field.onChange(newAmenities);
+                            }}
+                          >
+                            <Trash2 className="w-4 h-4 text-destructive" />
+                          </Button>
+                        </div>
+                      );
+                    })}
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        field.onChange([...(field.value || []), "CheckCircle:New Amenity"]);
+                      }}
+                    >
+                      <Plus className="w-4 h-4 mr-2" /> Add Amenity
+                    </Button>
+                  </div>
                   <FormMessage />
                 </FormItem>
               )}
@@ -950,15 +1021,25 @@ function SiteSettingsTab() {
 
       {/* Hero Section */}
       <SettingsSection
-        title="🏠 Hero Section"
-        description="Background image, headline, and subtitle shown on the home page"
-        onSave={() => saveSection(["hero_image", "hero_title", "hero_subtitle"])}
+        title="🏠 Page Headers — Home"
+        description="Background image and text styling shown entirely on the Home page Hero"
+        onSave={() => saveSection(["hero_image", "hero_title", "hero_title_color", "hero_title_size", "hero_subtitle"])}
         isSaving={updateSettings.isPending}
       >
         <SettingsImageField label="Hero Background Image" settingKey="hero_image" value={local.hero_image || ""} onChange={set} />
         <div className="space-y-2">
           <Label>Hero Title</Label>
-          <Input value={local.hero_title || ""} onChange={e => set("hero_title", e.target.value)} />
+          <Input value={local.hero_title || ""} onChange={e => set("hero_title", e.target.value)} placeholder="e.g. Luxury in the Heart of Addis Ababa" />
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label>Hero Title Color</Label>
+            <Input type="color" value={local.hero_title_color || "#D4AF37"} onChange={e => set("hero_title_color", e.target.value)} />
+          </div>
+          <div className="space-y-2">
+            <Label>Hero Title Size</Label>
+            <Input value={local.hero_title_size || ""} onChange={e => set("hero_title_size", e.target.value)} placeholder="e.g. text-6xl md:text-8xl" />
+          </div>
         </div>
         <div className="space-y-2">
           <Label>Hero Subtitle</Label>
@@ -1050,9 +1131,9 @@ function SiteSettingsTab() {
 
       {/* Contact Info */}
       <SettingsSection
-        title="📞 Contact Information"
-        description="Address, phone, and email displayed on the Contact page and Footer"
-        onSave={() => saveSection(["contact_address", "contact_phone", "contact_email"])}
+        title="📞 Contact Information & Footer"
+        description="Address, phone, email, and the short description used in the Site Footer"
+        onSave={() => saveSection(["contact_address", "contact_phone", "contact_email", "footer_description"])}
         isSaving={updateSettings.isPending}
       >
         <div className="space-y-2">
@@ -1066,6 +1147,15 @@ function SiteSettingsTab() {
         <div className="space-y-2">
           <Label>Email Address</Label>
           <Input value={local.contact_email || ""} onChange={e => set("contact_email", e.target.value)} />
+        </div>
+        <div className="space-y-2">
+          <Label>Footer Description</Label>
+          <Textarea 
+            value={local.footer_description || ""} 
+            onChange={e => set("footer_description", e.target.value)} 
+            rows={3} 
+            placeholder="Experience luxury and comfort in the heart of Addis Ababa..." 
+          />
         </div>
       </SettingsSection>
 

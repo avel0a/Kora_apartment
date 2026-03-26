@@ -23,6 +23,7 @@ export function Footer() {
   const siteName = getSetting(settings, "site_name", "PANDA");
   const siteSubtitle = getSetting(settings, "site_subtitle", "Hotel Apartments");
   const companyLogo = getSetting(settings, "company_logo", "");
+  const footerDescription = getSetting(settings, "footer_description", "Experience luxury and comfort in the heart of Addis Ababa. Just minutes from Bole International Airport.");
 
   return (
     <footer className="bg-primary text-primary-foreground pt-16 pb-8">
@@ -38,7 +39,7 @@ export function Footer() {
             </div>
           </div>
           <p className="text-primary-foreground/80 text-sm leading-relaxed max-w-xs">
-            Experience luxury and comfort in the heart of Addis Ababa. Just minutes from Bole International Airport.
+            {footerDescription}
           </p>
         </div>
 
