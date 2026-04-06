@@ -1023,7 +1023,7 @@ function SiteSettingsTab() {
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label>Site Name / Logo Text (fallback)</Label>
-            <Input value={local.site_name || ""} onChange={e => set("site_name", e.target.value)} placeholder="e.g. PANDA" />
+            <Input value={local.site_name || ""} onChange={e => set("site_name", e.target.value)} placeholder="e.g. KORA" />
           </div>
           <div className="space-y-2">
             <Label>Site Subtitle</Label>
@@ -1231,7 +1231,7 @@ function SiteSettingsTab() {
         <SettingsImageField label="Login Background Image" settingKey="auth_image" value={local.auth_image || ""} onChange={set} />
         <div className="space-y-2">
           <Label>Login Title</Label>
-          <Input value={local.auth_title || ""} onChange={e => set("auth_title", e.target.value)} placeholder="e.g. Modern Panda Hotel" />
+          <Input value={local.auth_title || ""} onChange={e => set("auth_title", e.target.value)} placeholder="e.g. Kora Hotel Suites" />
         </div>
         <div className="space-y-2">
           <Label>Login Subtitle</Label>

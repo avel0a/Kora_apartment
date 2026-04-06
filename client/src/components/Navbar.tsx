@@ -18,8 +18,8 @@ export function Navbar() {
   const [location] = useLocation();
   const { data: settings } = useSettings();
 
-  const siteName = getSetting(settings, "site_name", "PANDA");
-  const siteSubtitle = getSetting(settings, "site_subtitle", "Hotel Apartments");
+  const siteName = getSetting(settings, "site_name", "KORA");
+  const siteSubtitle = getSetting(settings, "site_subtitle", "Hotel Suites");
   const companyLogo = getSetting(settings, "company_logo", "");
 
   useEffect(() => {

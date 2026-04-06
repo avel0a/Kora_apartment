@@ -27,7 +27,7 @@ export default function Contact() {
 
   const address = getSetting(settings, "contact_address", "Bole Road, Addis Ababa, Ethiopia");
   const phone = getSetting(settings, "contact_phone", "+251 116 123 456");
-  const email = getSetting(settings, "contact_email", "info@pandahotel.com");
+  const email = getSetting(settings, "contact_email", "info@korahotelsuites.com");
   const latitude = getSetting(settings, "map_latitude", "9.0054");
   const longitude = getSetting(settings, "map_longitude", "38.7893");
   const facebookUrl = getSetting(settings, "facebook_url", "#");
@@ -119,7 +119,7 @@ export default function Contact() {
               <div>
                 <h2 className="text-4xl font-serif font-bold text-primary mb-6 text-gradient inline-block">Contact Information</h2>
                 <p className="text-muted-foreground text-lg leading-relaxed font-light">
-                  Located in the heart of the vibrant Bole district, Panda Hotel is your gateway to Addis Ababa's finest experiences.
+                  Located in the heart of the vibrant Bole district, Kora Hotel Suites is your gateway to Addis Ababa's finest experiences.
                 </p>
               </div>
 
@@ -228,7 +228,7 @@ export default function Contact() {
       {/* Map Embed */}
       <section className="h-[500px] w-full relative grayscale hover:grayscale-0 transition-all duration-1000">
         <iframe
-          title="Panda Hotel Location"
+          title="Kora Hotel Suites Location"
           src={`https://maps.google.com/maps?q=${latitude},${longitude}&z=15&output=embed`}
           width="100%"
           height="100%"

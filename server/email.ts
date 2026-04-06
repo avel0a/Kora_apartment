@@ -26,9 +26,9 @@ async function getTransporter() {
 }
 
 function baseEmailTemplate(subject: string, preheader: string, content: string, config: any) {
-  const siteName = config.site_name || "Modern Panda Hotel";
-  const primaryColor = "#d91a3c"; // Crimson
-  const accentColor = "#fbbd2e"; // Gold
+  const siteName = config.site_name || "Kora Hotel Suites";
+  const primaryColor = "#1a365d"; // Deep Navy
+  const accentColor = "#d4af37"; // Champagne Gold
   const textColor = "#110f0e";
   const lightTextColor = "#6c757d";
 
@@ -95,8 +95,8 @@ export async function sendBookingEmails(booking: Booking, room: Room) {
     config[s.key] = s.value;
   });
 
-  const siteName = config.site_name || "Modern Panda Hotel";
-  const fromEmail = config.smtp_from || "noreply@pandahotel.com";
+  const siteName = config.site_name || "Kora Hotel Suites";
+  const fromEmail = config.smtp_from || "noreply@korahotelsuites.com";
   const adminEmail = config.admin_booking_email || config.contact_email;
 
   // 1. Email to Guest
@@ -189,8 +189,8 @@ export async function sendInquiryEmail(contact: Contact) {
     config[s.key] = s.value;
   });
 
-  const siteName = config.site_name || "Modern Panda Hotel";
-  const fromEmail = config.smtp_from || "noreply@pandahotel.com";
+  const siteName = config.site_name || "Kora Hotel Suites";
+  const fromEmail = config.smtp_from || "noreply@korahotelsuites.com";
   const adminEmail = config.admin_booking_email || config.contact_email;
 
   const inquiryContent = `

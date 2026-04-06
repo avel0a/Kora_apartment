@@ -17,7 +17,7 @@ async function main() {
       let newValue = setting.value;
       if (typeof newValue === 'string') {
         newValue = newValue.replace(/MOMONA/g, "PANDA");
-        newValue = newValue.replace(/Momona/g, "Panda");
+        newValue = newValue.replace(/Panda/g, "Kora");
         newValue = newValue.replace(/momonahotel/g, "pandahotel");
         
         if (newValue !== setting.value) {

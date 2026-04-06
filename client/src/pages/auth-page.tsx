@@ -58,7 +58,7 @@ export default function AuthPage() {
   }
 
   const bgImage = settings?.auth_image?.value || "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=2070&auto=format&fit=crop";
-  const title = settings?.auth_title?.value || "Modern Panda Hotel";
+  const title = settings?.auth_title?.value || "Kora Hotel Suites";
   const subtitle = settings?.auth_subtitle?.value || "Experience Luxury & Comfort";
 
   return (

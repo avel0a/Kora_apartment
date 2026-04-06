@@ -15,13 +15,13 @@ export function Footer() {
 
   const address = getSetting(settings, "contact_address", "Bole Road, Addis Ababa, Ethiopia");
   const phone = getSetting(settings, "contact_phone", "+251 11 661 0404");
-  const email = getSetting(settings, "contact_email", "info@pandahotel.com");
+  const email = getSetting(settings, "contact_email", "info@korahotelsuites.com");
   const facebookUrl = getSetting(settings, "facebook_url", "#");
   const instagramUrl = getSetting(settings, "instagram_url", "#");
   const twitterUrl = getSetting(settings, "twitter_url", "#");
   const tiktokUrl = getSetting(settings, "tiktok_url", "#");
-  const siteName = getSetting(settings, "site_name", "PANDA");
-  const siteSubtitle = getSetting(settings, "site_subtitle", "Hotel Apartments");
+  const siteName = getSetting(settings, "site_name", "KORA");
+  const siteSubtitle = getSetting(settings, "site_subtitle", "Hotel Suites");
   const companyLogo = getSetting(settings, "company_logo", "");
   const footerDescription = getSetting(settings, "footer_description", "Experience luxury and comfort in the heart of Addis Ababa. Just minutes from Bole International Airport.");
 
