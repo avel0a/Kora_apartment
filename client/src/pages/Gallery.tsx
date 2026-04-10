@@ -3,10 +3,16 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { useGalleryImages } from "@/hooks/use-gallery";
 import { useSettings, getSetting } from "@/hooks/use-settings";
+import { useSEO } from "@/hooks/use-seo";
 import { Loader2, X, ChevronLeft, ChevronRight, Camera } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Gallery() {
+  useSEO({
+    title: "Gallery | Photos of Our Apartments & Amenities",
+    description: "Browse photos of Kora Hotel Suites’ luxury apartments, spa, and common areas. See why we're one of the top-rated serviced apartments in Addis Ababa, Ethiopia."
+  });
+
   const { data: images, isLoading } = useGalleryImages();
   const { data: settings } = useSettings();
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
@@ -14,7 +20,7 @@ export default function Gallery() {
   const headerImage = getSetting(settings, "gallery_header_image", "");
   const headerTagline = getSetting(settings, "gallery_header_tagline", "Visual Journey");
   const headerTitle = getSetting(settings, "gallery_header_title", "Our Gallery");
-  const headerSubtitle = getSetting(settings, "gallery_header_subtitle", "Step into a world of refined elegance and traditional charm through our curated lens.");
+  const headerSubtitle = getSetting(settings, "gallery_header_subtitle", "A visual journey through the spaces, details, and moments that define the Kora experience.");
 
   const openLightbox = (index: number) => setLightboxIndex(index);
   const closeLightbox = () => setLightboxIndex(null);

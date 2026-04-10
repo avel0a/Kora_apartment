@@ -13,7 +13,7 @@ function TikTokIcon({ className }: { className?: string }) {
 export function Footer() {
   const { data: settings } = useSettings();
 
-  const address = getSetting(settings, "contact_address", "Bole Road, Addis Ababa, Ethiopia");
+  const address = getSetting(settings, "contact_address", "Democratic Republic of Congo Road, Kirkos, Addis Ababa, Ethiopia");
   const phone = getSetting(settings, "contact_phone", "+251 11 661 0404");
   const email = getSetting(settings, "contact_email", "info@korahotelsuites.com");
   const facebookUrl = getSetting(settings, "facebook_url", "#");
@@ -23,7 +23,7 @@ export function Footer() {
   const siteName = getSetting(settings, "site_name", "KORA");
   const siteSubtitle = getSetting(settings, "site_subtitle", "Hotel Suites");
   const companyLogo = getSetting(settings, "company_logo", "");
-  const footerDescription = getSetting(settings, "footer_description", "Experience luxury and comfort in the heart of Addis Ababa. Just minutes from Bole International Airport.");
+  const footerDescription = getSetting(settings, "footer_description", "Luxury serviced apartments in the Kirkos district of Addis Ababa. 18 individually designed suites with full kitchens, spa & wellness, and 24/7 security — minutes from Meskel Square and Bole International Airport.");
 
   return (
     <footer className="bg-primary text-primary-foreground pt-16 pb-8">
@@ -48,7 +48,7 @@ export function Footer() {
           <h4 className="text-lg font-serif mb-6 text-accent">Discover</h4>
           <ul className="space-y-3 text-sm text-primary-foreground/80">
             <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
-            <li><Link href="/rooms" className="hover:text-white transition-colors">Rooms & Suites</Link></li>
+            <li><Link href="/rooms" className="hover:text-white transition-colors">Suites</Link></li>
             <li><Link href="/gallery" className="hover:text-white transition-colors">Gallery</Link></li>
             <li><Link href="/contact" className="hover:text-white transition-colors">Contact Us</Link></li>
           </ul>

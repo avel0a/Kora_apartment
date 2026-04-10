@@ -3,17 +3,23 @@ import { Footer } from "@/components/Footer";
 import { RoomCard } from "@/components/RoomCard";
 import { useRooms } from "@/hooks/use-rooms";
 import { useSettings, getSetting } from "@/hooks/use-settings";
+import { useSEO } from "@/hooks/use-seo";
 import { Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function Rooms() {
+  useSEO({
+    title: "Suites | Serviced Apartments in Addis Ababa",
+    description: "Explore our 2-bedroom, 3-bedroom, and studio suites at Kora Hotel Suites. Fully furnished apartments with kitchens, Wi-Fi, and daily housekeeping in central Addis Ababa."
+  });
+
   const { data: rooms, isLoading } = useRooms();
   const { data: settings } = useSettings();
 
   const headerImage = getSetting(settings, "rooms_header_image", "");
-  const headerTagline = getSetting(settings, "rooms_header_tagline", "Exquisite Stays");
-  const headerTitle = getSetting(settings, "rooms_header_title", "Our Rooms & Suites");
-  const headerSubtitle = getSetting(settings, "rooms_header_subtitle", "Curated spaces designed for the discerning traveler, blending modern luxury with timeless Ethiopian warmth.");
+  const headerTagline = getSetting(settings, "rooms_header_tagline", "Curated Collection");
+  const headerTitle = getSetting(settings, "rooms_header_title", "Our Suites");
+  const headerSubtitle = getSetting(settings, "rooms_header_subtitle", "Thoughtfully designed apartments for travelers who value space, privacy, and the comforts of home.");
 
   return (
     <div className="min-h-screen bg-background flex flex-col">

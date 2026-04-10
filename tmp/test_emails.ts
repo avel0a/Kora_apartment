@@ -37,14 +37,16 @@ const contact = {
 };
 
 const config = {
-  site_name: "MOMONA",
+  site_name: "Kora Hotel Suites",
   contact_address: "Bole Road, Addis Ababa, Ethiopia",
-  contact_phone: "+251 11 661 0404",
-  contact_email: "info@momonahotel.com"
+  smtp_host: "smtp.mailtrap.io",
+  smtp_port: "2525",
+  contact_email: "info@korahotelsuites.com"
 };
 
 // Paste the baseEmailTemplate and content generation logic here for standalone testing
-const primaryColor = "#d91a3c"; // Crimson
+const siteName = config.site_name || "Kora Hotel Suites";
+const primaryColor = "#1a365d"; // Navy
 const accentColor = "#fbbd2e"; // Gold
 const textColor = "#110f0e";
 const lightTextColor = "#6c757d";
@@ -134,7 +136,7 @@ const inquiryContent = `
         <tr><td>Subject</td><td>${contact.subject}</td></tr>
       </table>
       <p style="margin-top: 20px; font-weight: 600; color: #6c757d; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Message:</p>
-      <div style="background-color: #f9f9f9; padding: 20px; border-radius: 6px; border-left: 4px solid #d91a3c; font-style: italic;">
+      <div style="background-color: #f9f9f9; padding: 20px; border-radius: 6px; border-left: 4px solid #1a365d; font-style: italic;">
         ${contact.message.replace(/\n/g, '<br>')}
       </div>
       <div style="text-align: center; margin-top: 30px;">

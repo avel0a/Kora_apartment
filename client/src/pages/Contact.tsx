@@ -18,14 +18,20 @@ import { insertContactSchema } from "@shared/schema";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { useSEO } from "@/hooks/use-seo";
 import { motion } from "framer-motion";
 import { useSettings, getSetting } from "@/hooks/use-settings";
 
 export default function Contact() {
+  useSEO({
+    title: "Contact Us | Kora Hotel Suites, Kirkos, Addis Ababa",
+    description: "Get in touch with Kora Hotel Suites on Democratic Republic of Congo Road, Kirkos. Call, email, or visit — we're here to make your Addis Ababa stay extraordinary."
+  });
+
   const { toast } = useToast();
   const { data: settings } = useSettings();
 
-  const address = getSetting(settings, "contact_address", "Bole Road, Addis Ababa, Ethiopia");
+  const address = getSetting(settings, "contact_address", "Democratic Republic of Congo Road, Kirkos, Addis Ababa, Ethiopia");
   const phone = getSetting(settings, "contact_phone", "+251 116 123 456");
   const email = getSetting(settings, "contact_email", "info@korahotelsuites.com");
   const latitude = getSetting(settings, "map_latitude", "9.0054");
@@ -38,7 +44,7 @@ export default function Contact() {
   const headerImage = getSetting(settings, "contact_header_image", "");
   const headerTagline = getSetting(settings, "contact_header_tagline", "Connect With Us");
   const headerTitle = getSetting(settings, "contact_header_title", "Get in Touch");
-  const headerSubtitle = getSetting(settings, "contact_header_subtitle", "We're here to ensure your stay is extraordinary. Reach out for reservations, events, or inquiries.");
+  const headerSubtitle = getSetting(settings, "contact_header_subtitle", "We're here to ensure your stay is extraordinary. Reach out for reservations, extended-stay inquiries, or any questions about Addis Ababa.");
 
   const form = useForm({
     resolver: zodResolver(insertContactSchema),
@@ -119,7 +125,7 @@ export default function Contact() {
               <div>
                 <h2 className="text-4xl font-serif font-bold text-primary mb-6 text-gradient inline-block">Contact Information</h2>
                 <p className="text-muted-foreground text-lg leading-relaxed font-light">
-                  Located in the heart of the vibrant Bole district, Kora Hotel Suites is your gateway to Addis Ababa's finest experiences.
+                  Located in the heart of the Kirkos district on Democratic Republic of Congo Road, Kora Hotel Suites is your gateway to Addis Ababa's diplomatic quarter, cultural landmarks, and thriving business scene.
                 </p>
               </div>
 

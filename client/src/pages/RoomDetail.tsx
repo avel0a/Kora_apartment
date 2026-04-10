@@ -8,6 +8,7 @@ import { BookingForm } from "@/components/BookingForm";
 import { Loader2, Wifi, Tv, Coffee, Bath, Wind, Layout, User, ChevronLeft, ChevronRight, CheckCircle, Maximize, Bed, Wine } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { useSEO } from "@/hooks/use-seo";
 
 export default function RoomDetail() {
   const [, params] = useRoute<{slug: string}>("/rooms/:slug");
@@ -15,6 +16,13 @@ export default function RoomDetail() {
   const { data: room, isLoading } = useRoom(slug);
   const { data: extraImages } = useRoomImages(room?.id);
   const [currentSlide, setCurrentSlide] = useState(0);
+
+  useSEO({
+    title: room ? `${room.name} — Book Now` : "Suite Details",
+    description: room
+      ? `Book the ${room.name} at Kora Hotel Suites, Kirkos, Addis Ababa. ${room.description?.slice(0, 140)}...`
+      : "View suite details and book your luxury serviced apartment at Kora Hotel Suites, Addis Ababa."
+  });
 
   // Build image array: main image + extra images
   const allImages = room ? [

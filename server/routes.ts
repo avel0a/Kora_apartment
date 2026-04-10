@@ -36,6 +36,14 @@ export async function registerRoutes(
 
   const apiRouter = express.Router();
 
+  // Prevent browser and CDN caching of API responses
+  apiRouter.use((_req, res, next) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+    next();
+  });
+
   const isAuthenticated = (req: any, res: any, next: any) => {
     console.log(`[auth] isAuthenticated check for ${req.path}. User present: ${!!req.user}, Authenticated: ${req.isAuthenticated()}`);
     if (req.isAuthenticated()) {

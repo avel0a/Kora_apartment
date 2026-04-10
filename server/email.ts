@@ -206,7 +206,7 @@ export async function sendInquiryEmail(contact: Contact) {
       </table>
       
       <p style="margin-top: 20px; font-weight: 600; color: #6c757d; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Message:</p>
-      <div style="background-color: #f9f9f9; padding: 20px; border-radius: 6px; border-left: 4px solid #d91a3c; font-style: italic;">
+      <div style="background-color: #f9f9f9; padding: 20px; border-radius: 6px; border-left: 4px solid #1a365d; font-style: italic;">
         ${contact.message.replace(/\n/g, '<br>')}
       </div>
       

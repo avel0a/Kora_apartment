@@ -32,7 +32,7 @@ export function Navbar() {
 
   const navLinks = [
     { href: "/", label: "Home" },
-    { href: "/rooms", label: "Rooms & Suites" },
+    { href: "/rooms", label: "Suites" },
     { href: "/gallery", label: "Gallery" },
     { href: "/contact", label: "Contact" },
   ];

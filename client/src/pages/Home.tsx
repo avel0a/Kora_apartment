@@ -6,9 +6,15 @@ import { Button } from "@/components/ui/button";
 import { RoomCard } from "@/components/RoomCard";
 import { useRooms } from "@/hooks/use-rooms";
 import { useSettings, getSetting } from "@/hooks/use-settings";
+import { useSEO } from "@/hooks/use-seo";
 import { motion } from "framer-motion";
 
 export default function Home() {
+  useSEO({
+    title: "Luxury Serviced Apartments in Addis Ababa",
+    description: "Kora Hotel Suites — 4-star serviced apartments near Meskel Square, Addis Ababa. Fully equipped kitchens, spa & sauna, free parking, 24/7 security. Ideal for business and extended stays."
+  });
+
   const { data: rooms, isLoading } = useRooms();
   const { data: settings, isLoading: isSettingsLoading } = useSettings();
 
@@ -21,13 +27,13 @@ export default function Home() {
   }
 
   const heroImage = getSetting(settings, "hero_image", "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80");
-  const heroTitle = getSetting(settings, "hero_title", "Luxury in the Heart of Addis Ababa");
+  const heroTitle = getSetting(settings, "hero_title", "Your Home in the Heart of Addis Ababa");
   const heroTitleColor = getSetting(settings, "hero_title_color", "#D4AF37"); // Default to golden
   const heroTitleSize = getSetting(settings, "hero_title_size", "text-6xl md:text-8xl");
-  const heroSubtitle = getSetting(settings, "hero_title_subtitle", "Experience Ethiopian hospitality redefined. Just 3 minutes from Bole International Airport.");
+  const heroSubtitle = getSetting(settings, "hero_subtitle", "Luxury serviced apartments near Meskel Square — where modern comfort meets Ethiopian warmth.");
   const aboutImage = getSetting(settings, "about_image", "https://images.unsplash.com/photo-1559339352-11d035aa65de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1974&q=80");
   const aboutTitle = getSetting(settings, "about_title", "A Stay Defined by Comfort & Class");
-  const aboutDesc = getSetting(settings, "about_description", "Whether you're visiting Addis Ababa for business or leisure, Kora Hotel Suites offers a perfect blend of traditional Ethiopian hospitality and modern luxury.");
+  const aboutDesc = getSetting(settings, "about_description", "Whether you're visiting Addis Ababa for business or leisure, Kora Hotel Suites offers a perfect blend of traditional Ethiopian hospitality and modern luxury. Our 18 individually designed apartments in the Kirkos district provide the space, privacy, and amenities that discerning travelers deserve.");
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -55,12 +61,13 @@ export default function Home() {
 
       <main id="main-content" className="flex-grow">
       {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+      <section className="flex flex-col w-full">
+        {/* Full Image Block */}
         <motion.div 
-          initial={{ scale: 1.1 }}
+          initial={{ scale: 1.05 }}
           animate={{ scale: 1 }}
-          transition={{ duration: 10, ease: "linear" }}
-          className="absolute inset-0 z-0"
+          transition={{ duration: 1.5, ease: "easeOut" }}
+          className="relative w-full h-[65vh] md:h-[75vh] 2xl:h-[80vh] overflow-hidden"
         >
           <img 
             src={heroImage}
@@ -68,56 +75,47 @@ export default function Home() {
             className="w-full h-full object-cover"
             fetchPriority="high"
           />
-          <div className="absolute inset-0 bg-black/50" />
+          <div className="absolute inset-0 bg-transparent" />
         </motion.div>
 
-        <motion.div 
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="relative z-10 text-center text-white px-4 max-w-5xl mx-auto space-y-8"
-        >
-          {/* <motion.div variants={itemVariants} className="flex items-center justify-center gap-2 text-accent">
-            {[1, 2, 3, 4, 5].map((i) => (
-              <Star key={i} className="fill-current" size={18} />
-            ))}
-          </motion.div> */}
-          
-          <motion.h1 
-            variants={itemVariants} 
-            className={`${heroTitleSize} font-serif font-bold leading-[1.1] tracking-tight`}
-            style={{ color: heroTitleColor }}
+        {/* Text Block Completely Below the Image */}
+        <div className="w-full bg-background pt-16 pb-24 md:py-24 border-b border-border/50 shadow-sm relative z-10">
+          <motion.div 
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="text-center px-4 max-w-5xl mx-auto space-y-8"
           >
-            {heroTitle}
-          </motion.h1>
-          
-          <motion.p variants={itemVariants} className="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto font-light leading-relaxed">
-            {heroSubtitle}
-          </motion.p>
-          
-          <motion.div variants={itemVariants} className="pt-8 flex flex-col md:flex-row items-center justify-center gap-6">
-            <Link href="/rooms">
-              <Button size="lg" className="bg-white text-primary hover:bg-accent hover:text-white px-10 py-8 text-xl font-bold tracking-widest rounded-xl transition-all duration-500 shadow-2xl shadow-black/20 uppercase">
-                Reserve Your Stay
-              </Button>
-            </Link>
-            <Link href="/gallery">
-              <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 px-10 py-8 text-xl font-bold tracking-widest rounded-xl backdrop-blur-sm transition-all duration-500 uppercase">
-                Explore Gallery
-              </Button>
-            </Link>
+            <motion.h1 
+              variants={itemVariants} 
+              className={`${heroTitleSize} font-serif font-bold leading-[1.1] tracking-tight`}
+              style={{ color: heroTitleColor === "#ffffff" || heroTitleColor === "#fff" || heroTitleColor === "white" ? "inherit" : heroTitleColor }}
+            >
+              <span className={heroTitleColor === "#ffffff" || heroTitleColor === "#fff" || heroTitleColor === "white" ? "text-primary" : ""}>
+                {heroTitle}
+              </span>
+            </motion.h1>
+            
+            <motion.p variants={itemVariants} className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto font-light leading-relaxed">
+              {heroSubtitle}
+            </motion.p>
+            
+            <motion.div variants={itemVariants} className="pt-8 flex flex-col md:flex-row items-center justify-center gap-6">
+              <Link href="/rooms">
+                <Button size="lg" className="bg-primary text-white hover:bg-accent px-10 py-8 text-xl font-bold tracking-widest rounded-xl transition-all duration-500 shadow-xl shadow-primary/10 uppercase">
+                  Reserve Your Stay
+                </Button>
+              </Link>
+              <Link href="/gallery">
+                <Button size="lg" variant="outline" className="border-primary/20 text-primary hover:bg-primary/5 px-10 py-8 text-xl font-bold tracking-widest rounded-xl transition-all duration-500 uppercase">
+                  Explore Gallery
+                </Button>
+              </Link>
+            </motion.div>
           </motion.div>
-        </motion.div>
-
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 2, duration: 1 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/50"
-        >
-          <span className="text-[10px] uppercase tracking-[0.3em]">Scroll</span>
-          <div className="w-[1px] h-12 bg-gradient-to-b from-white/50 to-transparent" />
-        </motion.div>
+        </div>
       </section>
 
       {/* Highlights Section */}
@@ -126,20 +124,20 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             {[
               {
-                title: "Exquisite Living",
-                description: "Experience unparalleled comfort in our fully furnished designer apartments.",
+                title: "Apartment-Style Living",
+                description: "Spacious suites with full kitchens, living areas, and modern furnishings — designed for guests who stay longer and expect more.",
                 icon: <HomeIcon size={32} />,
                 href: "/rooms"
               },
               {
-                title: "Prime Bole Hub",
-                description: "The city's finest dining, shopping, and nightlife right at your doorstep.",
+                title: "Central Kirkos Location",
+                description: "Walk to Meskel Square and the UNECA. Bole International Airport is a short 15-minute drive.",
                 icon: <MapPin size={32} />,
                 href: "/contact"
               },
               {
-                title: "Elite Concierge",
-                description: "Bespoke 24/7 services tailored to your every need and desire.",
+                title: "24/7 Security & Service",
+                description: "Round-the-clock security, daily housekeeping, concierge, and free private parking — every detail managed.",
                 icon: <Shield size={32} />,
                 href: "/contact"
               }
@@ -243,9 +241,11 @@ export default function Home() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {[
                   "Gigabit Speed WiFi",
-                  "24/7 Elite Service",
-                  "Airport VIP Shuttle",
-                  "Gourmet Kitchenettes"
+                  "24/7 Security",
+                  "Free Private Parking",
+                  "Fully Equipped Kitchens",
+                  "Steam & Sauna",
+                  "Daily Housekeeping"
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-4 bg-white/5 p-4 rounded-xl backdrop-blur-sm border border-white/10">
                     <CheckCircle className="text-accent shrink-0" size={24} />
