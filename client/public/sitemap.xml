@@ -9,6 +9,12 @@
   </url>
 
   <url>
+    <loc>https://korahotelsuites.com/about</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
     <loc>https://korahotelsuites.com/rooms</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>

@@ -62,21 +62,19 @@ export default function Home() {
       <main id="main-content" className="flex-grow">
       {/* Hero Section */}
       <section className="flex flex-col w-full">
-        {/* Full Image Block */}
-        <motion.div 
-          initial={{ scale: 1.05 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 1.5, ease: "easeOut" }}
-          className="relative w-full h-[65vh] md:h-[75vh] 2xl:h-[80vh] overflow-hidden"
-        >
-          <img 
+        {/* Full Image Block — Cinematic Ken Burns Effect */}
+        <div className="relative w-full h-[65vh] md:h-[75vh] 2xl:h-[80vh] overflow-hidden">
+          <motion.img 
             src={heroImage}
             alt="Kora Hotel Suites Lobby" 
             className="w-full h-full object-cover"
             fetchPriority="high"
+            initial={{ scale: 1.15 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 20, ease: "linear", repeat: Infinity, repeatType: "reverse" }}
           />
-          <div className="absolute inset-0 bg-transparent" />
-        </motion.div>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/5 pointer-events-none" />
+        </div>
 
         {/* Text Block Completely Below the Image */}
         <div className="w-full bg-background pt-16 pb-24 md:py-24 border-b border-border/50 shadow-sm relative z-10">

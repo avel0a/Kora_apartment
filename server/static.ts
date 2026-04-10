@@ -10,10 +10,21 @@ export function serveStatic(app: Express) {
     );
   }
 
-  app.use(express.static(distPath));
+  // Hashed assets (JS/CSS/fonts) — cache forever (1 year, immutable)
+  app.use("/assets", express.static(path.join(distPath, "assets"), {
+    maxAge: "365d",
+    immutable: true,
+  }));
 
-  // fall through to index.html if the file doesn't exist
+  // All other static files (images, favicon, robots.txt, sitemap) — 1 hour cache
+  app.use(express.static(distPath, {
+    maxAge: "1h",
+    etag: true,
+  }));
+
+  // SPA fallback — no cache on HTML so users always get the latest
   app.use("/{*path}", (_req, res) => {
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     res.sendFile(path.resolve(distPath, "index.html"));
   });
 }

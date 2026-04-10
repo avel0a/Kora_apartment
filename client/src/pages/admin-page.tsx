@@ -1108,6 +1108,82 @@ function SiteSettingsTab() {
         </div>
       </SettingsSection>
 
+      {/* About Us Page */}
+      <SettingsSection
+        title="📖 Page — About Us"
+        description="Full content management for the About Us page (header, story, philosophy, location)"
+        onSave={() => saveSection([
+          "about_header_image", "about_header_tagline", "about_header_title", "about_header_subtitle",
+          "about_story_title", "about_story_p1", "about_story_p2", "about_story_image",
+          "about_philosophy_title", "about_philosophy_p1", "about_philosophy_p2",
+          "about_location_title", "about_location_desc", "about_location_image"
+        ])}
+        isSaving={updateSettings.isPending}
+      >
+        <div className="space-y-1 mb-4">
+          <h4 className="font-bold text-primary">Header</h4>
+        </div>
+        <SettingsImageField label="Header Background Image" settingKey="about_header_image" value={local.about_header_image || ""} onChange={set} />
+        <div className="space-y-2">
+          <Label>Tagline (small text above title)</Label>
+          <Input value={local.about_header_tagline || ""} onChange={e => set("about_header_tagline", e.target.value)} placeholder="e.g. Our Story" />
+        </div>
+        <div className="space-y-2">
+          <Label>Page Title</Label>
+          <Input value={local.about_header_title || ""} onChange={e => set("about_header_title", e.target.value)} placeholder="e.g. About Kora Hotel Suites" />
+        </div>
+        <div className="space-y-2">
+          <Label>Subtitle</Label>
+          <Textarea value={local.about_header_subtitle || ""} onChange={e => set("about_header_subtitle", e.target.value)} rows={2} />
+        </div>
+
+        <div className="border-t border-border/50 pt-6 mt-6 space-y-1 mb-4">
+          <h4 className="font-bold text-primary">Brand Story</h4>
+        </div>
+        <div className="space-y-2">
+          <Label>Story Title</Label>
+          <Input value={local.about_story_title || ""} onChange={e => set("about_story_title", e.target.value)} placeholder="e.g. Born from a Simple Belief" />
+        </div>
+        <div className="space-y-2">
+          <Label>Story — Paragraph 1</Label>
+          <Textarea value={local.about_story_p1 || ""} onChange={e => set("about_story_p1", e.target.value)} rows={3} />
+        </div>
+        <div className="space-y-2">
+          <Label>Story — Paragraph 2</Label>
+          <Textarea value={local.about_story_p2 || ""} onChange={e => set("about_story_p2", e.target.value)} rows={4} />
+        </div>
+        <SettingsImageField label="Story Section Image" settingKey="about_story_image" value={local.about_story_image || ""} onChange={set} />
+
+        <div className="border-t border-border/50 pt-6 mt-6 space-y-1 mb-4">
+          <h4 className="font-bold text-primary">Philosophy</h4>
+        </div>
+        <div className="space-y-2">
+          <Label>Philosophy Title</Label>
+          <Input value={local.about_philosophy_title || ""} onChange={e => set("about_philosophy_title", e.target.value)} placeholder="e.g. Our Philosophy" />
+        </div>
+        <div className="space-y-2">
+          <Label>Philosophy — Paragraph 1</Label>
+          <Textarea value={local.about_philosophy_p1 || ""} onChange={e => set("about_philosophy_p1", e.target.value)} rows={3} />
+        </div>
+        <div className="space-y-2">
+          <Label>Philosophy — Paragraph 2</Label>
+          <Textarea value={local.about_philosophy_p2 || ""} onChange={e => set("about_philosophy_p2", e.target.value)} rows={3} />
+        </div>
+
+        <div className="border-t border-border/50 pt-6 mt-6 space-y-1 mb-4">
+          <h4 className="font-bold text-primary">Location</h4>
+        </div>
+        <div className="space-y-2">
+          <Label>Location Title</Label>
+          <Input value={local.about_location_title || ""} onChange={e => set("about_location_title", e.target.value)} placeholder="e.g. Our Location" />
+        </div>
+        <div className="space-y-2">
+          <Label>Location Description</Label>
+          <Textarea value={local.about_location_desc || ""} onChange={e => set("about_location_desc", e.target.value)} rows={4} />
+        </div>
+        <SettingsImageField label="Location Section Image" settingKey="about_location_image" value={local.about_location_image || ""} onChange={set} />
+      </SettingsSection>
+
       {/* Page Headers */}
       <SettingsSection
         title="📄 Page Headers — Rooms"

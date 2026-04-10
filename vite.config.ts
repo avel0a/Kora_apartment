@@ -18,6 +18,29 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
+    // Minification & tree shaking
+    minify: "esbuild",
+    cssMinify: true,
+    target: "es2020",
+    // Code splitting — break vendor bundles for better caching
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          "vendor-react": ["react", "react-dom"],
+          "vendor-motion": ["framer-motion"],
+          "vendor-query": ["@tanstack/react-query"],
+          "vendor-ui": [
+            "@radix-ui/react-dialog",
+            "@radix-ui/react-select",
+            "@radix-ui/react-tabs",
+            "@radix-ui/react-toast",
+            "@radix-ui/react-dropdown-menu",
+          ],
+        },
+      },
+    },
+    // Inline small assets to reduce HTTP requests
+    assetsInlineLimit: 4096,
   },
   server: {
     fs: {

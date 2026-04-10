@@ -13,6 +13,7 @@ import { Loader2 } from "lucide-react";
 
 // Lazy-loaded pages for code-splitting
 const Home = React.lazy(() => import("@/pages/Home"));
+const About = React.lazy(() => import("@/pages/About"));
 const Rooms = React.lazy(() => import("@/pages/Rooms"));
 const RoomDetail = React.lazy(() => import("@/pages/RoomDetail"));
 const Gallery = React.lazy(() => import("@/pages/Gallery"));
@@ -53,6 +54,7 @@ function Router() {
       <Suspense fallback={<PageLoader />} key={location}>
         <Switch location={location}>
           <Route path="/" component={() => <AnimatedRoute component={Home} />} />
+          <Route path="/about" component={() => <AnimatedRoute component={About} />} />
           <Route path="/rooms" component={() => <AnimatedRoute component={Rooms} />} />
           <Route path="/rooms/:slug" component={() => <AnimatedRoute component={RoomDetail} />} />
           <Route path="/gallery" component={() => <AnimatedRoute component={Gallery} />} />

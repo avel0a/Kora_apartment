@@ -1,5 +1,6 @@
 import "dotenv/config";
 import express, { type Request, Response, NextFunction } from "express";
+import compression from "compression";
 import { registerRoutes } from "./routes";
 import { serveStatic } from "./static";
 import { createServer } from "http";
@@ -30,6 +31,9 @@ declare module "http" {
   }
 }
 
+// Gzip compression — reduces payload size by 60-80%
+app.use(compression());
+
 app.use(
   express.json({
     verify: (req, _res, buf) => {
@@ -38,12 +42,16 @@ app.use(
   }),
 );
 
-// Serve uploaded files statically
+// Serve uploaded files with 7-day cache
 const uploadsPath = path.resolve(process.cwd(), "uploads");
 if (!fs.existsSync(uploadsPath)) {
   fs.mkdirSync(uploadsPath, { recursive: true });
 }
-app.use("/uploads", express.static(uploadsPath));
+app.use("/uploads", express.static(uploadsPath, {
+  maxAge: "7d",
+  immutable: false,
+  etag: true,
+}));
 
 app.use(express.urlencoded({ extended: false }));
 

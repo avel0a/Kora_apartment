@@ -32,6 +32,7 @@ export function Navbar() {
 
   const navLinks = [
     { href: "/", label: "Home" },
+    { href: "/about", label: "About" },
     { href: "/rooms", label: "Suites" },
     { href: "/gallery", label: "Gallery" },
     { href: "/contact", label: "Contact" },
@@ -113,12 +114,6 @@ export function Navbar() {
             <Button className="btn-primary rounded-xl px-8 py-5 text-sm font-bold tracking-widest uppercase hover:scale-105 active:scale-95 transition-all duration-300 shadow-lg shadow-primary/20">
               Book Now
             </Button>
-          </Link>
-          
-          <Link href="/admin">
-            <span className={`text-[10px] font-bold tracking-widest opacity-50 hover:opacity-100 transition-opacity cursor-pointer ml-4 uppercase ${scrolled ? "text-foreground" : "text-white"}`}>
-              Admin
-            </span>
           </Link>
         </div>
 
