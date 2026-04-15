@@ -61,7 +61,7 @@ export function RoomCard({ room }: RoomCardProps) {
 
         <Link href={`/rooms/${room.slug}`}>
           <Button className="w-full btn-primary rounded-xl py-6 font-bold tracking-widest uppercase hover:scale-[1.02] transition-all duration-300 shadow-lg shadow-primary/20">
-            Discover Suite
+            Select Suite
           </Button>
         </Link>
       </div>

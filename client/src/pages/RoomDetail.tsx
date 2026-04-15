@@ -174,8 +174,7 @@ export default function RoomDetail() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
               >
-                <span className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-4 block">The Experience</span>
-                <h2 className="text-4xl font-serif font-bold text-primary mb-8">Unparalleled Comfort</h2>
+                <h2 className="text-4xl font-serif font-bold text-primary mb-8">Suite Details</h2>
                 <p className="text-muted-foreground leading-relaxed text-xl font-light">
                   {room.description}
                 </p>
@@ -189,9 +188,9 @@ export default function RoomDetail() {
               >
                 {[
                   { label: "Guest Capacity", value: `${room.capacity} Persons`, icon: <User size={24} /> },
-                  { label: "Bed Configuration", value: room.bedType || "King Suite", icon: <Bed size={24} /> },
+                  { label: "Bed Type", value: room.bedType || "King Suite", icon: <Bed size={24} /> },
                   { label: "Total Area", value: room.size || "Spacious", icon: <Maximize size={24} /> },
-                  { label: "Suite View", value: "Panoramic City", icon: <Wind size={24} /> }
+                  { label: "Suite View", value: "City View", icon: <Wind size={24} /> }
                 ].map((item, i) => (
                   <div key={i} className="space-y-3">
                     <div className="text-accent">{item.icon}</div>

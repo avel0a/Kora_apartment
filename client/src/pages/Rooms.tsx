@@ -9,8 +9,8 @@ import { motion } from "framer-motion";
 
 export default function Rooms() {
   useSEO({
-    title: "Suites | Serviced Apartments in Addis Ababa",
-    description: "Explore our 2-bedroom, 3-bedroom, and studio suites at Kora Hotel Suites. Fully furnished apartments with kitchens, Wi-Fi, and daily housekeeping in central Addis Ababa."
+    title: "Suites | Apartment-Style Suites from US$89 | Kora Hotel Suites, Addis Ababa",
+    description: "Choose from 2 to 4-bedroom suites at Kora Hotel Suites near Dembel Square. From US$89/night. Fully furnished with kitchens, private laundry, en-suite bathrooms, and African art. Sleeps 4-8."
   });
 
   const { data: rooms, isLoading } = useRooms();
@@ -19,7 +19,7 @@ export default function Rooms() {
   const headerImage = getSetting(settings, "rooms_header_image", "");
   const headerTagline = getSetting(settings, "rooms_header_tagline", "Curated Collection");
   const headerTitle = getSetting(settings, "rooms_header_title", "Our Suites");
-  const headerSubtitle = getSetting(settings, "rooms_header_subtitle", "Thoughtfully designed apartments for travelers who value space, privacy, and the comforts of home.");
+  const headerSubtitle = getSetting(settings, "rooms_header_subtitle", "Fully furnished apartment-style suites from 110 m² to 290 m² — with equipped kitchens, private laundry, en-suite bathrooms, and space that feels like home.");
 
   return (
     <div className="min-h-screen bg-background flex flex-col">

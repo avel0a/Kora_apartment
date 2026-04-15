@@ -24,14 +24,14 @@ import { useSettings, getSetting } from "@/hooks/use-settings";
 
 export default function Contact() {
   useSEO({
-    title: "Contact Us | Kora Hotel Suites, Kirkos, Addis Ababa",
-    description: "Get in touch with Kora Hotel Suites on Democratic Republic of Congo Road, Kirkos. Call, email, or visit — we're here to make your Addis Ababa stay extraordinary."
+    title: "Contact Us | Kora Hotel Suites, Near Dembel Square, Addis Ababa",
+    description: "Get in touch with Kora Hotel Suites near Dembel Square. 10 min from Bole Airport. Call, email, or visit — we're here to make your Addis Ababa stay extraordinary."
   });
 
   const { toast } = useToast();
   const { data: settings } = useSettings();
 
-  const address = getSetting(settings, "contact_address", "Democratic Republic of Congo Road, Kirkos, Addis Ababa, Ethiopia");
+  const address = getSetting(settings, "contact_address", "Near Dembel Square, Addis Ababa, Ethiopia");
   const phone = getSetting(settings, "contact_phone", "+251 116 123 456");
   const email = getSetting(settings, "contact_email", "info@korahotelsuites.com");
   const latitude = getSetting(settings, "map_latitude", "9.0054");
@@ -125,7 +125,7 @@ export default function Contact() {
               <div>
                 <h2 className="text-4xl font-serif font-bold text-primary mb-6 text-gradient inline-block">Contact Information</h2>
                 <p className="text-muted-foreground text-lg leading-relaxed font-light">
-                  Located in the heart of the Kirkos district on Democratic Republic of Congo Road, Kora Hotel Suites is your gateway to Addis Ababa's diplomatic quarter, cultural landmarks, and thriving business scene.
+                  Located next to Dembel Square, Kora Hotel Suites is just 10 minutes from Bole International Airport. Nearby landmarks include Friendship Park, Unity Park, the ECA, the Marriott Hotel, and the Hyatt Regency.
                 </p>
               </div>
 

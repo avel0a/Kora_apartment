@@ -13,7 +13,7 @@ function TikTokIcon({ className }: { className?: string }) {
 export function Footer() {
   const { data: settings } = useSettings();
 
-  const address = getSetting(settings, "contact_address", "Democratic Republic of Congo Road, Kirkos, Addis Ababa, Ethiopia");
+  const address = getSetting(settings, "contact_address", "Near Dembel Square, Addis Ababa, Ethiopia");
   const phone = getSetting(settings, "contact_phone", "+251 11 661 0404");
   const email = getSetting(settings, "contact_email", "info@korahotelsuites.com");
   const facebookUrl = getSetting(settings, "facebook_url", "#");
@@ -23,7 +23,7 @@ export function Footer() {
   const siteName = getSetting(settings, "site_name", "KORA");
   const siteSubtitle = getSetting(settings, "site_subtitle", "Hotel Suites");
   const companyLogo = getSetting(settings, "company_logo", "");
-  const footerDescription = getSetting(settings, "footer_description", "Luxury serviced apartments in the Kirkos district of Addis Ababa. 18 individually designed suites with full kitchens, spa & wellness, and 24/7 security — minutes from Meskel Square and Bole International Airport.");
+  const footerDescription = getSetting(settings, "footer_description", "Modern boutique hotel next to Dembel Square, Addis Ababa. Fully furnished apartment-style suites enriched with African art. 10 minutes from Bole International Airport. Where your journey finds its rhythm.");
 
   return (
     <footer className="bg-primary text-primary-foreground pt-16 pb-8">

@@ -19,7 +19,7 @@ export function Navbar() {
   const { data: settings } = useSettings();
 
   const siteName = getSetting(settings, "site_name", "KORA");
-  const siteSubtitle = getSetting(settings, "site_subtitle", "Hotel Suites");
+  const siteSubtitle = getSetting(settings, "site_subtitle", "Hotel, Suites & Wellness");
   const companyLogo = getSetting(settings, "company_logo", "");
 
   useEffect(() => {

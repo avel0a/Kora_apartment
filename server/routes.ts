@@ -66,7 +66,8 @@ export async function registerRoutes(
       const optimizedPath = path.join(uploadDir, optimizedFilename);
 
       await sharp(req.file.path)
-        .resize({ width: 1920, withoutEnlargement: true })
+        .rotate() // Automatically orient based on EXIF
+        .resize({ width: 1920, height: 1080, fit: "inside", withoutEnlargement: true })
         .webp({ quality: 80 })
         .toFile(optimizedPath);
 
@@ -317,59 +318,48 @@ async function seedDatabase() {
     console.log("Seeding rooms...");
     const roomTypes = [
       {
-        name: "Executive Room",
-        slug: "executive",
-        description: "Experience the pinnacle of luxury in our Executive Rooms, designed for the discerning traveler with premium finishes and city views.",
-        price: 150,
-        capacity: 2,
-        size: "45m²",
-        bedType: "King Size",
-        imageUrl: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?q=80&w=1000&auto=format&fit=crop",
-        amenities: ["Free WiFi", "City View", "Mini Bar", "Work Desk", "Coffee Maker"]
-      },
-      {
-        name: "Deluxe Room",
-        slug: "deluxe",
-        description: "Our Deluxe Rooms offer enhanced space and comfort, featuring elegant decor and top-tier amenities for a relaxing stay.",
-        price: 130,
-        capacity: 2,
-        size: "40m²",
-        bedType: "King Size",
-        imageUrl: "https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=1000&auto=format&fit=crop",
-        amenities: ["Free WiFi", "Mountain View", "Flat-screen TV", "Mini Bar", "Safe"]
-      },
-      {
-        name: "Twin Room",
-        slug: "twin",
-        description: "Perfect for colleagues or friends, our Twin Rooms feature two comfortable beds and all the essential amenities for a productive stay.",
-        price: 110,
-        capacity: 2,
-        size: "38m²",
-        bedType: "2 Twin Beds",
-        imageUrl: "https://images.unsplash.com/photo-1566665797739-1674de7a421a?q=80&w=1000&auto=format&fit=crop",
-        amenities: ["Free WiFi", "Work Desk", "Coffee Maker", "Safe", "Mini Bar"]
-      },
-      {
-        name: "Single Room",
-        slug: "single",
-        description: "Ideal for solo business travelers, offering a cozy and efficient space with a comfortable bed and work area.",
-        price: 90,
-        capacity: 1,
-        size: "28m²",
-        bedType: "Queen Size",
-        imageUrl: "https://images.unsplash.com/photo-1505691938895-1758d7eaa511?q=80&w=1000&auto=format&fit=crop",
-        amenities: ["Free WiFi", "Work Desk", "Flat-screen TV", "Mini Bar"]
-      },
-      {
         name: "Junior Suite",
         slug: "junior-suite",
-        description: "Spacious and elegant, our Junior Suites offer a separate sitting area and upgraded bathroom facilities for a touch of extra luxury.",
+        description: "It has 2 Bedrooms its size is 110 square meter it contains master bedroom with king size bed with built-in bathroom, second class bedroom with double bed with independent bathroom. Living and dinning room it contain private laundry machine all suite have private varanda and all are equipped with modern and comfortable funitures accommodate up to 4 person.",
+        price: 89,
+        capacity: 4,
+        size: "110m²",
+        bedType: "King Bed + Double Bed",
+        imageUrl: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?q=80&w=1000&auto=format&fit=crop",
+        amenities: ["High-Speed WiFi", "Private Laundry Machine", "Private Veranda", "Built-In Bathrooms", "Living & Dining Room", "Modern Furniture", "Fully Equipped Kitchen"]
+      },
+      {
+        name: "Senior Suite",
+        slug: "senior-suite",
+        description: "It has 3 bedrooms its size is 191 square meter contain master bedroom with king size bed with built in bathroom, second class bedroom with king size bed with its own balcony and independent bathroom, Third class bedroom single bed with its independent bathroom. Living room, dinning room accommodate up to 6 persons with private Veranda with comfortable modern furniture it contains a walk in closet.",
+        price: 99,
+        capacity: 6,
+        size: "191m²",
+        bedType: "2 King Beds + 1 Single Bed",
+        imageUrl: "https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=1000&auto=format&fit=crop",
+        amenities: ["High-Speed WiFi", "Private Veranda", "Balcony", "Walk-in Closet", "Living & Dining Room", "Independent Bathrooms", "Modern Furniture", "Fully Equipped Kitchen"]
+      },
+      {
+        name: "Penthouse Suite",
+        slug: "penthouse-suite",
+        description: "It has 4 bedroom its size is 290 square meter it contain one master bedroom with 2*2 meter bed size, jacuzzi shower, its own living room, its own veranda. The second class bedroom contain queen bed with independent bathroom, Third class bedroom double bed size contain independent bathroom, fourth class bedroom twin bed contained independent bathroom. With spacious living and dinner room. Accommodate up to 8 person have independent laundry machine have spectacular view of the city of Addis Ababa.",
         price: 180,
-        capacity: 2,
-        size: "55m²",
-        bedType: "King Size",
+        capacity: 8,
+        size: "290m²",
+        bedType: "2x2m King + Queen + Double + Twin",
         imageUrl: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1000&auto=format&fit=crop",
-        amenities: ["Free WiFi", "Separate Sitting Area", "Jacuzzi", "Premium Coffee Machine", "Bathrobes"]
+        amenities: ["Spectacular City View", "Jacuzzi Shower", "High-Speed WiFi", "Independent Laundry Machine", "Private Verandas", "Private Living Room", "Spacious Living & Dining Room", "Independent Bathrooms"]
+      },
+      {
+        name: "Deluxe Suite",
+        slug: "deluxe-suite",
+        description: "Size 290 square meter 3 bedroom suites contain 2 master bedroom and one second class bedroom and all the amenities mentioned in penthouse suite with luxury and elegance.",
+        price: 225,
+        capacity: 6,
+        size: "290m²",
+        bedType: "2 Master Beds + 1 Second Class Bed",
+        imageUrl: "https://images.unsplash.com/photo-1566665797739-1674de7a421a?q=80&w=1000&auto=format&fit=crop",
+        amenities: ["Luxury & Elegance", "Spectacular City View", "Jacuzzi Shower", "High-Speed WiFi", "Independent Laundry Machine", "Private Verandas", "Independent Bathrooms", "Spacious Living & Dining Room"]
       }
     ];
 
@@ -394,16 +384,16 @@ async function seedSettings() {
 
     // Hero Section
     { key: "hero_image", value: "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80", label: "Hero Background Image", type: "image" },
-    { key: "hero_title", value: "Luxury in the Heart of Addis Ababa", label: "Hero Title", type: "text" },
-    { key: "hero_subtitle", value: "Experience Ethiopian hospitality redefined. Just 3 minutes from Bole International Airport.", label: "Hero Subtitle", type: "textarea" },
+    { key: "hero_title", value: "Where Your Journey Finds Its Rhythm", label: "Hero Title", type: "text" },
+    { key: "hero_subtitle", value: "Modern boutique suites next to Dembel Square — 10 minutes from Bole International Airport. Fully furnished, apartment-style living enriched with African art and soul.", label: "Hero Subtitle", type: "textarea" },
 
     // About Section
     { key: "about_image", value: "https://images.unsplash.com/photo-1559339352-11d035aa65de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1974&q=80", label: "About Section Image", type: "image" },
-    { key: "about_title", value: "A Stay Defined by Comfort & Class", label: "About Title", type: "text" },
-    { key: "about_description", value: "Whether you're visiting Addis Ababa for business or leisure, Kora Hotel Suites offers a perfect blend of traditional Ethiopian hospitality and modern luxury.", label: "About Description", type: "textarea" },
+    { key: "about_title", value: "Elegance Inspired by Heritage", label: "About Title", type: "text" },
+    { key: "about_description", value: "Kora Hotel Suites is a modern boutique hotel next to Dembel Square, 10 minutes from Bole International Airport. Designed by the family members who manage the business, every suite is enriched with elegant African artifacts, giving it a unique and authentic ambiance. Fully furnished apartment-style suites for short-term and long-term guests. Kora Hotel Suites is your home — not simply a place to visit.", label: "About Description", type: "textarea" },
 
     // Contact
-    { key: "contact_address", value: "Bole Road, Addis Ababa, Ethiopia", label: "Address", type: "text" },
+    { key: "contact_address", value: "Near Dembel Square, Addis Ababa, Ethiopia", label: "Address", type: "text" },
     { key: "contact_phone", value: "+251 11 661 0404", label: "Phone Number", type: "text" },
     { key: "contact_email", value: "info@korahotelsuites.com", label: "Email Address", type: "text" },
 

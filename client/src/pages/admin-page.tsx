@@ -1090,6 +1090,23 @@ function SiteSettingsTab() {
         </div>
       </SettingsSection>
 
+      {/* Rooms Section Heading */}
+      <SettingsSection
+        title="🏠 Rooms Section Heading"
+        description="The heading above the featured suites on the home page"
+        onSave={() => saveSection(["rooms_section_tagline", "rooms_section_title"])}
+        isSaving={updateSettings.isPending}
+      >
+        <div className="space-y-2">
+          <Label>Tagline (small text above)</Label>
+          <Input value={local.rooms_section_tagline || ""} onChange={e => set("rooms_section_tagline", e.target.value)} placeholder="e.g. CURATED COLLECTION" />
+        </div>
+        <div className="space-y-2">
+          <Label>Section Title</Label>
+          <Input value={local.rooms_section_title || ""} onChange={e => set("rooms_section_title", e.target.value)} placeholder="e.g. Comfortable Residences" />
+        </div>
+      </SettingsSection>
+
       {/* About Section */}
       <SettingsSection
         title="📖 About Section"

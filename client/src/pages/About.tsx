@@ -3,34 +3,34 @@ import { Footer } from "@/components/Footer";
 import { useSettings, getSetting } from "@/hooks/use-settings";
 import { useSEO } from "@/hooks/use-seo";
 import { motion } from "framer-motion";
-import { CheckCircle, MapPin, Shield, Clock, Users, Sparkles } from "lucide-react";
+import { CheckCircle, MapPin, Shield, Clock, Users, Sparkles, Music, Palette, CalendarHeart, Heart } from "lucide-react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 
 export default function About() {
   useSEO({
-    title: "About Us | Kora Hotel Suites, Addis Ababa",
-    description: "Learn about Kora Hotel Suites — 18 individually designed serviced apartments in Kirkos, Addis Ababa. Apartment-style living with hotel service since day one."
+    title: "About Us | Kora Hotel Suites — The Soul of Elegance, Addis Ababa",
+    description: "Named after the kora — a timeless West African harp — Kora Hotel Suites blends modern luxury with cultural soul. Boutique suites near Dembel Square, enriched with African art."
   });
 
   const { data: settings } = useSettings();
 
   const headerImage = getSetting(settings, "about_header_image", "");
   const headerTagline = getSetting(settings, "about_header_tagline", "Our Story");
-  const headerTitle = getSetting(settings, "about_header_title", "About Kora Hotel Suites");
-  const headerSubtitle = getSetting(settings, "about_header_subtitle", "Where apartment-style living meets world-class hospitality in the heart of Addis Ababa.");
+  const headerTitle = getSetting(settings, "about_header_title", "The Soul of Elegance");
+  const headerSubtitle = getSetting(settings, "about_header_subtitle", "The Sound of Home.");
 
-  const storyTitle = getSetting(settings, "about_story_title", "Born from a Simple Belief");
-  const storyP1 = getSetting(settings, "about_story_p1", "Kora Hotel Suites was born from a simple belief: travelers to Addis Ababa deserve more than a hotel room. They deserve a home.");
-  const storyP2 = getSetting(settings, "about_story_p2", 'In Amharic, "Kora" evokes a sense of pride and stature — and that is precisely the standard we hold ourselves to. From the moment our doors opened in the Kirkos neighborhood, we set out to redefine what a serviced apartment in Addis Ababa could be: not merely a furnished flat, but a carefully considered living space where every fixture, every fabric, and every service anticipates our guests\' needs.');
+  const storyTitle = getSetting(settings, "about_story_title", "A Name Inspired by Culture");
+  const storyP1 = getSetting(settings, "about_story_p1", "The Kora Hotel Suites takes its name from the kora — a timeless West African harp known for its graceful form and rich, resonant sound. Crafted with care and played with soul, the kora embodies balance, beauty, and tradition. These are the values we bring to life within our walls.");
+  const storyP2 = getSetting(settings, "about_story_p2", "Throughout the hotel, you'll discover original pieces of African artifacts. Each piece is more than art; it is a tribute to identity, crafted with soul and intention. Here, every suite is a private retreat — designed with subtle luxury and layered with meaning. The Kora is not simply a place to stay. It is a place to feel, reflect, and remember.");
   const storyImage = getSetting(settings, "about_story_image", "https://images.unsplash.com/photo-1559339352-11d035aa65de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1974&q=80");
 
-  const philosophyTitle = getSetting(settings, "about_philosophy_title", "Our Philosophy");
-  const philosophyP1 = getSetting(settings, "about_philosophy_p1", "We believe that true comfort is not about excess — it is about thoughtfulness. A kitchen stocked with the right tools. A living room that feels like yours. A front desk team that remembers your name and your preferences.");
-  const philosophyP2 = getSetting(settings, "about_philosophy_p2", "At Kora, we combine the independence of apartment living with the reliability of hotel service, creating an experience that feels personal rather than transactional.");
+  const philosophyTitle = getSetting(settings, "about_philosophy_title", "Where Your Journey Finds Its Rhythm");
+  const philosophyP1 = getSetting(settings, "about_philosophy_p1", "At The Kora, every suite is thoughtfully composed — where modern comfort meets cultural depth, and every detail hums in quiet harmony. Like the instrument that inspires us, we believe true luxury lies in subtlety, warmth, and unforgettable resonance.");
+  const philosophyP2 = getSetting(settings, "about_philosophy_p2", "The family members who manage the business worked together to design the hotel with elegant African artifacts. Every suite has a spacious space that can accommodate both short-term and long-term guests, and it is completely furnished. Kora Hotel Suites is your home — not simply a place to visit.");
 
   const locationTitle = getSetting(settings, "about_location_title", "Our Location");
-  const locationDesc = getSetting(settings, "about_location_desc", "Positioned on Democratic Republic of Congo Road in the heart of the Kirkos district, Kora Hotel Suites sits within walking distance of Meskel Square, the United Nations Economic Commission for Africa (UNECA), the Red Terror Martyrs' Memorial Museum, and Africa Hall. We are 15 minutes from Bole International Airport and surrounded by Addis Ababa's finest dining, shopping, and cultural landmarks.");
+  const locationDesc = getSetting(settings, "about_location_desc", "The Kora Hotel Suites is a modern boutique hotel next to Dembel Square, 10 minutes' drive from the Bole International Airport of Addis Ababa. Its great location allows easy access to major commercial areas, shopping centres, and entertainment sites. Friendship Park, Unity Park, the Science and Technology Museum, the Economic Commission of Africa (ECA), the Marriott Hotel, and the Hyatt Regency Hotel are all conveniently in the vicinity.");
   const locationImage = getSetting(settings, "about_location_image", "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80");
 
   const containerVariants = {
@@ -73,15 +73,18 @@ export default function About() {
               transition={{ duration: 0.8 }}
             >
               <span className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-4 block">{headerTagline}</span>
-              <h1 className="text-5xl md:text-7xl font-serif font-bold mb-6">{headerTitle}</h1>
-              <p className="text-xl text-white/70 max-w-2xl mx-auto font-light leading-relaxed">
+              <h1 className="text-5xl md:text-7xl font-serif font-bold mb-4">{headerTitle}</h1>
+              <p className="text-3xl md:text-4xl text-accent/80 font-serif italic mb-6">
                 {headerSubtitle}
+              </p>
+              <p className="text-lg text-white/60 max-w-2xl mx-auto font-light leading-relaxed">
+                Named after the kora — a revered West African harp — our hotel is crafted to create harmony between tradition and modernity, comfort and culture.
               </p>
             </motion.div>
           </div>
         </section>
 
-        {/* Our Story */}
+        {/* The Kora Story */}
         <section className="py-24 md:py-32 bg-background">
           <div className="container-custom">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
@@ -92,7 +95,7 @@ export default function About() {
                 className="space-y-8"
               >
                 <div>
-                  <span className="text-accent font-bold tracking-[0.3em] uppercase text-xs mb-3 block">Our Story</span>
+                  <span className="text-accent font-bold tracking-[0.3em] uppercase text-xs mb-3 block">The Kora Instrument</span>
                   <h2 className="text-4xl md:text-5xl font-serif font-bold text-primary leading-tight">{storyTitle}</h2>
                 </div>
                 <p className="text-lg text-muted-foreground font-light leading-relaxed">
@@ -100,6 +103,9 @@ export default function About() {
                 </p>
                 <p className="text-lg text-muted-foreground font-light leading-relaxed">
                   {storyP2}
+                </p>
+                <p className="text-lg text-primary font-serif italic leading-relaxed border-l-4 border-accent pl-6">
+                  "Here, you don't just hear the rhythm of Africa — you live it."
                 </p>
               </motion.div>
 
@@ -113,7 +119,7 @@ export default function About() {
                 <div className="relative aspect-[4/5] overflow-hidden rounded-2xl shadow-2xl">
                   <img 
                     src={storyImage}
-                    alt="Kora Hotel Suites Interior" 
+                    alt="The Kora — West African Harp" 
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
                     loading="lazy"
                   />
@@ -123,7 +129,7 @@ export default function About() {
           </div>
         </section>
 
-        {/* Philosophy */}
+        {/* Philosophy & Culture */}
         <section className="py-24 md:py-32 bg-primary text-white overflow-hidden relative">
           <div className="absolute inset-0 opacity-10 pointer-events-none">
             <div className="absolute top-1/4 -left-20 w-96 h-96 bg-accent rounded-full blur-[120px]" />
@@ -137,7 +143,6 @@ export default function About() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
               >
-                <span className="text-accent font-bold tracking-[0.3em] uppercase text-xs mb-3 block">Our Approach</span>
                 <h2 className="text-4xl md:text-6xl font-serif font-bold leading-tight">{philosophyTitle}</h2>
               </motion.div>
               <motion.p
@@ -160,7 +165,7 @@ export default function About() {
               </motion.p>
             </div>
 
-            {/* Why Choose Us Grid */}
+            {/* Why Choose Kora Grid */}
             <motion.div
               variants={containerVariants}
               initial="hidden"
@@ -172,32 +177,32 @@ export default function About() {
                 {
                   icon: <Users size={28} />,
                   title: "Apartment Living, Hotel Service",
-                  description: "Every suite is a complete apartment — with a kitchen, living room, and space to live on your own terms. Plus daily housekeeping and concierge."
+                  description: "Every suite is a complete apartment — with a kitchen, living room, private laundry, and space to live on your own terms. Plus concierge and daily housekeeping."
                 },
                 {
                   icon: <Clock size={28} />,
-                  title: "Built for Extended Stays",
-                  description: "Purpose-built apartments with in-unit kitchens, washing machines, and generous storage. Settle in properly — not out of a suitcase."
+                  title: "Built for Short & Long Stays",
+                  description: "Purpose-built apartments with in-unit kitchens, private washing machines, and generous storage. Whether one night or one year — settle in properly."
+                },
+                {
+                  icon: <Palette size={28} />,
+                  title: "African Art & Cultural Soul",
+                  description: "The hotel's décor is enriched with African artifacts, giving it a unique and authentic ambiance. Each piece is a tribute to identity, crafted with soul."
                 },
                 {
                   icon: <MapPin size={28} />,
-                  title: "Central Without the Chaos",
-                  description: "Kirkos is one of Addis Ababa's most connected neighborhoods — yet our property offers a tranquil, secure environment."
+                  title: "Next to Dembel Square",
+                  description: "Easy access to commercial areas, shopping, and entertainment. Friendship Park, Unity Park, the ECA, the Marriott, and Hyatt Regency are all nearby."
+                },
+                {
+                  icon: <Shield size={28} />,
+                  title: "Secure Fenced Compound",
+                  description: "Known for its secure, fenced compound and reliable security measures. Your safety is our first priority — round-the-clock."
                 },
                 {
                   icon: <Sparkles size={28} />,
                   title: "Exceptional Value",
-                  description: "Premium apartment-style accommodation with parking, Wi-Fi, and security included — often below comparable international hotels."
-                },
-                {
-                  icon: <Shield size={28} />,
-                  title: "24/7 Security & Privacy",
-                  description: "Round-the-clock security personnel, controlled access, and CCTV surveillance. Your safety is our first priority."
-                },
-                {
-                  icon: <CheckCircle size={28} />,
-                  title: "Genuine Ethiopian Hospitality",
-                  description: "Our team follows a tradition, not a script. Sincere, generous, and personal service from check-in to check-out."
+                  description: "Weekly 5% off, monthly 10% off, yearly 30% off. Premium apartment-style living with parking, WiFi, and security included."
                 }
               ].map((item, i) => (
                 <motion.div
@@ -214,8 +219,48 @@ export default function About() {
           </div>
         </section>
 
-        {/* Location Section */}
+        {/* Events & Wellness */}
         <section className="py-24 md:py-32 bg-background">
+          <div className="container-custom">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+              {/* Events */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="bg-secondary/50 border border-border/50 rounded-2xl p-10 md:p-12 space-y-6"
+              >
+                <div className="text-primary bg-primary/10 w-16 h-16 rounded-2xl flex items-center justify-center">
+                  <CalendarHeart size={32} />
+                </div>
+                <h3 className="text-3xl font-serif font-bold text-primary">Events & Gatherings</h3>
+                <p className="text-lg text-muted-foreground font-light leading-relaxed">
+                  Our small and medium-sized spaces are geared for intimate and private gatherings and celebrations — birthdays, graduations, business meetings, and more. Let us help you create memorable moments in an elegant setting.
+                </p>
+              </motion.div>
+
+              {/* Wellness */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 }}
+                className="bg-secondary/50 border border-border/50 rounded-2xl p-10 md:p-12 space-y-6"
+              >
+                <div className="text-primary bg-primary/10 w-16 h-16 rounded-2xl flex items-center justify-center">
+                  <Heart size={32} />
+                </div>
+                <h3 className="text-3xl font-serif font-bold text-primary">Wellness Center</h3>
+                <p className="text-lg text-muted-foreground font-light leading-relaxed">
+                  At Kora Hotel, your comfort and relaxation are our top priority. Immerse yourself in the soothing atmosphere of our spa — the perfect retreat for unwinding and revitalizing your senses after a long day in the city.
+                </p>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        {/* Location Section */}
+        <section className="py-24 md:py-32 bg-primary/5">
           <div className="container-custom">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
               <motion.div
@@ -228,7 +273,7 @@ export default function About() {
                 <div className="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl">
                   <img 
                     src={locationImage}
-                    alt="Kora Hotel Suites Location" 
+                    alt="Kora Hotel Suites Location near Dembel Square" 
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
                     loading="lazy"
                   />
@@ -252,12 +297,14 @@ export default function About() {
                 {/* Landmark Distances */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
                   {[
-                    { name: "Meskel Square", distance: "~5 min walk" },
-                    { name: "UNECA / Africa Hall", distance: "~10 min walk" },
-                    { name: "Bole International Airport", distance: "~15 min drive" },
-                    { name: "National Museum", distance: "~15 min drive" },
+                    { name: "Dembel Square", distance: "Walking distance" },
+                    { name: "Bole International Airport", distance: "~10 min drive" },
+                    { name: "Friendship Park", distance: "Nearby" },
+                    { name: "Unity Park", distance: "Nearby" },
+                    { name: "ECA / Africa Hall", distance: "In the vicinity" },
+                    { name: "Marriott & Hyatt Regency", distance: "In the vicinity" },
                   ].map((landmark, i) => (
-                    <div key={i} className="flex items-center gap-4 bg-secondary/50 p-4 rounded-xl border border-border/50">
+                    <div key={i} className="flex items-center gap-4 bg-white p-4 rounded-xl border border-border/50">
                       <MapPin className="text-accent shrink-0" size={20} />
                       <div>
                         <span className="font-semibold text-primary text-sm">{landmark.name}</span>
@@ -281,8 +328,8 @@ export default function About() {
               className="max-w-2xl mx-auto space-y-8"
             >
               <h2 className="text-4xl md:text-5xl font-serif font-bold text-primary">Ready to Experience Kora?</h2>
-              <p className="text-lg text-muted-foreground font-light leading-relaxed">
-                Reserve your suite and discover why discerning travelers choose apartment-style luxury in the heart of Addis Ababa.
+              <p className="text-lg text-muted-foreground font-light leading-relaxed italic">
+                Elegance inspired by heritage. Luxury in harmony with culture. Crafted with soul. Styled for serenity.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-4">
                 <Link href="/rooms">

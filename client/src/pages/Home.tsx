@@ -35,6 +35,9 @@ export default function Home() {
   const aboutTitle = getSetting(settings, "about_title", "A Stay Defined by Comfort & Class");
   const aboutDesc = getSetting(settings, "about_description", "Whether you're visiting Addis Ababa for business or leisure, Kora Hotel Suites offers a perfect blend of traditional Ethiopian hospitality and modern luxury. Our 18 individually designed apartments in the Kirkos district provide the space, privacy, and amenities that discerning travelers deserve.");
 
+  const roomsSectionTagline = getSetting(settings, "rooms_section_tagline", "CURATED COLLECTION");
+  const roomsSectionTitle = getSetting(settings, "rooms_section_title", "Comfortable Residences");
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -122,20 +125,20 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             {[
               {
-                title: "Apartment-Style Living",
-                description: "Spacious suites with full kitchens, living areas, and modern furnishings — designed for guests who stay longer and expect more.",
+                title: "Apartment-Style Suites",
+                description: "Fully furnished modern suites sized like apartments — with equipped kitchens, living rooms, private laundry, and space for short or long stays.",
                 icon: <HomeIcon size={32} />,
                 href: "/rooms"
               },
               {
-                title: "Central Kirkos Location",
-                description: "Walk to Meskel Square and the UNECA. Bole International Airport is a short 15-minute drive.",
+                title: "Next to Dembel Square",
+                description: "10 minutes from Bole Airport. Near Friendship Park, Unity Park, ECA, the Marriott, and the Hyatt Regency.",
                 icon: <MapPin size={32} />,
-                href: "/contact"
+                href: "/about"
               },
               {
-                title: "24/7 Security & Service",
-                description: "Round-the-clock security, daily housekeeping, concierge, and free private parking — every detail managed.",
+                title: "Secure Fenced Compound",
+                description: "Secure, fenced compound with reliable 24/7 security, free parking, concierge, and daily housekeeping.",
                 icon: <Shield size={32} />,
                 href: "/contact"
               }
@@ -172,8 +175,8 @@ export default function Home() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
-              <span className="text-accent font-bold tracking-[0.3em] uppercase text-xs mb-2 block">CURATED COLLECTION</span>
-              <h2 className="text-5xl md:text-6xl font-serif font-bold text-primary">Luxury Residences</h2>
+              <span className="text-accent font-bold tracking-[0.3em] uppercase text-xs mb-2 block">{roomsSectionTagline}</span>
+              <h2 className="text-5xl md:text-6xl font-serif font-bold text-primary">{roomsSectionTitle}</h2>
             </motion.div>
             <motion.div
               initial={{ opacity: 0, x: 50 }}
@@ -238,12 +241,14 @@ export default function Home() {
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {[
-                  "Gigabit Speed WiFi",
-                  "24/7 Security",
-                  "Free Private Parking",
+                  "High-Speed WiFi",
+                  "Free Parking",
                   "Fully Equipped Kitchens",
-                  "Steam & Sauna",
-                  "Daily Housekeeping"
+                  "Private Laundry Machine",
+                  "Spa & Wellness",
+                  "Concierge & Event Room",
+                  "Workspace & Iron/Board",
+                  "Non-Smoking Rooms"
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-4 bg-white/5 p-4 rounded-xl backdrop-blur-sm border border-white/10">
                     <CheckCircle className="text-accent shrink-0" size={24} />
@@ -275,6 +280,42 @@ export default function Home() {
                 />
               </div>
             </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Special Offers */}
+      <section className="py-24 bg-secondary/50 border-y border-border/50">
+        <div className="container-custom">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <span className="text-accent font-bold tracking-[0.3em] uppercase text-xs mb-2 block">VALUE FOR YOUR STAY</span>
+            <h2 className="text-5xl md:text-6xl font-serif font-bold text-primary">Special Offers</h2>
+          </motion.div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[
+              { label: "Weekly Rate", discount: "5% OFF", description: "Stay 7+ nights and save on your weekly booking" },
+              { label: "Monthly Rate", discount: "10% OFF", description: "Extended stays of 30+ nights at reduced rates" },
+              { label: "Yearly Special", discount: "30% OFF", description: "Long-term residents enjoy our best value" },
+              { label: "Early Bird", discount: "5% OFF", description: "Book 1 month in advance online and save" },
+            ].map((offer, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="bg-white p-8 rounded-2xl border border-border/50 text-center hover:shadow-2xl hover:border-primary/20 transition-all duration-500 group"
+              >
+                <div className="text-accent text-4xl font-serif font-bold mb-3 group-hover:scale-110 transition-transform duration-500">{offer.discount}</div>
+                <h3 className="text-xl font-serif font-bold text-primary mb-2">{offer.label}</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">{offer.description}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
