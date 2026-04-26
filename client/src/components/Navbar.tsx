@@ -54,22 +54,12 @@ export function Navbar() {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className={`fixed w-full z-50 transition-all duration-500 ${
-        scrolled 
-          ? "top-4 px-4" 
-          : "top-0"
-      }`}
+      className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-border/50 shadow-sm transition-all duration-500"
     >
       <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-primary text-white p-2 rounded z-[60]">
         Skip to main content
       </a>
-      <div 
-        className={`container-custom flex justify-between items-center transition-all duration-500 ${
-          scrolled 
-            ? "glass shadow-lg py-3 rounded-2xl max-w-6xl" 
-            : "bg-transparent py-6"
-        }`}
-      >
+      <div className="container-custom flex justify-between items-center py-4">
         {/* Logo */}
         <Link href="/">
           <div className="flex items-center gap-3 cursor-pointer group hover:scale-105 transition-transform duration-300">
@@ -95,30 +85,26 @@ export function Navbar() {
               <Link key={link.href} href={link.href}>
                 <span 
                   onMouseEnter={() => handlePrefetch(link.href)}
-                  className="relative group cursor-pointer text-sm font-medium tracking-widest transition-colors"
+                  className="relative group cursor-pointer text-xs font-semibold tracking-[0.2em] transition-colors uppercase text-foreground hover:text-accent"
                 >
-                  <span className={`${
-                    isActive(link.href) 
-                      ? "text-primary font-bold" 
-                      : scrolled ? "text-foreground" : "text-white md:text-white lg:text-white"
-                  } group-hover:text-accent transition-colors duration-300 uppercase`}>
+                  <span className={`${isActive(link.href) ? "text-primary" : ""}`}>
                     {link.label}
                   </span>
-                  <span className={`absolute -bottom-1 left-0 w-0 h-[1.5px] bg-accent transition-all duration-300 group-hover:w-full ${isActive(link.href) ? "w-full" : ""}`} />
+                  <span className={`absolute -bottom-2 left-0 w-0 h-[1px] bg-accent transition-all duration-300 group-hover:w-full ${isActive(link.href) ? "w-full" : ""}`} />
                 </span>
               </Link>
             ))}
           </div>
           
           <Link href="/rooms">
-            <Button className="btn-primary rounded-xl px-8 py-5 text-sm font-bold tracking-widest uppercase hover:scale-105 active:scale-95 transition-all duration-300 shadow-lg shadow-primary/20">
+            <Button className="btn-primary rounded-none shadow-none text-[10px] tracking-[0.2em] px-8 py-6 uppercase hover:bg-primary/90 transition-colors">
               Book Now
             </Button>
           </Link>
         </div>
 
         <button
-          className={`${scrolled ? "text-foreground" : "text-white"} md:hidden hover:scale-110 active:scale-90 transition-transform`}
+          className="text-foreground md:hidden hover:scale-110 active:scale-90 transition-transform"
           onClick={() => setIsOpen(!isOpen)}
           aria-expanded={isOpen}
           aria-label={isOpen ? "Close menu" : "Open menu"}

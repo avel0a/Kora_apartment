@@ -64,82 +64,76 @@ export default function Home() {
 
       <main id="main-content" className="flex-grow">
       {/* Hero Section */}
-      <section className="flex flex-col w-full">
-        {/* Full Image Block — Cinematic Ken Burns Effect */}
-        <div className="relative w-full h-[65vh] md:h-[75vh] 2xl:h-[80vh] overflow-hidden">
+      <section className="flex flex-col w-full relative">
+        <div className="relative w-full h-[85vh] overflow-hidden">
           <motion.img 
             src={heroImage}
             alt="Kora Hotel Suites Lobby" 
             className="w-full h-full object-cover"
             fetchPriority="high"
-            initial={{ scale: 1.15 }}
+            initial={{ scale: 1.05 }}
             animate={{ scale: 1 }}
-            transition={{ duration: 20, ease: "linear", repeat: Infinity, repeatType: "reverse" }}
+            transition={{ duration: 15, ease: "easeOut" }}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/5 pointer-events-none" />
-        </div>
-
-        {/* Text Block Completely Below the Image */}
-        <div className="w-full bg-background pt-16 pb-24 md:py-24 border-b border-border/50 shadow-sm relative z-10">
-          <motion.div 
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="text-center px-4 max-w-5xl mx-auto space-y-8"
-          >
-            <motion.h1 
-              variants={itemVariants} 
-              className={`${heroTitleSize} font-serif font-bold leading-[1.1] tracking-tight`}
-              style={{ color: heroTitleColor === "#ffffff" || heroTitleColor === "#fff" || heroTitleColor === "white" ? "inherit" : heroTitleColor }}
+          <div className="absolute inset-0 bg-black/20 pointer-events-none" />
+          
+          {/* Text Overlay on Image */}
+          <div className="absolute inset-0 flex items-center justify-center text-center z-10 px-4">
+            <motion.div 
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              className="max-w-4xl mx-auto space-y-8"
             >
-              <span className={heroTitleColor === "#ffffff" || heroTitleColor === "#fff" || heroTitleColor === "white" ? "text-primary" : ""}>
+              <motion.h1 
+                variants={itemVariants} 
+                className={`${heroTitleSize} font-serif font-normal leading-[1.1] tracking-wide text-white drop-shadow-md`}
+              >
                 {heroTitle}
-              </span>
-            </motion.h1>
-            
-            <motion.p variants={itemVariants} className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto font-light leading-relaxed">
-              {heroSubtitle}
-            </motion.p>
-            
-            <motion.div variants={itemVariants} className="pt-8 flex flex-col md:flex-row items-center justify-center gap-6">
-              <Link href="/rooms">
-                <Button size="lg" className="bg-primary text-white hover:bg-accent px-10 py-8 text-xl font-bold tracking-widest rounded-xl transition-all duration-500 shadow-xl shadow-primary/10 uppercase">
-                  Reserve Your Stay
-                </Button>
-              </Link>
-              <Link href="/gallery">
-                <Button size="lg" variant="outline" className="border-primary/20 text-primary hover:bg-primary/5 px-10 py-8 text-xl font-bold tracking-widest rounded-xl transition-all duration-500 uppercase">
-                  Explore Gallery
-                </Button>
-              </Link>
+              </motion.h1>
+              
+              <motion.p variants={itemVariants} className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto font-sans tracking-wide leading-relaxed drop-shadow">
+                {heroSubtitle}
+              </motion.p>
+              
+              <motion.div variants={itemVariants} className="pt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+                <Link href="/rooms">
+                  <Button size="lg" className="bg-primary hover:bg-primary/90 text-white rounded-none px-12 py-6 text-sm tracking-[0.2em] transition-colors uppercase border border-primary">
+                    Reserve Your Stay
+                  </Button>
+                </Link>
+                <Link href="/gallery">
+                  <Button size="lg" variant="outline" className="bg-transparent border-white text-white hover:bg-white hover:text-primary rounded-none px-12 py-6 text-sm tracking-[0.2em] transition-colors uppercase">
+                    Explore Gallery
+                  </Button>
+                </Link>
+              </motion.div>
             </motion.div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* Highlights Section */}
-      <section className="py-24 bg-secondary/50 border-y border-border/50">
+      <section className="py-24 bg-background">
         <div className="container-custom">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
             {[
               {
                 title: "Apartment-Style Suites",
                 description: "Fully furnished modern suites sized like apartments — with equipped kitchens, living rooms, private laundry, and space for short or long stays.",
-                icon: <HomeIcon size={32} />,
+                icon: <HomeIcon size={40} strokeWidth={1} />,
                 href: "/rooms"
               },
               {
                 title: "Next to Dembel Square",
                 description: "10 minutes from Bole Airport. Near Friendship Park, Unity Park, ECA, the Marriott, and the Hyatt Regency.",
-                icon: <MapPin size={32} />,
+                icon: <MapPin size={40} strokeWidth={1} />,
                 href: "/about"
               },
               {
                 title: "Secure Fenced Compound",
                 description: "Secure, fenced compound with reliable 24/7 security, free parking, concierge, and daily housekeeping.",
-                icon: <Shield size={32} />,
+                icon: <Shield size={40} strokeWidth={1} />,
                 href: "/contact"
               }
             ].map((item, i) => (
@@ -151,13 +145,12 @@ export default function Home() {
                 transition={{ delay: i * 0.1 }}
               >
                 <Link href={item.href}>
-                  <div className="group bg-white h-full p-10 rounded-2xl border border-border/50 hover:border-primary/20 text-center hover:shadow-2xl transition-all duration-500 cursor-pointer relative overflow-hidden">
-                    <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-bl-full transition-all duration-500 group-hover:bg-primary/10 group-hover:scale-125" />
-                    <div className="relative text-primary bg-primary/10 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all duration-500">
+                  <div className="group h-full text-center hover:-translate-y-2 transition-transform duration-500 cursor-pointer flex flex-col items-center">
+                    <div className="text-primary mb-6 group-hover:text-accent transition-colors duration-500">
                       {item.icon}
                     </div>
-                    <h3 className="text-2xl font-serif font-bold text-primary mb-4">{item.title}</h3>
-                    <p className="text-muted-foreground leading-relaxed text-lg">{item.description}</p>
+                    <h3 className="text-2xl font-serif font-normal text-foreground mb-4">{item.title}</h3>
+                    <p className="text-muted-foreground leading-relaxed text-sm tracking-wide font-sans">{item.description}</p>
                   </div>
                 </Link>
               </motion.div>
