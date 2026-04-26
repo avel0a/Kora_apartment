@@ -7,7 +7,8 @@ import { RoomCard } from "@/components/RoomCard";
 import { useRooms } from "@/hooks/use-rooms";
 import { useSettings, getSetting } from "@/hooks/use-settings";
 import { useSEO } from "@/hooks/use-seo";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
 
 export default function Home() {
   useSEO({
@@ -18,6 +19,24 @@ export default function Home() {
   const { data: rooms, isLoading } = useRooms();
   const { data: settings, isLoading: isSettingsLoading } = useSettings();
 
+  const { scrollYProgress } = useScroll();
+  const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+
+  const [currentHeroIndex, setCurrentHeroIndex] = useState(0);
+
+  const heroImage1 = settings ? getSetting(settings, "hero_image", "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80") : "";
+  const heroImage2 = settings ? getSetting(settings, "hero_image_2", "") : "";
+  const heroImage3 = settings ? getSetting(settings, "hero_image_3", "") : "";
+  const heroImages = [heroImage1, heroImage2, heroImage3].filter(Boolean);
+
+  useEffect(() => {
+    if (heroImages.length <= 1) return;
+    const interval = setInterval(() => {
+      setCurrentHeroIndex((prev) => (prev + 1) % heroImages.length);
+    }, 7000); // Crossfade every 7 seconds
+    return () => clearInterval(interval);
+  }, [heroImages.length]);
+
   if (isSettingsLoading) {
     return (
       <div className="min-h-screen bg-background flex flex-col items-center justify-center">
@@ -26,11 +45,11 @@ export default function Home() {
     );
   }
 
-  const heroImage = getSetting(settings, "hero_image", "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80");
   const heroTitle = getSetting(settings, "hero_title", "Your Home in the Heart of Addis Ababa");
   const heroTitleColor = getSetting(settings, "hero_title_color", "#D4AF37"); // Default to golden
   const heroTitleSize = getSetting(settings, "hero_title_size", "text-6xl md:text-8xl");
   const heroSubtitle = getSetting(settings, "hero_subtitle", "Luxury serviced apartments near Meskel Square — where modern comfort meets Ethiopian warmth.");
+
   const aboutImage = getSetting(settings, "about_image", "https://images.unsplash.com/photo-1559339352-11d035aa65de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1974&q=80");
   const aboutTitle = getSetting(settings, "about_title", "A Stay Defined by Comfort & Class");
   const aboutDesc = getSetting(settings, "about_description", "Whether you're visiting Addis Ababa for business or leisure, Kora Hotel Suites offers a perfect blend of traditional Ethiopian hospitality and modern luxury. Our 18 individually designed apartments in the Kirkos district provide the space, privacy, and amenities that discerning travelers deserve.");
@@ -64,18 +83,26 @@ export default function Home() {
 
       <main id="main-content" className="flex-grow">
       {/* Hero Section */}
-      <section className="flex flex-col w-full relative">
-        <div className="relative w-full h-[85vh] overflow-hidden">
-          <motion.img 
-            src={heroImage}
-            alt="Kora Hotel Suites Lobby" 
-            className="w-full h-full object-cover"
-            fetchPriority="high"
-            initial={{ scale: 1.05 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 15, ease: "easeOut" }}
-          />
-          <div className="absolute inset-0 bg-black/20 pointer-events-none" />
+      <section className="flex flex-col w-full relative bg-black">
+        <div className="relative w-full h-screen overflow-hidden">
+          <AnimatePresence>
+            <motion.img 
+              key={currentHeroIndex}
+              src={heroImages[currentHeroIndex]}
+              alt="Kora Hotel Suites Lobby" 
+              className="absolute inset-0 w-full h-full object-cover"
+              fetchPriority="high"
+              initial={{ scale: 1.08, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ 
+                opacity: { duration: 1.5, ease: "easeInOut" },
+                scale: { duration: 12, ease: "linear" }
+              }}
+              style={{ y: heroY }}
+            />
+          </AnimatePresence>
+          <div className="absolute inset-0 bg-black/30 pointer-events-none z-0" />
           
           {/* Text Overlay on Image */}
           <div className="absolute inset-0 flex items-center justify-center text-center z-10 px-4">
@@ -87,7 +114,8 @@ export default function Home() {
             >
               <motion.h1 
                 variants={itemVariants} 
-                className={`${heroTitleSize} font-serif font-normal leading-[1.1] tracking-wide text-white drop-shadow-md`}
+                className={`${heroTitleSize} font-serif font-normal leading-[1.1] tracking-wide drop-shadow-md`}
+                style={{ color: heroTitleColor }}
               >
                 {heroTitle}
               </motion.h1>

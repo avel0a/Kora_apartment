@@ -10,6 +10,7 @@ import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { CookieBanner } from "@/components/CookieBanner";
 import { AnimatePresence, motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
+import { InitialLoader } from "@/components/InitialLoader";
 
 // Lazy-loaded pages for code-splitting
 const Home = React.lazy(() => import("@/pages/Home"));
@@ -71,10 +72,17 @@ function Router() {
 }
 
 export default function App() {
+  const [showLoader, setShowLoader] = React.useState(true);
+
   return (
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
+          <AnimatePresence>
+            {showLoader && (
+              <InitialLoader onComplete={() => setShowLoader(false)} />
+            )}
+          </AnimatePresence>
           <Router />
           <WhatsAppButton />
           <CookieBanner />

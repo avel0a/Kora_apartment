@@ -1035,11 +1035,13 @@ function SiteSettingsTab() {
       {/* Hero Section */}
       <SettingsSection
         title="🏠 Page Headers — Home"
-        description="Background image and text styling shown entirely on the Home page Hero"
-        onSave={() => saveSection(["hero_image", "hero_title", "hero_title_color", "hero_title_size", "hero_subtitle"])}
+        description="Background images and text styling shown entirely on the Home page Hero"
+        onSave={() => saveSection(["hero_image", "hero_image_2", "hero_image_3", "hero_title", "hero_title_color", "hero_title_size", "hero_subtitle"])}
         isSaving={updateSettings.isPending}
       >
-        <SettingsImageField label="Hero Background Image" settingKey="hero_image" value={local.hero_image || ""} onChange={set} />
+        <SettingsImageField label="Hero Background Image 1" settingKey="hero_image" value={local.hero_image || ""} onChange={set} />
+        <SettingsImageField label="Hero Background Image 2 (Optional)" settingKey="hero_image_2" value={local.hero_image_2 || ""} onChange={set} />
+        <SettingsImageField label="Hero Background Image 3 (Optional)" settingKey="hero_image_3" value={local.hero_image_3 || ""} onChange={set} />
         <div className="space-y-2">
           <Label>Hero Title</Label>
           <Input value={local.hero_title || ""} onChange={e => set("hero_title", e.target.value)} placeholder="e.g. Luxury in the Heart of Addis Ababa" />

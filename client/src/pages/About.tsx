@@ -2,7 +2,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { useSettings, getSetting } from "@/hooks/use-settings";
 import { useSEO } from "@/hooks/use-seo";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { CheckCircle, MapPin, Shield, Clock, Users, Sparkles, Music, Palette, CalendarHeart, Heart } from "lucide-react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
@@ -33,6 +33,9 @@ export default function About() {
   const locationDesc = getSetting(settings, "about_location_desc", "The Kora Hotel Suites is a modern boutique hotel next to Dembel Square, 10 minutes' drive from the Bole International Airport of Addis Ababa. Its great location allows easy access to major commercial areas, shopping centres, and entertainment sites. Friendship Park, Unity Park, the Science and Technology Museum, the Economic Commission of Africa (ECA), the Marriott Hotel, and the Hyatt Regency Hotel are all conveniently in the vicinity.");
   const locationImage = getSetting(settings, "about_location_image", "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80");
 
+  const { scrollYProgress } = useScroll();
+  const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -55,8 +58,15 @@ export default function About() {
         <section className="relative pt-48 pb-24 overflow-hidden text-white bg-primary">
           {headerImage ? (
             <>
-              <div className="absolute inset-0 z-0">
-                <img src={headerImage} alt="" className="w-full h-full object-cover" fetchPriority="high" decoding="async" />
+              <div className="absolute inset-0 z-0 overflow-hidden">
+                <motion.img 
+                  src={headerImage} 
+                  alt="" 
+                  className="w-full h-full object-cover origin-center" 
+                  fetchPriority="high" 
+                  decoding="async" 
+                  style={{ y: heroY, scale: 1.1 }}
+                />
                 <div className="absolute inset-0 bg-black/60" />
               </div>
             </>
