@@ -322,6 +322,7 @@ function RoomDialog({ room }: { room?: Room }) {
       size: room?.size || "",
       bedType: room?.bedType || "",
       imageUrl: room?.imageUrl || "",
+      youtubeUrl: room?.youtubeUrl || "",
       amenities: room?.amenities || [],
     },
   });
@@ -605,6 +606,20 @@ function RoomDialog({ room }: { room?: Room }) {
                       <img src={field.value} alt="Preview" className="object-cover w-full h-full" />
                     </div>
                   )}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="youtubeUrl"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>YouTube Video URL (Optional)</FormLabel>
+                  <FormControl>
+                    <Input {...field} value={field.value || ''} placeholder="e.g. https://www.youtube.com/watch?v=..." />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}

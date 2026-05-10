@@ -14,6 +14,7 @@ export const rooms = pgTable("rooms", {
   size: text("size"), // e.g., "45m²"
   bedType: text("bed_type"), // e.g., "King Size"
   imageUrl: text("image_url").notNull(),
+  youtubeUrl: text("youtube_url"), // Optional YouTube video link
   amenities: text("amenities").array(), // e.g., ["Free WiFi", "Bathtub"]
 });
 

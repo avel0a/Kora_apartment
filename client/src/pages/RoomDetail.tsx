@@ -115,7 +115,7 @@ export default function RoomDetail() {
           </motion.div>
         </AnimatePresence>
         
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/80 z-10" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60 z-10 pointer-events-none" />
         
         {/* Slideshow Navigation */}
         {allImages.length > 1 && (
@@ -167,8 +167,57 @@ export default function RoomDetail() {
         <div className="container-custom">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-20">
             
-            {/* Suite Details */}
+            {/* Suite Details and Gallery */}
             <div className="lg:col-span-2 space-y-20">
+              {/* Photo & Video Gallery */}
+              {(allImages.length > 0 || room.youtubeUrl) && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                >
+                  <h2 className="text-3xl font-serif font-bold text-primary mb-8">Suite Gallery & Video</h2>
+                  
+                  {room.youtubeUrl && (
+                    <div className="w-full aspect-video rounded-2xl overflow-hidden shadow-lg mb-8 bg-black">
+                      {(() => {
+                        const match = room.youtubeUrl.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/);
+                        const videoId = (match && match[2].length === 11) ? match[2] : null;
+                        if (videoId) {
+                          return (
+                            <iframe 
+                              width="100%" 
+                              height="100%" 
+                              src={`https://www.youtube.com/embed/${videoId}`}
+                              title="YouTube video player" 
+                              frameBorder="0" 
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                              allowFullScreen>
+                            </iframe>
+                          );
+                        }
+                        return <div className="text-white p-4">Invalid YouTube URL</div>;
+                      })()}
+                    </div>
+                  )}
+
+                  {allImages.length > 0 && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {allImages.map((img, idx) => (
+                        <div key={idx} className={`relative rounded-2xl overflow-hidden shadow-lg group ${idx === 0 && !room.youtubeUrl ? 'md:col-span-2 aspect-[21/9]' : 'aspect-video'}`}>
+                          <img 
+                            src={img.url} 
+                            alt={img.caption || `${room.name} view ${idx + 1}`} 
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                          />
+                          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 pointer-events-none" />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </motion.div>
+              )}
+
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -233,6 +282,7 @@ export default function RoomDetail() {
                   )}
                 </div>
               </motion.div>
+
             </div>
 
             {/* Booking Sidebar */}
