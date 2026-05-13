@@ -220,6 +220,15 @@ export async function registerRoutes(
     res.json(contacts);
   });
 
+  apiRouter.get("/debug-session", isAuthenticated, (req: any, res) => {
+    res.json({
+      isAuthenticated: req.isAuthenticated(),
+      user: req.user ? { id: req.user.id, username: req.user.username } : null,
+      sessionID: req.sessionID,
+      session: req.session
+    });
+  });
+
   apiRouter.post("/contact", async (req, res) => {
     try {
       const input = api.contact.create.input.parse(req.body);

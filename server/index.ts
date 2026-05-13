@@ -14,15 +14,46 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const httpServer = createServer(app);
 
-// Global error handlers for debugging
-process.on("unhandledRejection", (reason, p) => {
+// ──────────────────────────────────────────────
+// Graceful shutdown — prevents 503 errors on cPanel
+// ──────────────────────────────────────────────
+let isShuttingDown = false;
+
+const gracefulShutdown = async (signal: string) => {
+  if (isShuttingDown) return; // prevent double-shutdown
+  isShuttingDown = true;
+  console.log(`[shutdown] Received ${signal}. Shutting down gracefully...`);
+
+  // 1. Stop accepting new connections
+  httpServer.close(() => {
+    console.log("[shutdown] HTTP server closed.");
+  });
+
+  // 2. Close the database (removes PGlite lock file)
+  try {
+    const { closeDb } = await import("./db");
+    await closeDb();
+  } catch (e) {
+    console.error("[shutdown] Error closing database:", e);
+  }
+
+  console.log("[shutdown] Cleanup complete. Exiting.");
+  process.exit(0);
+};
+
+// cPanel Passenger sends SIGTERM when idling your app
+process.on("SIGTERM", () => gracefulShutdown("SIGTERM"));
+process.on("SIGINT", () => gracefulShutdown("SIGINT"));
+
+// Global error handlers — still shut down cleanly on crashes
+process.on("unhandledRejection", async (reason, p) => {
   console.error("Unhandled Rejection at:", p, "reason:", reason);
-  process.exit(1);
+  await gracefulShutdown("unhandledRejection");
 });
 
-process.on("uncaughtException", (err) => {
+process.on("uncaughtException", async (err) => {
   console.error("Uncaught Exception:", err);
-  process.exit(1);
+  await gracefulShutdown("uncaughtException");
 });
 
 declare module "http" {

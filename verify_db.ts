@@ -3,7 +3,7 @@ import { drizzle } from "drizzle-orm/pglite";
 import * as schema from "./shared/schema";
 
 async function verify() {
-  const client = new PGlite("./.drizzle/pglite");
+  const client = new PGlite("./db-storage");
   const db = drizzle(client, { schema });
 
   const allBookings = await db.select().from(schema.bookings);
