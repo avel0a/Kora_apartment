@@ -13,16 +13,15 @@ async function diagnose() {
   });
   
   console.log("   Login status:", loginRes.status);
-  console.log("   ALL Login Headers:");
-  for (const [key, value] of loginRes.headers.entries()) {
-    console.log(`     ${key}: ${value}`);
-  }
   
   const setCookies = loginRes.headers.getSetCookie?.() || [];
-  console.log("   Set-Cookie headers (getSetCookie):", setCookies);
+  const sessionCookie = setCookies.find(c => c.startsWith('connect.sid='))?.split(';')[0];
+  console.log("   Session Cookie:", sessionCookie);
 
-  console.log("\n3. Testing fallback /api/bookings (NO AUTH)...");
-  const fallbackRes = await fetch(`${baseUrl}/api/bookings`);
+  const authHeaders = sessionCookie ? { "Cookie": sessionCookie } : {};
+
+  console.log("\n3. Testing /api/admin/bookings (AUTH REQUIRED)...");
+  const fallbackRes = await fetch(`${baseUrl}/api/admin/bookings`, { headers: authHeaders });
   console.log("   Status:", fallbackRes.status);
   if (fallbackRes.ok) {
     const data = await fallbackRes.json();
@@ -33,10 +32,12 @@ async function diagnose() {
   }
 
   console.log("\n4. Checking server environment...");
-  const debugSessionRes = await fetch(`${baseUrl}/api/debug-session`);
+  const debugSessionRes = await fetch(`${baseUrl}/api/debug-session`, { headers: authHeaders });
   if (debugSessionRes.ok) {
      const debugInfo = await debugSessionRes.json();
      console.log("   Debug Session Info:", JSON.stringify(debugInfo, null, 2));
+  } else {
+     console.log("   Failed to get debug session, status:", debugSessionRes.status);
   }
 }
 

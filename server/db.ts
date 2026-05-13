@@ -15,20 +15,23 @@ if (!process.env.DATABASE_URL) {
   const dbPath = path.resolve(process.cwd(), "db-storage");
   const lockFile = path.resolve(dbPath, "postmaster.pid");
 
+  if (!fs.existsSync(dbPath)) {
+    fs.mkdirSync(dbPath, { recursive: true });
+  }
+
   // Clear stale lock file if it exists to prevent "Aborted" error on Windows
   if (fs.existsSync(lockFile)) {
     try {
+      console.log(`[db] Removing stale lock file: ${lockFile}`);
       fs.unlinkSync(lockFile);
     } catch (e) {
-      console.error(`Failed to remove lock file: ${e}`);
+      console.error(`[db] Failed to remove lock file (it may be in use): ${e}`);
     }
   }
 
   // Use a dedicated folder for persistence
   const client = new PGlite(dbPath);
-
   db = drizzlePglite(client, { schema });
-  // pool is not available in PGlite mode
 } else {
   pool = new Pool({ connectionString: process.env.DATABASE_URL });
   db = drizzlePg(pool, { schema });
