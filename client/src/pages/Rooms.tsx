@@ -49,32 +49,37 @@ export default function Rooms() {
           >
             <span className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-4 block">{headerTagline}</span>
             <h1 className="text-5xl md:text-7xl font-serif font-bold mb-6">{headerTitle}</h1>
-            <p className="text-xl text-white/70 max-w-2xl mx-auto font-light leading-relaxed">
+            <p className="text-xl text-white/85 max-w-2xl mx-auto font-normal leading-relaxed">
               {headerSubtitle}
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* Room Grid */}
+      {/* Room Listings */}
       <section className="py-24 flex-grow bg-secondary/20">
         <div className="container-custom">
           {isLoading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-              {[1, 2, 3, 4, 5, 6].map((n) => (
-                <div key={n} className="bg-white rounded-2xl overflow-hidden border border-border/50 animate-pulse">
-                  <div className="aspect-[4/5] bg-muted" />
-                  <div className="p-8 space-y-4">
-                    <div className="h-6 bg-muted rounded-lg w-3/4" />
-                    <div className="space-y-2">
-                      <div className="h-4 bg-muted rounded w-full" />
-                      <div className="h-4 bg-muted rounded w-5/6" />
+            <div className="space-y-12">
+              {[1, 2, 3].map((n) => (
+                <div key={n} className="bg-white overflow-hidden border border-border/50 animate-pulse">
+                  <div className="grid grid-cols-1 lg:grid-cols-2">
+                    <div className="aspect-[4/3] bg-muted" />
+                    <div className="p-12 space-y-6">
+                      <div className="h-8 bg-muted rounded-lg w-3/4" />
+                      <div className="h-6 bg-muted rounded-lg w-1/2" />
+                      <div className="space-y-2">
+                        <div className="h-4 bg-muted rounded w-full" />
+                        <div className="h-4 bg-muted rounded w-5/6" />
+                        <div className="h-4 bg-muted rounded w-4/6" />
+                      </div>
+                      <div className="grid grid-cols-3 gap-3 pt-2">
+                        <div className="h-6 bg-muted rounded" />
+                        <div className="h-6 bg-muted rounded" />
+                        <div className="h-6 bg-muted rounded" />
+                      </div>
+                      <div className="h-14 bg-muted rounded w-48" />
                     </div>
-                    <div className="grid grid-cols-2 gap-4 pt-2">
-                      <div className="h-10 bg-muted rounded-lg" />
-                      <div className="h-10 bg-muted rounded-lg" />
-                    </div>
-                    <div className="h-12 bg-muted rounded-xl" />
                   </div>
                 </div>
               ))}
@@ -84,17 +89,17 @@ export default function Rooms() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"
+              className="space-y-16"
             >
               {rooms?.map((room, i) => (
                 <motion.div
                   key={room.id}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
+                  transition={{ delay: i * 0.15 }}
                 >
-                  <RoomCard room={room} />
+                  <RoomCard room={room} horizontal />
                 </motion.div>
               ))}
             </motion.div>

@@ -35,6 +35,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { z } from "zod";
 import { useSettings, useUpdateSettings, getSetting, type SettingsMap } from "@/hooks/use-settings";
+import { AMENITY_ICONS, AMENITY_ICON_KEYS, getAmenityIcon } from "@/lib/amenity-icons";
 
 export default function AdminPage() {
   const { user, logoutMutation } = useAuth();
@@ -442,9 +443,14 @@ function RoomDialog({ room }: { room?: Room }) {
                             <SelectTrigger className="w-[160px]">
                               <SelectValue />
                             </SelectTrigger>
-                            <SelectContent>
-                              {["Wifi", "TV", "Coffee", "Bathtub", "AC", "Desk", "Wind", "Wine", "CheckCircle"].map(i => (
-                                <SelectItem key={i} value={i}>{i}</SelectItem>
+                            <SelectContent className="max-h-[300px]">
+                              {AMENITY_ICON_KEYS.map(i => (
+                                <SelectItem key={i} value={i}>
+                                  <span className="flex items-center gap-2">
+                                    <span className="text-primary shrink-0">{getAmenityIcon(i, 16)}</span>
+                                    <span>{AMENITY_ICONS[i].label}</span>
+                                  </span>
+                                </SelectItem>
                               ))}
                             </SelectContent>
                           </Select>

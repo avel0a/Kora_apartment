@@ -120,7 +120,7 @@ export default function Home() {
                 {heroTitle}
               </motion.h1>
               
-              <motion.p variants={itemVariants} className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto font-sans tracking-wide leading-relaxed drop-shadow">
+              <motion.p variants={itemVariants} className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto font-sans font-medium tracking-wide leading-relaxed drop-shadow">
                 {heroSubtitle}
               </motion.p>
               
@@ -178,7 +178,7 @@ export default function Home() {
                       {item.icon}
                     </div>
                     <h3 className="text-2xl font-serif font-normal text-foreground mb-4">{item.title}</h3>
-                    <p className="text-muted-foreground leading-relaxed text-sm tracking-wide font-sans">{item.description}</p>
+                    <p className="text-muted-foreground leading-relaxed text-sm tracking-wide font-sans font-medium">{item.description}</p>
                   </div>
                 </Link>
               </motion.div>
@@ -256,7 +256,7 @@ export default function Home() {
                   <>{aboutTitle.split("&")[0]}<br/><span className="text-accent italic font-normal">&{aboutTitle.split("&")[1]}</span></>
                 ) : aboutTitle}
               </h2>
-              <p className="text-white/70 text-xl font-light leading-relaxed max-w-xl">
+              <p className="text-white/80 text-xl font-normal leading-relaxed max-w-xl">
                 {aboutDesc}
               </p>
               
@@ -334,7 +334,7 @@ export default function Home() {
               >
                 <div className="text-accent text-4xl font-serif font-bold mb-3 group-hover:scale-110 transition-transform duration-500">{offer.discount}</div>
                 <h3 className="text-xl font-serif font-bold text-primary mb-2">{offer.label}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">{offer.description}</p>
+                <p className="text-muted-foreground text-sm font-medium leading-relaxed">{offer.description}</p>
               </motion.div>
             ))}
           </div>

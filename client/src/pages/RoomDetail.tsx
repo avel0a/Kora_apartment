@@ -5,10 +5,11 @@ import { Footer } from "@/components/Footer";
 import { useRoom } from "@/hooks/use-rooms";
 import { useRoomImages } from "@/hooks/use-room-images";
 import { BookingForm } from "@/components/BookingForm";
-import { Loader2, Wifi, Tv, Coffee, Bath, Wind, Layout, User, ChevronLeft, ChevronRight, CheckCircle, Maximize, Bed, Wine } from "lucide-react";
+import { Loader2, User, ChevronLeft, ChevronRight, Maximize, Bed, Wind } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useSEO } from "@/hooks/use-seo";
+import { getAmenityIcon, parseAmenity } from "@/lib/amenity-icons";
 
 export default function RoomDetail() {
   const [, params] = useRoute<{slug: string}>("/rooms/:slug");
@@ -71,26 +72,7 @@ export default function RoomDetail() {
     );
   }
 
-  const amenityIcons: Record<string, React.ReactNode> = {
-    "Wifi": <Wifi size={20} />,
-    "TV": <Tv size={20} />,
-    "Coffee": <Coffee size={20} />,
-    "Bathtub": <Bath size={20} />,
-    "AC": <Wind size={20} />,
-    "Desk": <Layout size={20} />,
-    "Wind": <Wind size={20} />,
-    "Wine": <Wine size={20} />,
-    "CheckCircle": <CheckCircle size={20} />
-  };
 
-  const parseAmenity = (amenity: string) => {
-    if (amenity.includes(":")) {
-      const [iconName, ...textParts] = amenity.split(":");
-      return { icon: iconName.trim(), text: textParts.join(":").trim() };
-    }
-    // Fallback for older string-only amenities
-    return { icon: amenity.split(" ")[0], text: amenity };
-  };
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -153,7 +135,7 @@ export default function RoomDetail() {
                    <span className="text-white/60 text-sm uppercase tracking-widest font-bold">/ night</span>
                 </div>
                 <div className="h-8 w-[1px] bg-white/20" />
-                <span className="text-white/80 font-light flex items-center gap-2">
+                <span className="text-white/80 font-normal flex items-center gap-2">
                   <Maximize size={18} className="text-accent" /> {room.size || "Standard"} Living Space
                 </span>
               </div>
@@ -224,7 +206,7 @@ export default function RoomDetail() {
                 viewport={{ once: true }}
               >
                 <h2 className="text-4xl font-serif font-bold text-primary mb-8">Suite Details</h2>
-                <p className="text-muted-foreground leading-relaxed text-xl font-light">
+                <p className="text-muted-foreground leading-relaxed text-xl font-normal">
                   {room.description}
                 </p>
               </motion.div>
@@ -264,7 +246,7 @@ export default function RoomDetail() {
                       return (
                         <div key={idx} className="flex items-center gap-4 p-5 bg-secondary/20 rounded-2xl border border-transparent hover:border-primary/10 hover:bg-white hover:shadow-xl transition-all duration-300">
                           <div className="bg-primary/5 p-3 rounded-xl text-primary">
-                            {amenityIcons[icon] || <CheckCircle size={20} />}
+                            {getAmenityIcon(icon, 20)}
                           </div>
                           <span className="text-sm font-bold tracking-wide text-primary/80">{text}</span>
                         </div>
@@ -274,7 +256,7 @@ export default function RoomDetail() {
                     ["Gigabit WiFi", "65\" Smart TV", "Climate Control", "Artisan Coffee"].map((item, i) => (
                       <div key={i} className="flex items-center gap-4 p-5 bg-secondary/20 rounded-2xl">
                          <div className="bg-primary/5 p-3 rounded-xl text-primary">
-                           <CheckCircle size={20} />
+                           {getAmenityIcon("CheckCircle", 20)}
                          </div>
                          <span className="text-sm font-bold tracking-wide text-primary/80">{item}</span>
                       </div>

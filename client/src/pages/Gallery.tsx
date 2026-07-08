@@ -65,7 +65,7 @@ export default function Gallery() {
           >
             <span className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-4 block">{headerTagline}</span>
             <h1 className="text-5xl md:text-7xl font-serif font-bold mb-6">{headerTitle}</h1>
-            <p className="text-xl text-white/70 max-w-2xl mx-auto font-light leading-relaxed">
+            <p className="text-xl text-white/85 max-w-2xl mx-auto font-normal leading-relaxed">
               {headerSubtitle}
             </p>
           </motion.div>

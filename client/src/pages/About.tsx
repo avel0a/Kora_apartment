@@ -87,7 +87,7 @@ export default function About() {
               <p className="text-3xl md:text-4xl text-accent/80 font-serif italic mb-6">
                 {headerSubtitle}
               </p>
-              <p className="text-lg text-white/60 max-w-2xl mx-auto font-light leading-relaxed">
+              <p className="text-lg text-white/80 max-w-2xl mx-auto font-normal leading-relaxed">
                 Named after the kora — a revered West African harp — our hotel is crafted to create harmony between tradition and modernity, comfort and culture.
               </p>
             </motion.div>
@@ -108,10 +108,10 @@ export default function About() {
                   <span className="text-accent font-bold tracking-[0.3em] uppercase text-xs mb-3 block">The Kora Instrument</span>
                   <h2 className="text-4xl md:text-5xl font-serif font-bold text-primary leading-tight">{storyTitle}</h2>
                 </div>
-                <p className="text-lg text-muted-foreground font-light leading-relaxed">
+                <p className="text-lg text-muted-foreground font-normal leading-relaxed">
                   {storyP1}
                 </p>
-                <p className="text-lg text-muted-foreground font-light leading-relaxed">
+                <p className="text-lg text-muted-foreground font-normal leading-relaxed">
                   {storyP2}
                 </p>
                 <p className="text-lg text-primary font-serif italic leading-relaxed border-l-4 border-accent pl-6">
@@ -160,7 +160,7 @@ export default function About() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.1 }}
-                className="text-xl text-white/70 font-light leading-relaxed max-w-3xl mx-auto"
+                className="text-xl text-white/80 font-normal leading-relaxed max-w-3xl mx-auto"
               >
                 {philosophyP1}
               </motion.p>
@@ -169,7 +169,7 @@ export default function About() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.2 }}
-                className="text-xl text-white/70 font-light leading-relaxed max-w-3xl mx-auto"
+                className="text-xl text-white/80 font-normal leading-relaxed max-w-3xl mx-auto"
               >
                 {philosophyP2}
               </motion.p>
@@ -222,7 +222,7 @@ export default function About() {
                 >
                   <div className="text-accent mb-5">{item.icon}</div>
                   <h3 className="text-xl font-serif font-bold mb-3">{item.title}</h3>
-                  <p className="text-white/60 font-light leading-relaxed">{item.description}</p>
+                  <p className="text-white/80 font-normal leading-relaxed">{item.description}</p>
                 </motion.div>
               ))}
             </motion.div>
@@ -244,7 +244,7 @@ export default function About() {
                   <CalendarHeart size={32} />
                 </div>
                 <h3 className="text-3xl font-serif font-bold text-primary">Events & Gatherings</h3>
-                <p className="text-lg text-muted-foreground font-light leading-relaxed">
+                <p className="text-lg text-muted-foreground font-normal leading-relaxed">
                   Our small and medium-sized spaces are geared for intimate and private gatherings and celebrations — birthdays, graduations, business meetings, and more. Let us help you create memorable moments in an elegant setting.
                 </p>
               </motion.div>
@@ -261,7 +261,7 @@ export default function About() {
                   <Heart size={32} />
                 </div>
                 <h3 className="text-3xl font-serif font-bold text-primary">Wellness Center</h3>
-                <p className="text-lg text-muted-foreground font-light leading-relaxed">
+                <p className="text-lg text-muted-foreground font-normal leading-relaxed">
                   At Kora Hotel, your comfort and relaxation are our top priority. Immerse yourself in the soothing atmosphere of our spa — the perfect retreat for unwinding and revitalizing your senses after a long day in the city.
                 </p>
               </motion.div>
@@ -300,7 +300,7 @@ export default function About() {
                   <span className="text-accent font-bold tracking-[0.3em] uppercase text-xs mb-3 block">Where We Are</span>
                   <h2 className="text-4xl md:text-5xl font-serif font-bold text-primary leading-tight">{locationTitle}</h2>
                 </div>
-                <p className="text-lg text-muted-foreground font-light leading-relaxed">
+                <p className="text-lg text-muted-foreground font-normal leading-relaxed">
                   {locationDesc}
                 </p>
 
@@ -338,7 +338,7 @@ export default function About() {
               className="max-w-2xl mx-auto space-y-8"
             >
               <h2 className="text-4xl md:text-5xl font-serif font-bold text-primary">Ready to Experience Kora?</h2>
-              <p className="text-lg text-muted-foreground font-light leading-relaxed italic">
+              <p className="text-lg text-muted-foreground font-normal leading-relaxed italic">
                 Elegance inspired by heritage. Luxury in harmony with culture. Crafted with soul. Styled for serenity.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-4">

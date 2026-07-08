@@ -104,7 +104,7 @@ export default function Contact() {
           >
             <span className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-4 block">{headerTagline}</span>
             <h1 className="text-5xl md:text-7xl font-serif font-bold mb-6">{headerTitle}</h1>
-            <p className="text-xl text-white/70 max-w-2xl mx-auto font-light leading-relaxed">
+            <p className="text-xl text-white/85 max-w-2xl mx-auto font-normal leading-relaxed">
               {headerSubtitle}
             </p>
           </motion.div>
@@ -124,7 +124,7 @@ export default function Contact() {
             >
               <div>
                 <h2 className="text-4xl font-serif font-bold text-primary mb-6 text-gradient inline-block">Contact Information</h2>
-                <p className="text-muted-foreground text-lg leading-relaxed font-light">
+                <p className="text-muted-foreground text-lg leading-relaxed font-normal">
                   Located next to Dembel Square, Kora Hotel Suites is just 10 minutes from Bole International Airport. Nearby landmarks include Friendship Park, Unity Park, the ECA, the Marriott Hotel, and the Hyatt Regency.
                 </p>
               </div>
