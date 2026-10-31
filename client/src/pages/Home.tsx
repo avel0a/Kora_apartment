@@ -319,10 +319,10 @@ export default function Home() {
           </motion.div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
-              { label: "Weekly Rate", discount: "5% OFF", description: "Stay 7+ nights and save on your weekly booking" },
-              { label: "Monthly Rate", discount: "10% OFF", description: "Extended stays of 30+ nights at reduced rates" },
-              { label: "Yearly Special", discount: "30% OFF", description: "Long-term residents enjoy our best value" },
-              { label: "Early Bird", discount: "5% OFF", description: "Book 1 month in advance online and save" },
+              { label: "Book Direct", discount: "Best Rate", description: "Guaranteed best rate, direct communication, and flexible modifications" },
+              { label: "Weekly Stay", discount: "5% OFF", description: "Stay longer and save more on bookings of 7+ nights" },
+              { label: "Monthly Stay", discount: "10% OFF", description: "Extended stays of 30+ nights at reduced rates" },
+              { label: "Early Bird", discount: "5% OFF", description: "Book online at least 30 days in advance and save" },
             ].map((offer, i) => (
               <motion.div
                 key={i}

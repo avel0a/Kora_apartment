@@ -4,12 +4,13 @@ import compression from "compression";
 import { registerRoutes } from "./routes";
 import { serveStatic } from "./static";
 import { createServer } from "http";
+import { seedDatabase } from "./seed";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// In CommonJS/bundled environments, __dirname is already available globally
+const currentDir = typeof __dirname !== "undefined" ? __dirname : process.cwd();
 
 const app = express();
 const httpServer = createServer(app);
@@ -124,11 +125,20 @@ app.use((req, res, next) => {
   try {
     // Initialize DB and run migrations if PGlite
     const { db } = await import("./db");
+    const { sql } = await import("drizzle-orm");
+    try {
+      await db.execute(sql`ALTER TABLE rooms ADD COLUMN IF NOT EXISTS sort_order INTEGER NOT NULL DEFAULT 0;`);
+    } catch (e) {
+      console.log("[db] Note on adding sort_order column:", e);
+    }
+
     if (!process.env.DATABASE_URL) {
       console.log("Running PGlite migrations (in-memory)...");
       const { migrate } = await import("drizzle-orm/pglite/migrator");
       await migrate(db, { migrationsFolder: "migrations" });
       console.log("Migrations applied successfully!");
+      
+      await seedDatabase();
     }
     await registerRoutes(httpServer, app);
   } catch (err) {

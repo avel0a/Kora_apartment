@@ -3,7 +3,7 @@ import { Footer } from "@/components/Footer";
 import { useSettings, getSetting } from "@/hooks/use-settings";
 import { useSEO } from "@/hooks/use-seo";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { CheckCircle, MapPin, Shield, Clock, Users, Sparkles, Music, Palette, CalendarHeart, Heart } from "lucide-react";
+import { CheckCircle, MapPin, Shield, Clock, Users, Sparkles, Music, Palette, CalendarHeart, Heart, Tag, ArrowUpCircle, Gift, Star } from "lucide-react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 
@@ -24,6 +24,7 @@ export default function About() {
   const storyP1 = getSetting(settings, "about_story_p1", "The Kora Hotel Suites takes its name from the kora — a timeless West African harp known for its graceful form and rich, resonant sound. Crafted with care and played with soul, the kora embodies balance, beauty, and tradition. These are the values we bring to life within our walls.");
   const storyP2 = getSetting(settings, "about_story_p2", "Throughout the hotel, you'll discover original pieces of African artifacts. Each piece is more than art; it is a tribute to identity, crafted with soul and intention. Here, every suite is a private retreat — designed with subtle luxury and layered with meaning. The Kora is not simply a place to stay. It is a place to feel, reflect, and remember.");
   const storyImage = getSetting(settings, "about_story_image", "https://images.unsplash.com/photo-1559339352-11d035aa65de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1974&q=80");
+  const storyQuote = getSetting(settings, "about_story_quote", "Here, you don't just hear the rhythm of Africa — you live it.");
 
   const philosophyTitle = getSetting(settings, "about_philosophy_title", "Where Your Journey Finds Its Rhythm");
   const philosophyP1 = getSetting(settings, "about_philosophy_p1", "At The Kora, every suite is thoughtfully composed — where modern comfort meets cultural depth, and every detail hums in quiet harmony. Like the instrument that inspires us, we believe true luxury lies in subtlety, warmth, and unforgettable resonance.");
@@ -114,9 +115,11 @@ export default function About() {
                 <p className="text-lg text-muted-foreground font-normal leading-relaxed">
                   {storyP2}
                 </p>
+                {storyQuote && (
                 <p className="text-lg text-primary font-serif italic leading-relaxed border-l-4 border-accent pl-6">
-                  "Here, you don't just hear the rhythm of Africa — you live it."
+                  "{storyQuote}"
                 </p>
+                )}
               </motion.div>
 
               <motion.div
@@ -243,9 +246,9 @@ export default function About() {
                 <div className="text-primary bg-primary/10 w-16 h-16 rounded-2xl flex items-center justify-center">
                   <CalendarHeart size={32} />
                 </div>
-                <h3 className="text-3xl font-serif font-bold text-primary">Events & Gatherings</h3>
+                <h3 className="text-3xl font-serif font-bold text-primary">Meetings & Events</h3>
                 <p className="text-lg text-muted-foreground font-normal leading-relaxed">
-                  Our small and medium-sized spaces are geared for intimate and private gatherings and celebrations — birthdays, graduations, business meetings, and more. Let us help you create memorable moments in an elegant setting.
+                  Our small and medium-sized event spaces are perfect for intimate gatherings, private celebrations, and business meetings. Whether you are planning a birthday, graduation, family event, or corporate meeting, Kora Hotel offers a comfortable and professional setting for every occasion.
                 </p>
               </motion.div>
 
@@ -260,9 +263,9 @@ export default function About() {
                 <div className="text-primary bg-primary/10 w-16 h-16 rounded-2xl flex items-center justify-center">
                   <Heart size={32} />
                 </div>
-                <h3 className="text-3xl font-serif font-bold text-primary">Wellness Center</h3>
+                <h3 className="text-3xl font-serif font-bold text-primary">The Spa</h3>
                 <p className="text-lg text-muted-foreground font-normal leading-relaxed">
-                  At Kora Hotel, your comfort and relaxation are our top priority. Immerse yourself in the soothing atmosphere of our spa — the perfect retreat for unwinding and revitalizing your senses after a long day in the city.
+                  At Kora Hotel, your well-being comes first. Designed as a sanctuary of relaxation and renewal, our spa offers a peaceful retreat where you can unwind, recharge, and restore balance to your body and mind. Enjoy a tranquil atmosphere dedicated to your comfort and rejuvenation.
                 </p>
               </motion.div>
             </div>
@@ -325,6 +328,97 @@ export default function About() {
                 </div>
               </motion.div>
             </div>
+          </div>
+        </section>
+
+        {/* Things To Do */}
+        <section className="py-24 md:py-32 bg-background">
+          <div className="container-custom">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <span className="text-accent font-bold tracking-[0.3em] uppercase text-xs mb-2 block">EXPLORE ADDIS ABABA</span>
+              <h2 className="text-4xl md:text-5xl font-serif font-bold text-primary">Things to Do</h2>
+            </motion.div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {[
+                { name: "Zoological Museum", desc: "Explore Ethiopia's diverse wildlife through fascinating exhibits and scientific collections." },
+                { name: "Entoto Natural Park", desc: "Enjoy hiking, cycling, and breathtaking views of Addis Ababa in a beautiful natural setting." },
+                { name: "Holy Trinity Cathedral", desc: "Visit one of Ethiopia's most important religious landmarks and the resting place of Emperor Haile Selassie." },
+                { name: "Red Terror Museum", desc: "Learn about Ethiopia's recent history through powerful exhibits commemorating the victims of the Derg regime." },
+                { name: "National Museum", desc: "Discover Ethiopia's rich cultural heritage, including the famous fossil remains of Lucy." },
+                { name: "St. George Cathedral", desc: "Admire the unique octagonal architecture and historical significance of this iconic cathedral." },
+                { name: "Ethnological Museum", desc: "Explore Ethiopia's diverse cultures, traditions, and history within the former palace of Emperor Haile Selassie." },
+                { name: "Merkato", desc: "Experience one of Africa's largest open-air markets, offering everything from spices and textiles to local crafts." }
+              ].map((item, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 }}
+                  className="bg-secondary/20 p-8 rounded-2xl border border-border/50 hover:border-primary/20 hover:shadow-lg transition-all duration-300"
+                >
+                  <MapPin className="text-accent mb-4 w-8 h-8" />
+                  <h3 className="text-xl font-serif font-bold text-primary mb-3">{item.name}</h3>
+                  <p className="text-sm text-muted-foreground font-normal leading-relaxed">{item.desc}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Loyalty Program */}
+        <section className="py-24 md:py-32 bg-primary text-white">
+          <div className="container-custom">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <span className="text-accent font-bold tracking-[0.3em] uppercase text-xs mb-2 block">EXCLUSIVE REWARDS</span>
+              <h2 className="text-4xl md:text-5xl font-serif font-bold text-white mb-6">Kora Hotel Loyalty Program</h2>
+              <p className="text-white/80 max-w-2xl mx-auto text-lg">Join the Kora Hotel Loyalty Program and enjoy exclusive privileges designed to make every stay more rewarding.</p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+              {[
+                { icon: Tag, text: "10% discount on room rates" },
+                { icon: Clock, text: "Priority early check-in (subject to availability)" },
+                { icon: Clock, text: "Complimentary late check-out (subject to availability)" },
+                { icon: ArrowUpCircle, text: "Room upgrades (subject to availability)" },
+                { icon: Heart, text: "Complimentary spa treatment" },
+                { icon: Gift, text: "Exclusive member offers and promotions" }
+              ].map((benefit, idx) => {
+                const Icon = benefit.icon;
+                return (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.1 }}
+                    className="flex items-start gap-4 p-6 bg-white/5 rounded-xl border border-white/10"
+                  >
+                    <Icon className="text-accent shrink-0 w-6 h-6 mt-1" />
+                    <p className="text-white font-medium">{benefit.text}</p>
+                  </motion.div>
+                );
+              })}
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center"
+            >
+              <p className="text-white/90 italic">Become a member today and enjoy greater comfort, flexibility, and value with every stay.</p>
+            </motion.div>
           </div>
         </section>
 

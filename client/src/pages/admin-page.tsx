@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2, Trash2, Plus, Edit2, ImageIcon, PlusCircle, CheckCircle, XCircle, Pencil, Upload, Save, Settings } from "lucide-react";
+import { Loader2, Trash2, Plus, Edit2, ImageIcon, PlusCircle, CheckCircle, XCircle, Pencil, Upload, Save, Settings, ArrowUp, ArrowDown } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { format } from "date-fns";
 import {
@@ -83,6 +83,42 @@ export default function AdminPage() {
       toast({ title: "Room deleted" });
     },
   });
+
+  const updateRoomOrder = useMutation({
+    mutationFn: async ({ id, sortOrder }: { id: number; sortOrder: number }) => {
+      await apiRequest("PATCH", `/api/rooms/${id}`, { sortOrder });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/rooms"] });
+    },
+    onError: (err: any) => {
+      toast({ title: "Failed to update room order", description: err.message, variant: "destructive" });
+    }
+  });
+
+  const handleMoveRoom = async (index: number, direction: 'up' | 'down') => {
+    if (!rooms) return;
+    const targetIndex = direction === 'up' ? index - 1 : index + 1;
+    if (targetIndex < 0 || targetIndex >= rooms.length) return;
+
+    const currentRoom = rooms[index];
+    const targetRoom = rooms[targetIndex];
+
+    const currentOrder = currentRoom.sortOrder ?? (index + 1);
+    const targetOrder = targetRoom.sortOrder ?? (targetIndex + 1);
+
+    const newCurrentOrder = currentOrder === targetOrder
+      ? (direction === 'up' ? targetOrder - 1 : targetOrder + 1)
+      : targetOrder;
+
+    try {
+      await updateRoomOrder.mutateAsync({ id: currentRoom.id, sortOrder: newCurrentOrder });
+      await updateRoomOrder.mutateAsync({ id: targetRoom.id, sortOrder: currentOrder });
+      toast({ title: `Moved "${currentRoom.name}" ${direction}` });
+    } catch (e) {
+      // error handled in mutation
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -187,6 +223,7 @@ export default function AdminPage() {
                 <Table>
                   <TableHeader>
                     <TableRow>
+                      <TableHead className="w-24">Order</TableHead>
                       <TableHead>Image</TableHead>
                       <TableHead>Name</TableHead>
                       <TableHead>Slug</TableHead>
@@ -199,13 +236,42 @@ export default function AdminPage() {
                   <TableBody>
                      {rooms?.length === 0 && (
                         <TableRow>
-                            <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
+                            <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
                                 No rooms found
                             </TableCell>
                         </TableRow>
                     )}
-                    {rooms?.map((room) => (
+                    {rooms?.map((room, index) => (
                       <TableRow key={room.id}>
+                        <TableCell>
+                          <div className="flex items-center gap-1.5">
+                            <span className="font-bold text-xs bg-muted px-2 py-1 rounded min-w-[28px] text-center text-primary">
+                              #{room.sortOrder ?? index + 1}
+                            </span>
+                            <div className="flex flex-col gap-0.5">
+                              <Button
+                                size="icon"
+                                variant="ghost"
+                                className="h-5 w-5 text-gray-500 hover:text-primary disabled:opacity-20"
+                                disabled={index === 0 || updateRoomOrder.isPending}
+                                onClick={() => handleMoveRoom(index, 'up')}
+                                title="Move up in display order"
+                              >
+                                <ArrowUp className="h-3 w-3" />
+                              </Button>
+                              <Button
+                                size="icon"
+                                variant="ghost"
+                                className="h-5 w-5 text-gray-500 hover:text-primary disabled:opacity-20"
+                                disabled={index === (rooms?.length || 0) - 1 || updateRoomOrder.isPending}
+                                onClick={() => handleMoveRoom(index, 'down')}
+                                title="Move down in display order"
+                              >
+                                <ArrowDown className="h-3 w-3" />
+                              </Button>
+                            </div>
+                          </div>
+                        </TableCell>
                         <TableCell>
                             <img src={room.imageUrl} alt={room.name} className="h-10 w-16 object-cover rounded" />
                         </TableCell>
@@ -325,6 +391,7 @@ function RoomDialog({ room }: { room?: Room }) {
       imageUrl: room?.imageUrl || "",
       youtubeUrl: room?.youtubeUrl || "",
       amenities: room?.amenities || [],
+      sortOrder: room?.sortOrder ?? 0,
     },
   });
 
@@ -494,7 +561,7 @@ function RoomDialog({ room }: { room?: Room }) {
               )}
             />
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-3 gap-4">
               <FormField
                 control={form.control}
                 name="price"
@@ -505,7 +572,7 @@ function RoomDialog({ room }: { room?: Room }) {
                       <Input 
                         type="number" 
                         {...field} 
-                        onChange={(e) => field.onChange(parseInt(e.target.value))}
+                        onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
                       />
                     </FormControl>
                     <FormMessage />
@@ -522,7 +589,26 @@ function RoomDialog({ room }: { room?: Room }) {
                       <Input 
                         type="number" 
                         {...field} 
-                        onChange={(e) => field.onChange(parseInt(e.target.value))}
+                        onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="sortOrder"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Display Order</FormLabel>
+                    <FormControl>
+                      <Input 
+                        type="number" 
+                        {...field} 
+                        value={field.value ?? 0}
+                        onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                        placeholder="1, 2, 3..."
                       />
                     </FormControl>
                     <FormMessage />
@@ -1154,7 +1240,7 @@ function SiteSettingsTab() {
         description="Full content management for the About Us page (header, story, philosophy, location)"
         onSave={() => saveSection([
           "about_header_image", "about_header_tagline", "about_header_title", "about_header_subtitle",
-          "about_story_title", "about_story_p1", "about_story_p2", "about_story_image",
+          "about_story_title", "about_story_p1", "about_story_p2", "about_story_image", "about_story_quote",
           "about_philosophy_title", "about_philosophy_p1", "about_philosophy_p2",
           "about_location_title", "about_location_desc", "about_location_image"
         ])}
@@ -1193,6 +1279,10 @@ function SiteSettingsTab() {
           <Textarea value={local.about_story_p2 || ""} onChange={e => set("about_story_p2", e.target.value)} rows={4} />
         </div>
         <SettingsImageField label="Story Section Image" settingKey="about_story_image" value={local.about_story_image || ""} onChange={set} />
+        <div className="space-y-2">
+          <Label>Story Quote (leave empty to hide)</Label>
+          <Input value={local.about_story_quote || ""} onChange={e => set("about_story_quote", e.target.value)} placeholder="e.g. Here, you don't just hear the rhythm of Africa — you live it." />
+        </div>
 
         <div className="border-t border-border/50 pt-6 mt-6 space-y-1 mb-4">
           <h4 className="font-bold text-primary">Philosophy</h4>
@@ -1228,13 +1318,13 @@ function SiteSettingsTab() {
       <SettingsSection
         title="📄 Page Headers — Rooms"
         description="Background image and text shown at the top of the Rooms & Suites page"
-        onSave={() => saveSection(["rooms_header_image", "rooms_header_tagline", "rooms_header_title", "rooms_header_subtitle"])}
+        onSave={() => saveSection(["rooms_header_image", "rooms_section_tagline", "rooms_header_title", "rooms_header_subtitle"])}
         isSaving={updateSettings.isPending}
       >
         <SettingsImageField label="Header Background Image" settingKey="rooms_header_image" value={local.rooms_header_image || ""} onChange={set} />
         <div className="space-y-2">
           <Label>Tagline (small text above title)</Label>
-          <Input value={local.rooms_header_tagline || ""} onChange={e => set("rooms_header_tagline", e.target.value)} placeholder="e.g. Exquisite Stays" />
+          <Input value={local.rooms_section_tagline || ""} onChange={e => set("rooms_section_tagline", e.target.value)} placeholder="e.g. Exquisite Stays" />
         </div>
         <div className="space-y-2">
           <Label>Page Title</Label>

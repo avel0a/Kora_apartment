@@ -5,7 +5,7 @@ import { Footer } from "@/components/Footer";
 import { useRoom } from "@/hooks/use-rooms";
 import { useRoomImages } from "@/hooks/use-room-images";
 import { BookingForm } from "@/components/BookingForm";
-import { Loader2, User, ChevronLeft, ChevronRight, Maximize, Bed, Wind } from "lucide-react";
+import { Loader2, User, ChevronLeft, ChevronRight, Maximize, Bed, Wind, DoorClosed } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useSEO } from "@/hooks/use-seo";
@@ -206,7 +206,7 @@ export default function RoomDetail() {
                 viewport={{ once: true }}
               >
                 <h2 className="text-4xl font-serif font-bold text-primary mb-8">Suite Details</h2>
-                <p className="text-muted-foreground leading-relaxed text-xl font-normal">
+                <p className="text-muted-foreground leading-relaxed text-xl font-normal whitespace-pre-line">
                   {room.description}
                 </p>
               </motion.div>
@@ -218,10 +218,10 @@ export default function RoomDetail() {
                 className="grid grid-cols-2 md:grid-cols-4 gap-10 py-12 border-y border-border/50"
               >
                 {[
+                  { label: "Bedrooms", value: room.name.includes("Two") ? "2 Bedrooms" : room.name.includes("Three") ? "3 Bedrooms" : room.name.includes("Four") ? "4 Bedrooms" : room.capacity <= 4 ? "2 Bedrooms" : room.capacity <= 6 ? "3 Bedrooms" : "4 Bedrooms", icon: <DoorClosed size={24} /> },
                   { label: "Guest Capacity", value: `${room.capacity} Persons`, icon: <User size={24} /> },
                   { label: "Bed Type", value: room.bedType || "King Suite", icon: <Bed size={24} /> },
                   { label: "Total Area", value: room.size || "Spacious", icon: <Maximize size={24} /> },
-                  { label: "Suite View", value: "City View", icon: <Wind size={24} /> }
                 ].map((item, i) => (
                   <div key={i} className="space-y-3">
                     <div className="text-accent">{item.icon}</div>

@@ -5,11 +5,13 @@ import { api } from "@shared/routes";
 import { z } from "zod";
 import { setupAuth } from "./auth";
 import { sendBookingEmails, sendInquiryEmail } from "./email";
-import { insertRoomSchema, insertGalleryImageSchema, insertRoomImageSchema } from "@shared/schema";
+import { insertRoomSchema, insertGalleryImageSchema, insertRoomImageSchema, rooms, roomImages, galleryImages, siteSettings } from "@shared/schema";
+import { db } from "./db";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
 import sharp from "sharp";
+import { eq } from "drizzle-orm";
 
 const storage_multer = multer.diskStorage({
   destination: function (_req, _file, cb) {
@@ -42,6 +44,73 @@ export async function registerRoutes(
     res.setHeader('Pragma', 'no-cache');
     res.setHeader('Expires', '0');
     next();
+  });
+
+  apiRouter.get("/trigger-reseed", async (req, res) => {
+    try {
+      const roomTypes = [
+        {
+          name: "Junior Suite – Two Bedroom Apartment",
+          slug: "junior-suite",
+          description: "Spacious and comfortable, this 110 m² apartment offers two bedrooms and ample space to work, relax, and entertain guests.\n\nAccommodates up to 4 guests:\n• Bedroom 1: King-size bed\n• Bedroom 2: Two single beds\n\nIdeal for families, business travellers, and long-term stays.",
+          price: 89,
+          capacity: 4,
+          size: "110 m²",
+          bedType: "King Bed + 2 Single Beds",
+          imageUrl: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?q=80&w=1000&auto=format&fit=crop",
+          amenities: ["Wifi:Complimentary Wi-Fi throughout the apartment", "Coffee:Fully equipped kitchen with modern appliances", "Sofa:Spacious living room and dining area", "Shirt:Private washing machine", "TV:Smart TV", "Sparkles:Daily housekeeping service", "Heating:Backup power supply", "Shield:24-hour security", "Parking:Free on-site parking"],
+          sortOrder: 1
+        },
+        {
+          name: "Senior Suite – Three Bedroom Apartment",
+          slug: "senior-suite",
+          description: "Spacious and comfortable, this 175 m² apartment features three bedrooms and ample space to work, relax, and entertain guests.\n\nAccommodates up to 6 guests:\n• Bedroom 1: King-size bed\n• Bedroom 2: Queen-size bed\n• Bedroom 3: King-size bed\n\nAll bedrooms with private en-suite bathrooms. Ideal for families, business travellers, and long-term stays seeking comfort, convenience, and privacy.",
+          price: 99,
+          capacity: 6,
+          size: "175 m²",
+          bedType: "2 King Beds + Queen Bed",
+          imageUrl: "https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=1000&auto=format&fit=crop",
+          amenities: ["Bathtub:All bedrooms with private en-suite bathrooms", "Wifi:Complimentary Wi-Fi throughout the apartment", "Coffee:Fully equipped kitchen with modern appliances", "Sofa:Spacious living room and dining area", "Shirt:Private washing machine", "TV:Smart TV", "Sparkles:Daily housekeeping service", "Heating:Backup power supply", "Shield:24-hour security", "Parking:Free on-site parking"],
+          sortOrder: 2
+        },
+        {
+          name: "Penthouse Suite – Four Bedroom Apartment",
+          slug: "penthouse-suite",
+          description: "Spacious and inviting, this 290 m² Penthouse Suite features four bedrooms and expansive living areas designed for work, relaxation, and entertaining.\n\nAccommodates up to 8 guests:\n• Bedroom 1: King-size bed\n• Bedroom 2: Queen-size bed\n• Bedroom 3: Two single beds\n• Bedroom 4: King-size bed\n\nAll bedrooms with private en-suite bathrooms. Ideal for large families, business executives, diplomatic staff, and long-term stays seeking exceptional space, comfort, and privacy.",
+          price: 180,
+          capacity: 8,
+          size: "290 m²",
+          bedType: "2 King + Queen + 2 Singles",
+          imageUrl: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1000&auto=format&fit=crop",
+          amenities: ["Bathtub:All bedrooms with private en-suite bathrooms", "Wifi:Complimentary Wi-Fi throughout the apartment", "Coffee:Fully equipped kitchen with modern appliances", "Sofa:Very spacious living room and dining area", "DoorOpen:Separate family entertainment room", "Shirt:Private laundry room", "Lamp:Large veranda with outdoor seating space", "TV:Smart TV", "Sparkles:Daily housekeeping service", "Heating:Backup power supply", "Shield:24-hour security", "Parking:Free on-site parking"],
+          sortOrder: 3
+        },
+        {
+          name: "Deluxe Suite – Three Bedroom Apartment",
+          slug: "deluxe-suite",
+          description: "Stylish and exceptionally spacious, this 320 m² Deluxe Suite features three bedrooms, expansive living areas, and a vast veranda, offering the perfect setting to work, relax, and entertain.\n\nAccommodates up to 6 guests:\n• Bedroom 1: King-size bed\n• Bedroom 2: Queen-size bed\n• Bedroom 3: Queen-size bed\n\nAll bedrooms with private en-suite bathrooms. Ideal for families, business executives, diplomats, and long-term guests seeking exceptional space, comfort, and privacy.",
+          price: 225,
+          capacity: 6,
+          size: "320 m²",
+          bedType: "King Bed + 2 Queen Beds",
+          imageUrl: "https://images.unsplash.com/photo-1566665797739-1674de7a421a?q=80&w=1000&auto=format&fit=crop",
+          amenities: ["Bathtub:All bedrooms with private en-suite bathrooms", "Wifi:Complimentary Wi-Fi throughout the apartment", "Coffee:Fully equipped kitchen with modern appliances", "Sofa:Very spacious living room and dining area", "DoorOpen:Separate family entertainment room", "Shirt:Private laundry room", "Lamp:Vast veranda with outdoor seating space", "TV:Smart TV", "Sparkles:Daily housekeeping service", "Heating:Backup power supply", "Shield:24-hour security", "Parking:Free on-site parking"],
+          sortOrder: 4
+        }
+      ];
+
+      for (const roomType of roomTypes) {
+        console.log(`Updating room: ${roomType.slug}`);
+        await db.update(rooms)
+          .set(roomType)
+          .where(eq(rooms.slug, roomType.slug));
+      }
+
+      res.status(200).json({ success: true, message: "Database rooms updated successfully!" });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ success: false, error: "Failed to update database rooms", details: error instanceof Error ? error.message : String(error) });
+    }
   });
 
   const isAuthenticated = (req: any, res: any, next: any) => {
@@ -315,7 +384,10 @@ async function ensureNewTables() {
         sort_order INTEGER NOT NULL DEFAULT 0
       )
     `);
-    console.log("New tables ensured (gallery_images, room_images).");
+    await dbInstance.execute(sql`
+      ALTER TABLE rooms ADD COLUMN IF NOT EXISTS sort_order INTEGER NOT NULL DEFAULT 0;
+    `);
+    console.log("New tables ensured (gallery_images, room_images, rooms.sort_order).");
   } catch (err) {
     console.error("Error creating new tables:", err);
   }

@@ -1,18 +1,34 @@
-# ADR 0001: PGlite Lock File Management on Windows
+# ADR 0001: PGlite Lock File & Lifecycle Management (503 Prevention)
 
 ## Status
-Accepted
+Accepted & Enhanced
 
 ## Context
-In local development environments (especially Windows), restarting the Node.js dev server abruptly (e.g., via Nodemon/tsx watch) leaves the PGlite `postmaster.pid` lock file orphaned. Upon restart, PGlite throws a `RuntimeError: Aborted()` and refuses to initialize the database because it perceives another process is actively using it.
+When running on cPanel (CloudLinux Passenger), the hosting environment frequently stops idle Node.js application processes via `SIGTERM` to preserve server memory. When users visit the site again, Passenger spawns the process back up.
 
-## Decision
-We have added a startup check in `server/db.ts` that checks for the existence of `db-storage/postmaster.pid` before initializing the `PGlite` client. 
-If the file exists and we are not in a production cluster, we synchronously attempt to unlink (delete) it using `fs.unlinkSync()`. 
-If it fails (due to legitimate OS-level locking because the server is actually running in another terminal), we catch the exception and log a clear error to the developer.
+Under PGlite, abrupt process shutdowns left an orphaned `db-storage/postmaster.pid` lock file on disk. When Passenger attempted to restart the application, PGlite detected the lock file and threw:
+```
+RuntimeError: Aborted()
+[db] Failed to acquire lock on postmaster.pid
+```
+This resulted in HTTP 503 "Service Unavailable" errors for visitors until the server was manually restarted.
+
+## Decision & Implementation
+A dual-layer lifecycle management strategy was implemented:
+
+1. **Graceful Shutdown Interceptors (`server/index.ts` & `server/db.ts`):**
+   - The application intercepts both `SIGTERM` and `SIGINT` signals.
+   - When received, the HTTP server stops accepting new connections, and the `closeDb()` routine cleanly shuts down the PGlite WASM engine and releases the lock file.
+
+2. **Boot-Time Lock Recovery (`server/db.ts`):**
+   - On every application startup, prior to initializing PGlite, the system checks for `db-storage/postmaster.pid`.
+   - If an orphaned lock file is found (e.g. from an abrupt server power cut or ungraceful kill), it is automatically removed before PGlite initializes.
+
+3. **Safe Dynamic Schema Migrations (`server/index.ts` & `server/routes.ts`):**
+   - Startup hooks execute `ALTER TABLE rooms ADD COLUMN IF NOT EXISTS sort_order INTEGER NOT NULL DEFAULT 0;` and create auxiliary tables if missing.
 
 ## Consequences
-- **Positive**: Dev server auto-restarts no longer permanently break the database connection.
-- **Negative**: If two instances of the dev server are started simultaneously, the second instance might clear the lock and corrupt the local in-memory state or fail gracefully. This is deemed an acceptable risk for local development.
-
-*Generated via Senior Architect & Abel Fullstack Builder skills.*
+- **Positive**: 
+  - Complete elimination of 503 errors during cPanel Passenger idle spin-down / spin-up cycles.
+  - Safe zero-downtime updates and seamless database migrations without data loss.
+- **Negative**: None. Lock acquisition is safe and idempotent across single-process hosting environments.

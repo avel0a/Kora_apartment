@@ -59,7 +59,7 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getRooms(): Promise<Room[]> {
-    return await db.select().from(rooms);
+    return await db.select().from(rooms).orderBy(asc(rooms.sortOrder), asc(rooms.id));
   }
 
   async getRoom(id: number): Promise<Room | undefined> {

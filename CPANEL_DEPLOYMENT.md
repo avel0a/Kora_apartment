@@ -1,110 +1,102 @@
-# cPanel Deployment Guide: Momona Hotel
+# cPanel Deployment Guide: Kora Hotel Suites
 
-This guide explains how to deploy your Node.js application to a standard cPanel hosting environment.
-
-## Prerequisites
-
-- cPanel access with the **"Setup Node.js App"** feature enabled.
-- A registered domain or subdomain.
-- Your project files (you can upload a ZIP or use Git).
-
-## ⚠️ CRITICAL: Local vs. Server
-
-- **Your Computer**: Run `npm run build` and `npm run check` here.
-- **cPanel Server**: **NEVER** run `npm run build`, `npm run dev`, or `npm run check` here. These will fail with "command not found" because the server only has the tools to _run_ the site, not _build_ it.
+This guide explains how to deploy and update the Kora Hotel Suites application on standard cPanel hosting with "Setup Node.js App" (CloudLinux Passenger).
 
 ---
 
-## Step 1: Prepare the Project Locally
+## 📦 What is in the Deployment Zip?
+The pre-built package **`cpanel_update_final.zip`** is located in your project root:
+- `dist/` (Compiled backend server `dist/index.js` and frontend static assets `dist/public/`)
+- `migrations/` (Database migration definitions)
+- `package.json` & `package-lock.json` (Dependency manifests)
+- `server/` & `shared/` (Server modules and schema definitions)
 
-Before uploading, you need to generate the production build **on your own computer**.
-
-1.  Open your terminal in the project root.
-2.  Run the build command:
-    ```bash
-    npm run build
-    ```
-3.  This will create a `dist` folder. This folder contains the compiled backend (`dist/index.js`) and the frontend assets (`dist/public`).
-
----
-
-## Step 2: Upload Files to cPanel
-
-1.  Log in to cPanel and open **File Manager**.
-2.  Create a folder for your app (e.g., `/home/username/momonahotel`). **Caution**: Do not use `public_html` as the application root; it should be a sibling to `public_html`.
-3.  Upload the following files and folders:
-    - `dist/`
-    - `migrations/`
-    - `package.json`
-    - `package-lock.json`
-    - `.env` (Create this on the server with your production secrets)
-4.  **Important**: You do **not** need to upload `node_modules`, `client/`, or `server/` (except `dist/`).
+> [!IMPORTANT]
+> **Data Safety Guarantee**:
+> Uploading this zip **WILL NOT** overwrite or delete your existing bookings, custom gallery photos, or database data.
+> The database lives in the `db-storage/` folder on your server, which is completely separate from the code files in the zip.
 
 ---
 
-## Step 3: Setup Node.js App in cPanel
+## 🚀 Fast Deployment (Update Existing Website)
 
-1.  In cPanel, search for **"Setup Node.js App"**.
-2.  Click **Create Application**.
-3.  **Node.js version**: Select the latest stable version (at least 20.x).
-4.  **Application mode**: Select `Production`.
-5.  **Application root**: Enter the path where you uploaded your files (e.g., `momonahotel`).
-6.  **Application URL**: Choose your domain.
-7.  **Application startup file**: Enter `dist/index.js`.
-8.  Click **Create**.
+If you already have the Node.js application running on cPanel:
 
----
+1. **Upload & Extract:**
+   - In cPanel, open **File Manager**.
+   - Navigate to your application directory (e.g., `/home/username/Kora_apartment/`).
+   - Upload `cpanel_update_final.zip`.
+   - Right-click `cpanel_update_final.zip` and choose **Extract** (select your app directory as destination and overwrite existing files).
+   - Delete `cpanel_update_final.zip` from File Manager once extracted.
 
-## Step 4: Install Dependencies
+2. **Restart Application:**
+   - In cPanel, open **"Setup Node.js App"**.
+   - Click the **Restart** button for your application.
 
-1.  Once the app is created, you will see a button labeled **"Run npm install"**. Click it.
-2.  Wait for the process to finish. This installs the required packages on your server.
-
----
-
-## Step 5: Configure Environment Variables
-
-In the same "Setup Node.js App" interface:
-
-1.  Add a variable named `NODE_ENV` with value `production`. **(Very Important)**
-2.  Add `SESSION_SECRET` with a long random string.
-3.  Add `PORT` (usually cPanel handles this, but you can set it to `5000` if needed).
-4.  Click **Save**.
+3. **Verify:**
+   - Visit your website: `https://yourdomain.com`
+   - Visit the Suites page: `https://yourdomain.com/rooms`
+   - Visit the Admin panel: `https://yourdomain.com/admin` (Rooms tab shows the new Order column with Up/Down buttons).
 
 ---
 
-## Step 6: Fix Routing (.htaccess)
+## 🛠️ Fresh Deployment (First Time Setup)
 
-If your website shows a 404 when you refresh page like `/rooms`, you need to ensure all traffic points to your Node.js app. cPanel usually handles this, but if not, ensure your `.htaccess` in the domain's document root (e.g., `public_html` if that's where the domain points) looks like this:
+If you are setting up the website from scratch on a new server or clean directory:
+
+### Step 1: Create Application Directory
+1. Open **File Manager** in cPanel.
+2. Create a folder named `Kora_apartment` in your home root (sibling to `public_html`, e.g. `/home/username/Kora_apartment`).
+3. Upload `cpanel_update_final.zip` into this folder and extract it.
+
+### Step 2: Configure "Setup Node.js App"
+1. In cPanel, search for **"Setup Node.js App"**.
+2. Click **Create Application**:
+   - **Node.js version**: `20.x` or `22.x`
+   - **Application mode**: `Production`
+   - **Application root**: `Kora_apartment`
+   - **Application URL**: Select your domain or subdomain.
+   - **Application startup file**: `dist/index.js`
+3. Click **Create**.
+
+### Step 3: Install Dependencies
+1. In the Node.js application panel, click **Run NPM Install**.
+2. Wait for npm install to finish.
+
+### Step 4: Environment Variables
+In the "Setup Node.js App" settings page, add the following environment variables:
+- `NODE_ENV` = `production`
+- `SESSION_SECRET` = `kora_hotel_super_secret_session_key_2026`
+- `PORT` = `5000` (or leave default if managed by Passenger)
+- `ADMIN_PASSWORD` = (your preferred admin password)
+
+Click **Save**.
+
+### Step 5: Start & Automatic Database Seeding
+1. Click **Restart** or **Start**.
+2. When the application starts for the first time, it automatically:
+   - Initializes the local PostgreSQL-compatible database in `db-storage/`.
+   - Seeds the 4 luxury suites (Junior, Senior, Penthouse, Deluxe) with accurate descriptions, sizes, amenities, and default display orders (`#1`, `#2`, `#3`, `#4`).
+   - Seeds default site settings and gallery images.
+
+---
+
+## 🛡️ 503 Prevention Architecture
+
+Previous versions of the deployment could encounter `503 Service Unavailable` errors during cPanel idle restarts. This has been permanently resolved:
+1. **Graceful Shutdown (`SIGTERM` & `SIGINT`):** When Passenger spins down the idle Node.js process, the server cleanly unmounts the HTTP listeners and flushes/closes the PGlite database connection.
+2. **Auto-Recovery on Startup:** The server checks for any orphaned `db-storage/postmaster.pid` lock files on boot. If one exists, it is automatically purged before initializing the database.
+
+---
+
+## ⚙️ URL Routing & Rewrites (.htaccess)
+
+If refreshing client-side routes (e.g. `/rooms`, `/about`, `/admin`) gives a 404, ensure your document root `.htaccess` (inside the folder where your domain points, e.g. `public_html`) forwards requests to the Node app:
 
 ```apache
 RewriteEngine On
-RewriteRule ^$ http://127.0.0.1:PORT/ [P,L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ http://127.0.0.1:PORT/$1 [P,L]
+RewriteRule ^(.*)$ http://127.0.0.1:5000/$1 [P,L]
 ```
-
-_(Note: Replace `PORT` with the actual port your app is running on, which you can find in the node app settings)._
-
----
-
-## Step 7: Database & Uploads
-
-- **Database**: The app uses **PGlite**, which stores data in a local folder `.drizzle/pglite`. The server will automatically create this and run migrations on first start.
-- **Uploads**: Images will be stored in the `uploads` folder in your application root. Ensure this folder is writable.
-
----
-
-## Troubleshooting
-
-- **"sh: cross-env: command not found" error**: I have removed `cross-env` from the `start` script in `package.json`. Ensure you upload the updated `package.json` to the server. You **must** also set `NODE_ENV` to `production` manually in the cPanel Node.js Selector settings (see Step 5).
-- **"Can't acquire lock for app" error**: This happens when a previous operation was interrupted and left a lock file behind.
-  1. Go to cPanel **File Manager**.
-  2. Navigate to your application root (e.g., `momonahotel`).
-  3. Look for a file named `.lock` or similar. Sometimes it is hidden, so click **Settings** (top right) and check **"Show Hidden Files"**.
-  4. If it's not in your app folder, it might be in `/home/username/nodevenv/repositories/your_app_name/`.
-  5. Delete the `.lock` file.
-  6. **Stop** the application in the "Setup Node.js App" interface, then try **Run npm install** again.
-- **Logs**: Check the `stderr.log` file in your application root if the app fails to start.
-- **Port**: If the app doesn't load, check the port assigned by cPanel in the "Setup Node.js App" screen.
+*(Note: Passenger usually creates its own passenger rewrite rules automatically).*

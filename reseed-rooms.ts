@@ -11,48 +11,48 @@ async function reseed() {
 
   const roomTypes = [
     {
-      name: "Junior Suite",
+      name: "Junior Suite – Two Bedroom Apartment",
       slug: "junior-suite",
-      description: "It has 2 Bedrooms. Size is 110 square meters. It contains a master bedroom with a king size bed and private bathroom, and a second class bedroom with a double bed and private bathroom. Features a spacious living room, dining room, fully equipped kitchen, and private laundry machine. All suites have a private veranda and are equipped with modern comfortable furniture. Accommodates up to 4 persons.",
+      description: "Spacious and comfortable, this 110 m² apartment offers two bedrooms and ample space to work, relax, and entertain guests.\n\nAccommodates up to 4 guests:\n• Bedroom 1: King-size bed\n• Bedroom 2: Two single beds\n\nIdeal for families, business travellers, and long-term stays.",
       price: 89,
       capacity: 4,
-      size: "110m²",
-      bedType: "King Bed + Double Bed",
+      size: "110 m²",
+      bedType: "King Bed + 2 Single Beds",
       imageUrl: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?q=80&w=1000&auto=format&fit=crop",
-      amenities: ["High-Speed WiFi", "Private Laundry", "Private Veranda", "Private Bathrooms", "Living & Dining Room", "Fully Equipped Kitchen"]
+      amenities: ["Wifi:Complimentary Wi-Fi throughout the apartment", "Coffee:Fully equipped kitchen with modern appliances", "Sofa:Spacious living room and dining area", "Shirt:Private washing machine", "TV:Smart TV", "Sparkles:Daily housekeeping service", "Heating:Backup power supply", "Shield:24-hour security", "Parking:Free on-site parking"]
     },
     {
-      name: "Senior Suite",
+      name: "Senior Suite – Three Bedroom Apartment",
       slug: "senior-suite",
-      description: "It has 3 Bedrooms. Size is 191 square meters. It contains a master bedroom with a king size bed and private bathroom, a second class bedroom with a king size bed, balcony, and private bathroom, and a third class bedroom with a single bed and private bathroom. Features a spacious living room, dining room, fully equipped kitchen, walk-in closet, and private laundry. All suites have a private veranda and modern comfortable furniture. Accommodates up to 6 persons.",
+      description: "Spacious and comfortable, this 175 m² apartment features three bedrooms and ample space to work, relax, and entertain guests.\n\nAccommodates up to 6 guests:\n• Bedroom 1: King-size bed\n• Bedroom 2: Queen-size bed\n• Bedroom 3: King-size bed\n\nAll bedrooms with private en-suite bathrooms. Ideal for families, business travellers, and long-term stays seeking comfort, convenience, and privacy.",
       price: 99,
       capacity: 6,
-      size: "191m²",
-      bedType: "2 King Beds + 1 Single Bed",
+      size: "175 m²",
+      bedType: "2 King Beds + Queen Bed",
       imageUrl: "https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=1000&auto=format&fit=crop",
-      amenities: ["High-Speed WiFi", "Private Veranda", "Balcony", "Walk-in Closet", "Living & Dining", "Private Bathrooms", "Fully Equipped Kitchen"]
+      amenities: ["Bathtub:All bedrooms with private en-suite bathrooms", "Wifi:Complimentary Wi-Fi throughout the apartment", "Coffee:Fully equipped kitchen with modern appliances", "Sofa:Spacious living room and dining area", "Shirt:Private washing machine", "TV:Smart TV", "Sparkles:Daily housekeeping service", "Heating:Backup power supply", "Shield:24-hour security", "Parking:Free on-site parking"]
     },
     {
-      name: "Penthouse Suite",
+      name: "Penthouse Suite – Four Bedroom Apartment",
       slug: "penthouse-suite",
-      description: "It has 4 Bedrooms. Size is 290 square meters. It contains a master bedroom with a 2x2 meter bed, jacuzzi shower, private living room, private veranda, and private bathroom. The second class bedroom contains a queen bed with a private bathroom. The third class bedroom contains a double bed with a private bathroom. The fourth class bedroom contains twin beds with a private bathroom. Features a spacious living and dining room, fully equipped kitchen, independent laundry machine, and a spectacular view of Addis Ababa. Accommodates up to 8 persons.",
+      description: "Spacious and inviting, this 290 m² Penthouse Suite features four bedrooms and expansive living areas designed for work, relaxation, and entertaining.\n\nAccommodates up to 8 guests:\n• Bedroom 1: King-size bed\n• Bedroom 2: Queen-size bed\n• Bedroom 3: Two single beds\n• Bedroom 4: King-size bed\n\nAll bedrooms with private en-suite bathrooms. Ideal for large families, business executives, diplomatic staff, and long-term stays seeking exceptional space, comfort, and privacy.",
       price: 180,
       capacity: 8,
-      size: "290m²",
-      bedType: "2x2m King + Queen + Double + Twin",
+      size: "290 m²",
+      bedType: "2 King + Queen + 2 Singles",
       imageUrl: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1000&auto=format&fit=crop",
-      amenities: ["City View", "Jacuzzi Shower", "High-Speed WiFi", "Laundry Machine", "Private Verandas", "Private Bathrooms", "Fully Equipped Kitchen"]
+      amenities: ["Bathtub:All bedrooms with private en-suite bathrooms", "Wifi:Complimentary Wi-Fi throughout the apartment", "Coffee:Fully equipped kitchen with modern appliances", "Sofa:Very spacious living room and dining area", "DoorOpen:Separate family entertainment room", "Shirt:Private laundry room", "Lamp:Large veranda with outdoor seating space", "TV:Smart TV", "Sparkles:Daily housekeeping service", "Heating:Backup power supply", "Shield:24-hour security", "Parking:Free on-site parking"]
     },
     {
-      name: "Deluxe Suite",
+      name: "Deluxe Suite – Three Bedroom Apartment",
       slug: "deluxe-suite",
-      description: "It has 3 Bedrooms. Size is 290 square meters. Contains 2 master bedrooms and one second class bedroom, all with private bathrooms. Features luxury and elegance with all the premium amenities of the penthouse suite, including an expansive living room, dining room, and fully equipped kitchen. Accommodates up to 6 persons.",
+      description: "Stylish and exceptionally spacious, this 320 m² Deluxe Suite features three bedrooms, expansive living areas, and a vast veranda, offering the perfect setting to work, relax, and entertain.\n\nAccommodates up to 6 guests:\n• Bedroom 1: King-size bed\n• Bedroom 2: Queen-size bed\n• Bedroom 3: Queen-size bed\n\nAll bedrooms with private en-suite bathrooms. Ideal for families, business executives, diplomats, and long-term guests seeking exceptional space, comfort, and privacy.",
       price: 225,
       capacity: 6,
-      size: "290m²",
-      bedType: "2 Master Beds + 1 Double Bed",
+      size: "320 m²",
+      bedType: "King Bed + 2 Queen Beds",
       imageUrl: "https://images.unsplash.com/photo-1566665797739-1674de7a421a?q=80&w=1000&auto=format&fit=crop",
-      amenities: ["Luxury & Elegance", "City View", "Jacuzzi Shower", "High-Speed WiFi", "Laundry Machine", "Private Verandas", "Private Bathrooms", "Fully Equipped Kitchen"]
+      amenities: ["Bathtub:All bedrooms with private en-suite bathrooms", "Wifi:Complimentary Wi-Fi throughout the apartment", "Coffee:Fully equipped kitchen with modern appliances", "Sofa:Very spacious living room and dining area", "DoorOpen:Separate family entertainment room", "Shirt:Private laundry room", "Lamp:Vast veranda with outdoor seating space", "TV:Smart TV", "Sparkles:Daily housekeeping service", "Heating:Backup power supply", "Shield:24-hour security", "Parking:Free on-site parking"]
     }
   ];
 

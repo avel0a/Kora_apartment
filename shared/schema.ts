@@ -16,6 +16,7 @@ export const rooms = pgTable("rooms", {
   imageUrl: text("image_url").notNull(),
   youtubeUrl: text("youtube_url"), // Optional YouTube video link
   amenities: text("amenities").array(), // e.g., ["Free WiFi", "Bathtub"]
+  sortOrder: integer("sort_order").notNull().default(0),
 });
 
 export const bookings = pgTable("bookings", {
